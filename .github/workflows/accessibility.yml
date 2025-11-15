@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run Jest tests
+      run: npm run test
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+
+    - name: Build Next.js app
+      run: npm run build
+
+    - name: Run Playwright tests
+      run: npm run test:e2e
+
+    - name: Install pa11y
+      run: npm install -g pa11y
+
+    - name: Start Next.js server
+      run: |
+        npm run start &
+        sleep 20  # Wait for server to be ready
+
+    - name: Run pa11y tests
+      run: |
+        # Test main pages
+        pa11y http://localhost:3000 --reporter cli
+        pa11y http://localhost:3000/about --reporter cli
+        pa11y http://localhost:3000/jobs --reporter cli
+        pa11y http://localhost:3000/stays --reporter cli
+        pa11y http://localhost:3000/list --reporter cli
+        pa11y http://localhost:3000/browse --reporter cli
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          playwright-report/
+          coverage/
+        retention-days: 30
