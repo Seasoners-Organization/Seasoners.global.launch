@@ -10,6 +10,11 @@ export async function GET() {
       return NextResponse.json({ isLaunched: true, earlyBirdActive: false });
     }
 
+    // If no database configured, default to launched and avoid Prisma access during builds
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ isLaunched: true, earlyBirdActive: false });
+    }
+
     const settings = await (prisma as any).launchSettings.findFirst();
     return NextResponse.json({
       // Default to launched when no settings exist to avoid unintended gating in prod
