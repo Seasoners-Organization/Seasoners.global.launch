@@ -5,10 +5,17 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
+    // If explicitly disabled via env var, consider site launched
+    if (process.env.DISABLE_LAUNCH_GATE === 'true') {
+      return NextResponse.json({ isLaunched: true, earlyBirdActive: false });
+    }
+
     const settings = await (prisma as any).launchSettings.findFirst();
     return NextResponse.json({
-      isLaunched: settings?.isLaunched ?? false,
-      earlyBirdActive: settings?.earlyBirdActive ?? true,
+      // Default to launched when no settings exist to avoid unintended gating in prod
+      isLaunched: settings?.isLaunched ?? true,
+      // Be conservative on early-bird when no settings exist
+      earlyBirdActive: settings?.earlyBirdActive ?? false,
     });
   } catch (e) {
     console.error('Error fetching launch status', e);
