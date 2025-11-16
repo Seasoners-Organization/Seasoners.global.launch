@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../../lib/auth';
-import { prisma } from '../../../../lib/prisma';
+import { authOptions } from '../../../_lib/auth';
+import { prisma } from '../../../_lib/prisma';
 import crypto from 'crypto';
-import { getResend } from '../../../../lib/resend';
+import { getResend } from '../../../_lib/resend';
 
 export async function POST(req: Request) {
   try {
