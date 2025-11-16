@@ -19,7 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "lib/*": ["lib/*"]
+      "@/lib/*": ["./lib/*"]
     },
     "plugins": [
       {
@@ -31,8 +31,7 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "lib/**/*.ts"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"

@@ -1,4 +1,4 @@
-import { getResend } from '../app/_lib/resend';
+import { getResend } from '@/lib/resend';
 
 /**
  * Send email notification when an agreement is created
