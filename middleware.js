@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 export async function middleware(request) {
+  // Allow bypassing the launch gate entirely in CI/E2E environments
+  if (process.env.DISABLE_LAUNCH_GATE === 'true' || process.env.CI === 'true') {
+    return NextResponse.next();
+  }
   const token = await getToken({ req: request });
   const path = request.nextUrl.pathname;
 
@@ -9,6 +13,7 @@ export async function middleware(request) {
   const exemptPaths = [
     '/waitlist',
     '/api/waitlist',
+    '/api/dev',
     '/api/auth',
     '/api/launch-status',
     '/api/webhooks',

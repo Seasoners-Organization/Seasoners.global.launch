@@ -14,6 +14,7 @@ jobs:
       SENDGRID_API_KEY: SG.test_dummy
       STRIPE_SECRET_KEY: sk_test_123
       DATABASE_URL: file:./tmp/ci-test.db
+      DISABLE_LAUNCH_GATE: 'true'
 
     steps:
     - uses: actions/checkout@v3

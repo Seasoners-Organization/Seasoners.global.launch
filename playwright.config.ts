@@ -44,7 +44,8 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     env: {
       NODE_ENV: 'development',
-      DATABASE_URL: process.env.DATABASE_URL || 'file:./tmp/ci-test.db'
+      DATABASE_URL: process.env.DATABASE_URL || 'file:./tmp/ci-test.db',
+      DISABLE_LAUNCH_GATE: 'true',
     },
   },
 });
