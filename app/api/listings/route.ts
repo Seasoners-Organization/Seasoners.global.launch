@@ -141,6 +141,11 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
+    // If no database configured, return empty array to allow builds to succeed
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ listings: [] }, { status: 200 });
+    }
+
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type');
     const region = searchParams.get('region');
