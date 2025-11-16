@@ -11,7 +11,9 @@
     "test:coverage": "jest --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:ci": "jest --ci && playwright test"
+    "test:ci": "jest --ci && playwright test",
+    "i18n:translate": "node scripts/generate-translations-auto.js",
+    "i18n:validate": "node scripts/validate-translations.js"
   },
   "dependencies": {
     "@auth/core": "^0.34.3",
