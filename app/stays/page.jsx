@@ -97,7 +97,7 @@ export default function StaysPage() {
           {t('staysSubtitle')}
         </p>
         <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-8">
-          <FilterSidebar listings={stays} onFiltered={setFilteredStays} />
+          <FilterSidebar context="stays" listings={stays} onFiltered={setFilteredStays} />
           <div>
             {loading && (
               <div className="text-center py-12">

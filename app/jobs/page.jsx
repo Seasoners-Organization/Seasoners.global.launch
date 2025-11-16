@@ -101,7 +101,7 @@ export default function JobsPage() {
           {t('jobsSubtitle')}
         </p>
         <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-8">
-          <FilterSidebar listings={jobs} onFiltered={setFilteredJobs} />
+          <FilterSidebar context="jobs" listings={jobs} onFiltered={setFilteredJobs} />
           <div>
             {loading && (
               <div className="text-center py-12">

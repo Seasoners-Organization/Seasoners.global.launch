@@ -31,24 +31,29 @@ export async function POST(req: NextRequest) {
       totalRoommates,
       currentRoommates,
       lookingForGender,
-      spotsAvailable
+      spotsAvailable,
+      // Optional enhanced location context
+      location: locationName
     } = body;
 
-    // Validate required fields
-    if (!title || !description || !listingType || !region) {
+    // Validate required fields (region no longer required for non-AT locations)
+    if (!title || !description || !listingType) {
       return NextResponse.json(
-        { error: 'Missing required fields: title, description, listingType, region' },
+        { error: 'Missing required fields: title, description, listingType' },
         { status: 400 }
       );
     }
 
-    // Map display region name to enum value
-    const regionEnum = REGION_DISPLAY_TO_ENUM[region];
-    if (!regionEnum) {
-      return NextResponse.json(
-        { error: 'Invalid region provided' },
-        { status: 400 }
-      );
+    // Map display region name to enum value if provided
+    let regionEnum = undefined as undefined | string;
+    if (region) {
+      regionEnum = REGION_DISPLAY_TO_ENUM[region];
+      if (!regionEnum) {
+        return NextResponse.json(
+          { error: 'Invalid region provided' },
+          { status: 400 }
+        );
+      }
     }
 
     // Map listing type to standardized values
@@ -87,8 +92,8 @@ export async function POST(req: NextRequest) {
       description,
       type,
       price: parsedPrice,
-      location: `${city || ''}, ${region}`.trim(),
-      region: regionEnum,
+      location: (locationName?.toString()?.trim() || [city, region].filter(Boolean).join(', ')).trim(),
+      region: regionEnum ? (regionEnum as any) : null,
       city: city || null,
       photos: photos || [], // Store photos array
       userId: user.id,

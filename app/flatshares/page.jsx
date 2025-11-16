@@ -71,7 +71,7 @@ export default function FlatsharesPage() {
 
           {/* Filters Sidebar + Results */}
           <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-6">
-            <FilterSidebar listings={listings} onFiltered={setFiltered} />
+            <FilterSidebar context="flatshares" listings={listings} onFiltered={setFiltered} />
             <div>
               {loading ? (
                 <div className="text-center py-12">

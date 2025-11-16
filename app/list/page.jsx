@@ -7,7 +7,7 @@ import AnimatedPage from "../../components/AnimatedPage";
 import { useLanguage } from "../../components/LanguageProvider";
 import SubscriptionGate from "../../components/SubscriptionGate";
 import { motion } from "framer-motion";
-import { REGIONS } from "../../utils/regions";
+import { getCountriesBySeason, getRegionsByCountry, getLocations } from "../../utils/geo";
 import { canCreateListings } from "../../utils/subscription";
 
 export default function List() {
@@ -23,6 +23,11 @@ export default function List() {
   const [totalRoommates, setTotalRoommates] = useState(2);
   const [photos, setPhotos] = useState([]);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  // Location cascade
+  const [season, setSeason] = useState('all');
+  const [country, setCountry] = useState('all');
+  const [region, setRegion] = useState('all');
+  const [locationName, setLocationName] = useState('all');
 
   useEffect(() => {
     if (session?.user) {
@@ -92,6 +97,14 @@ export default function List() {
     setPhotos(photos.filter((_, i) => i !== index));
   };
 
+  const countries = getCountriesBySeason(season);
+  const regions = country === 'all' ? [] : getRegionsByCountry(country);
+  const locations = getLocations(season, country);
+
+  useEffect(() => { setCountry('all'); setRegion('all'); setLocationName('all'); }, [season]);
+  useEffect(() => { setRegion('all'); setLocationName('all'); }, [country]);
+  useEffect(() => { setLocationName('all'); }, [region]);
+
   const submit = async (e) => {
     e.preventDefault();
     
@@ -109,8 +122,10 @@ export default function List() {
       title: formData.get("title"),
       description: formData.get("details"),
       listingType: formData.get("listingType"),
-      region: formData.get("region"),
-      city: formData.get("city"),
+      // For Austria (AT), region select below populates an Austrian region display name; otherwise leave empty
+      region: country === 'AT' && region !== 'all' ? region : '',
+      // Use selected location name as city to aid filtering/display
+      city: locationName !== 'all' ? locationName : formData.get("city"),
       price: formData.get("price"),
       photos: photos, // Add photos array
     };
@@ -311,17 +326,46 @@ export default function List() {
               </div>
             )}
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="region" className="sr-only">{t('region')}</label>
-                <select id="region" name="region" className="w-full border p-3 rounded-lg" required disabled={status === "unauthenticated" || loading}>
-                  <option value="">{t('selectRegionOption')}</option>
-                  {REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
-                </select>
+            {/* Location cascade: Season -> Country -> Region (when AT) -> Location */}
+            <div className="grid gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Season</label>
+                  <select aria-label="Season" className="w-full border p-3 rounded-lg" value={season} onChange={e=>setSeason(e.target.value)} disabled={status === "unauthenticated" || loading}>
+                    <option value="all">All</option>
+                    <option value="winter">winter</option>
+                    <option value="summer">summer</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                  <select aria-label="Country" className="w-full border p-3 rounded-lg" value={country} onChange={e=>setCountry(e.target.value)} disabled={status === "unauthenticated" || loading}>
+                    <option value="all">Select country</option>
+                    {countries.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Region</label>
+                  <select aria-label="Region" className="w-full border p-3 rounded-lg" value={region} onChange={e=>setRegion(e.target.value)} disabled={status === "unauthenticated" || loading || country==='all'}>
+                    <option value="all">{country==='AT' ? 'Select region' : 'N/A'}</option>
+                    {regions.map(r => <option key={r} value={r}>{r}</option>)}
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">Region is required only for Austria.</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                  <select aria-label="Location" className="w-full border p-3 rounded-lg" value={locationName} onChange={e=>setLocationName(e.target.value)} disabled={status === "unauthenticated" || loading || season==='all'}>
+                    <option value="all">Select location</option>
+                    {locations.map(l => <option key={l} value={l}>{l}</option>)}
+                  </select>
+                </div>
               </div>
               <div>
                 <label htmlFor="city" className="sr-only">{t('city')}</label>
                 <input id="city" name="city" className="w-full border p-3 rounded-lg" placeholder={t('cityPlaceholderShort')} disabled={status === "unauthenticated" || loading} />
+                <p className="text-xs text-gray-500 mt-1">If no location selected above, you can type a city here.</p>
               </div>
             </div>
 

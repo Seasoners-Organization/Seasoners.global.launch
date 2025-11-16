@@ -12,7 +12,7 @@ function useDebouncedEffect(effect, deps, delay) {
   }, [...deps, delay]);
 }
 
-export default function FilterSidebar({ listings, onFiltered }) {
+export default function FilterSidebar({ listings, onFiltered, context = 'stays' }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -53,6 +53,9 @@ export default function FilterSidebar({ listings, onFiltered }) {
   const regions = useMemo(() => country === 'all' ? [] : getRegionsByCountry(country), [country]);
   const locations = useMemo(() => getLocations(season, country), [season, country]);
 
+  const showProperty = context === 'stays' || context === 'flatshares';
+  const showJobs = context === 'jobs';
+
   // Reset dependent fields when upstream changes
   useEffect(() => { setCountry('all'); setRegion('all'); setLocation('all'); }, [season]);
   useEffect(() => { setRegion('all'); setLocation('all'); }, [country]);
@@ -80,13 +83,17 @@ export default function FilterSidebar({ listings, onFiltered }) {
     if (location !== 'all') params.set('location', location);
     if (priceMin) params.set('priceMin', priceMin);
     if (priceMax) params.set('priceMax', priceMax);
-    if (bedrooms) params.set('bedrooms', bedrooms);
-    if (roommates) params.set('roommates', roommates);
-    if (jobType !== 'all') params.set('jobType', jobType);
-    if (industry !== 'all') params.set('industry', industry);
+    if (showProperty) {
+      if (bedrooms) params.set('bedrooms', bedrooms);
+      if (roommates) params.set('roommates', roommates);
+    }
+    if (showJobs) {
+      if (jobType !== 'all') params.set('jobType', jobType);
+      if (industry !== 'all') params.set('industry', industry);
+    }
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname);
-  }, [season, country, region, location, priceMin, priceMax, bedrooms, roommates, jobType, industry, hydrated], 250);
+  }, [season, country, region, location, priceMin, priceMax, bedrooms, roommates, jobType, industry, hydrated, showProperty, showJobs], 250);
 
   function resetAll() {
     setSeason('all');
@@ -153,45 +160,49 @@ export default function FilterSidebar({ listings, onFiltered }) {
       </fieldset>
 
       {/* Property Section */}
-      <fieldset className="space-y-3 border rounded-lg p-4 border-slate-200">
-        <legend className="text-xs font-medium text-slate-500 px-1">Property</legend>
-        <div className="grid grid-cols-2 gap-2">
-          <label className="text-xs font-medium text-slate-600">Bedrooms
-            <input aria-label="Bedrooms" type="number" min="0" value={bedrooms} onChange={e=>setBedrooms(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" />
-          </label>
-          <label className="text-xs font-medium text-slate-600">Roommates
-            <input aria-label="Roommates" type="number" min="0" value={roommates} onChange={e=>setRoommates(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" />
-          </label>
-        </div>
-      </fieldset>
+      {showProperty && (
+        <fieldset className="space-y-3 border rounded-lg p-4 border-slate-200">
+          <legend className="text-xs font-medium text-slate-500 px-1">Property</legend>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="text-xs font-medium text-slate-600">Bedrooms
+              <input aria-label="Bedrooms" type="number" min="0" value={bedrooms} onChange={e=>setBedrooms(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" />
+            </label>
+            <label className="text-xs font-medium text-slate-600">Roommates
+              <input aria-label="Roommates" type="number" min="0" value={roommates} onChange={e=>setRoommates(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" />
+            </label>
+          </div>
+        </fieldset>
+      )}
 
       {/* Jobs Section */}
-      <fieldset className="space-y-3 border rounded-lg p-4 border-slate-200">
-        <legend className="text-xs font-medium text-slate-500 px-1">Jobs</legend>
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium text-slate-600">Job Type
-            <select aria-label="Job type" value={jobType} onChange={e=>setJobType(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
-              <option value="all">All</option>
-              <option value="FULL_TIME">Full Time</option>
-              <option value="PART_TIME">Part Time</option>
-              <option value="SEASONAL">Seasonal</option>
-              <option value="TEMPORARY">Temporary</option>
-            </select>
-          </label>
-          <label className="text-xs font-medium text-slate-600">Industry
-            <select aria-label="Industry" value={industry} onChange={e=>setIndustry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
-              <option value="all">All</option>
-              <option value="HOSPITALITY">Hospitality</option>
-              <option value="FOOD_SERVICE">Food Service</option>
-              <option value="RETAIL">Retail</option>
-              <option value="OUTDOOR">Outdoor</option>
-              <option value="TRAVEL">Travel</option>
-              <option value="MAINTENANCE">Maintenance</option>
-              <option value="OTHER">Other</option>
-            </select>
-          </label>
-        </div>
-      </fieldset>
+      {showJobs && (
+        <fieldset className="space-y-3 border rounded-lg p-4 border-slate-200">
+          <legend className="text-xs font-medium text-slate-500 px-1">Jobs</legend>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-medium text-slate-600">Job Type
+              <select aria-label="Job type" value={jobType} onChange={e=>setJobType(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
+                <option value="all">All</option>
+                <option value="FULL_TIME">Full Time</option>
+                <option value="PART_TIME">Part Time</option>
+                <option value="SEASONAL">Seasonal</option>
+                <option value="TEMPORARY">Temporary</option>
+              </select>
+            </label>
+            <label className="text-xs font-medium text-slate-600">Industry
+              <select aria-label="Industry" value={industry} onChange={e=>setIndustry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
+                <option value="all">All</option>
+                <option value="HOSPITALITY">Hospitality</option>
+                <option value="FOOD_SERVICE">Food Service</option>
+                <option value="RETAIL">Retail</option>
+                <option value="OUTDOOR">Outdoor</option>
+                <option value="TRAVEL">Travel</option>
+                <option value="MAINTENANCE">Maintenance</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </label>
+          </div>
+        </fieldset>
+      )}
     </aside>
   );
 }
