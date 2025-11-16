@@ -1,0 +1,29 @@
+/* styles/globals.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: small quality-of-life tweaks (pure CSS, no @apply) */
+html,
+body {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  color: rgb(31, 41, 55); /* text-gray-800 */
+}
+
+/* Optional link treatment */
+a {
+  text-underline-offset: 2px;
+}
+a:hover {
+  text-decoration: underline;
+}

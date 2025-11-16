@@ -1,0 +1,57 @@
+name: I18N Translate
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'Branch to translate into'
+        required: true
+        default: 'feat/listing-cascade-filters'
+      provider:
+        description: 'Translation provider (openai|deepl)'
+        required: false
+        default: 'openai'
+
+permissions:
+  contents: write
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Switch to target branch
+        run: |
+          git checkout ${{ github.event.inputs.target_branch }}
+      - name: Generate translations
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.provider }}" = "deepl" ] && [ -z "$DEEPL_API_KEY" ]; then
+            echo "DEEPL requested but DEEPL_API_KEY not set" && exit 1;
+          fi
+          if [ "${{ github.event.inputs.provider }}" = "openai" ] && [ -z "$OPENAI_API_KEY" ] && [ -z "$DEEPL_API_KEY" ]; then
+            echo "No provider API key set (OPENAI_API_KEY or DEEPL_API_KEY)" && exit 1;
+          fi
+          node scripts/generate-translations-auto.js
+      - name: Validate translations
+        run: node scripts/validate-translations.js
+      - name: Commit changes
+        run: |
+          if [ -n "$(git status --porcelain locales)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add locales/*.json
+            git commit -m "chore(i18n): update locale files via workflow"
+            git push origin HEAD:${{ github.event.inputs.target_branch }}
+          else
+            echo "No i18n changes to commit"
+          fi

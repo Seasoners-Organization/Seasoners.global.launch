@@ -1,0 +1,95 @@
+name: CI Smoke
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  smoke:
+    name: CI smoke flow
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: development
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Generate Prisma client
+        run: |
+          npx prisma generate || true
+
+      - name: Start dev server
+        run: |
+          # start dev server in background
+          npm run dev --if-present &
+
+      - name: Wait for server
+        run: |
+          npx wait-on http://localhost:3000 --timeout 120000
+
+      - name: Run CI smoke script
+        run: |
+          bash scripts/ci_smoke.sh
+name: CI Smoke (dev)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  smoke:
+    name: Run CI smoke script
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start dev server
+        run: |
+          export NODE_ENV=development
+          # Start dev server in background and capture logs
+          NODE_ENV=development npm run dev > /tmp/dev.server.log 2>&1 &
+          PID=$!
+          echo "Dev server PID: $PID"
+          # Wait for server to accept connections
+          for i in {1..60}; do
+            if curl -sI http://localhost:3000/ | head -n1 | grep -E "HTTP/1.[01] (200|302|301)" >/dev/null; then
+              echo "Server is up"
+              break
+            fi
+            sleep 1
+          done
+          sleep 1
+
+      - name: Run CI smoke script
+        env:
+          CI: true
+        run: bash scripts/ci_smoke.sh
+
+      - name: Upload dev server log (on failure helpful)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-server-log
+          path: /tmp/dev.server.log
