@@ -1,6 +1,2 @@
 
-{
-  "redirects": [
-    { "source": "https://www.seasoners.eu/:path*", "destination": "https://seasoners.eu/:path*", "permanent": true }
-  ]
-}
+{}
