@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { Resend } from 'resend';
+import { getResend } from '../../../../lib/resend';
 import crypto from 'crypto';
 
 const prisma = new PrismaClient();
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Simple in-memory rate limiter for email sends
 const emailAttempts = new Map<string, number[]>();
@@ -52,6 +51,11 @@ export async function POST(req: Request) {
     const verificationUrl = `${appBaseUrl()}/auth/verify/email?token=${encodeURIComponent(token)}`;
 
     // Send verification email via Resend
+    const resend = getResend();
+    if (!resend) {
+      console.warn('RESEND_API_KEY not set; skipping verification email');
+      return NextResponse.json({ message: 'Verification email skipped (no email provider configured).' });
+    }
     const sendResult = await resend.emails.send({
       from: 'onboarding@resend.dev', // Resend's test domain - works immediately
       to: email,
