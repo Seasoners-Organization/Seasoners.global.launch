@@ -50,7 +50,7 @@ jobs:
         pa11y http://localhost:3000/jobs --reporter cli
         pa11y http://localhost:3000/stays --reporter cli
         pa11y http://localhost:3000/list --reporter cli
-        pa11y http://localhost:3000/browse --reporter cli
+        # Removed /browse as this route does not exist and caused CI failure
 
     - name: Upload test results
       if: always()
