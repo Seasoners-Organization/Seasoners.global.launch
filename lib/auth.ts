@@ -32,8 +32,6 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 
 // Email provider (requires Resend)
 if (process.env.RESEND_API_KEY) {
-// Email provider (requires Resend)
-if (process.env.RESEND_API_KEY) {
   providers.push(
     EmailProvider({
       from: 'Seasoners <onboarding@resend.dev>',
