@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../../../../lib/auth';
+import { prisma } from '../../../../lib/prisma';
 import { sendAgreementRequestEmail } from '../../../../utils/agreement-emails';
-
-const prisma = new PrismaClient();
 
 /**
  * POST /api/agreements/request

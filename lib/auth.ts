@@ -3,18 +3,19 @@ import EmailProvider from 'next-auth/providers/email';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import zxcvbn from 'zxcvbn';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from './prisma';
 import { getResend } from './resend';
 import type { NextAuthOptions } from 'next-auth';
 
-const prisma = new PrismaClient();
+// Build providers array conditionally based on available env vars
+const providers: any[] = [];
 
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  providers: [
+// Only include Google if credentials are configured
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.push(
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       profile(profile) {
         return {
           id: profile.sub,
@@ -25,7 +26,15 @@ export const authOptions: NextAuthOptions = {
           emailVerified: profile.email_verified,
         };
       },
-    }),
+    })
+  );
+}
+
+// Email provider (requires Resend)
+if (process.env.RESEND_API_KEY) {
+// Email provider (requires Resend)
+if (process.env.RESEND_API_KEY) {
+  providers.push(
     EmailProvider({
       from: 'Seasoners <onboarding@resend.dev>',
       sendVerificationRequest: async ({ identifier, url }) => {
@@ -89,7 +98,12 @@ export const authOptions: NextAuthOptions = {
           throw error;
         }
       },
-    }),
+    })
+  );
+}
+
+// Credentials provider (always available for email/password login)
+providers.push(
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -122,8 +136,12 @@ export const authOptions: NextAuthOptions = {
           emailVerified: user.emailVerified,
         };
       },
-    }),
-  ],
+    })
+);
+
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers,
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60,

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { z } from 'zod';
+import { prisma } from '../../../../lib/prisma';
 
 function isValidEmail(email: string) {
   return /.+@.+\..+/.test(email);

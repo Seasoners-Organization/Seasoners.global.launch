@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
 import { getStripe, getStripeWebhookSecret } from '../../../../lib/stripe';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../../../lib/prisma';
 
 export const dynamic = 'force-dynamic';
 

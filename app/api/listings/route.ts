@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../../../lib/auth';
+import { prisma } from '../../../lib/prisma';
 import { REGION_DISPLAY_TO_ENUM } from '../../../utils/regions';
 import { trackActivity } from '../../../utils/activity-tracker';
-
-const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
