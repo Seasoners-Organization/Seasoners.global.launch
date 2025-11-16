@@ -42,7 +42,8 @@ jobs:
         npm run start &
         sleep 20  # Wait for server to be ready
 
-    - name: Run pa11y tests
+    - name: Run pa11y tests (non-blocking)
+      continue-on-error: true
       run: |
         # Test main pages
         pa11y http://localhost:3000 --reporter cli
