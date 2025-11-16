@@ -1,6 +1,1 @@
-
-{
-  "redirects": [
-    { "source": "/:path*", "destination": "https://seasoners.eu/:path*", "permanent": true, "has": [{ "type": "host", "value": "www.seasoners.eu" }] }
-  ]
-}
+{}
