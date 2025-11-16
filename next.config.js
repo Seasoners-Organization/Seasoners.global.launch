@@ -5,6 +5,11 @@ const nextConfig = {
   // which causes prerender warnings. These can be safely ignored as we have
   // App Router error boundaries (error.tsx, not-found.jsx, global-error.tsx).
   // The runtime app will use the App Router error pages, not the legacy ones.
+  
+  // Force clean build cache
+  generateBuildId: async () => {
+    return `build-${Date.now()}`;
+  },
 };
 
 module.exports = nextConfig;
