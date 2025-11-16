@@ -1,6 +1,4 @@
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { getResend } from '../lib/resend';
 
 /**
  * Send email notification when an agreement is created
@@ -10,6 +8,11 @@ export async function sendAgreementCreatedEmail(agreement, guest) {
   const agreementUrl = `${appUrl}/agreements`;
 
   try {
+    const resend = getResend();
+    if (!resend) {
+      console.warn('RESEND_API_KEY not set; skipping sendAgreementCreatedEmail');
+      return;
+    }
     await resend.emails.send({
       from: 'onboarding@resend.dev',
       to: guest.email,
@@ -31,6 +34,11 @@ export async function sendAgreementSignedEmail(agreement, recipient, signerName)
   const isFullySigned = agreement.status === 'FULLY_SIGNED';
 
   try {
+    const resend = getResend();
+    if (!resend) {
+      console.warn('RESEND_API_KEY not set; skipping sendAgreementSignedEmail');
+      return;
+    }
     await resend.emails.send({
       from: 'onboarding@resend.dev',
       to: recipient.email,
@@ -54,6 +62,11 @@ export async function sendAgreementRequestEmail(agreement, host) {
   const agreementUrl = `${appUrl}/agreements`;
 
   try {
+    const resend = getResend();
+    if (!resend) {
+      console.warn('RESEND_API_KEY not set; skipping sendAgreementRequestEmail');
+      return;
+    }
     await resend.emails.send({
       from: 'onboarding@resend.dev',
       to: host.email,

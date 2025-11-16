@@ -4,11 +4,10 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import zxcvbn from 'zxcvbn';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
-import { Resend } from 'resend';
+import { getResend } from './resend';
 import type { NextAuthOptions } from 'next-auth';
 
 const prisma = new PrismaClient();
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -30,6 +29,11 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       from: 'Seasoners <onboarding@resend.dev>',
       sendVerificationRequest: async ({ identifier, url }) => {
+        const resend = getResend();
+        if (!resend) {
+          console.warn('RESEND_API_KEY not set; skipping verification email send.');
+          return;
+        }
         try {
           const result = await resend.emails.send({
             from: 'Seasoners <onboarding@resend.dev>',

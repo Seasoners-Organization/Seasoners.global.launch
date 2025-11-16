@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { Resend } from 'resend';
+import { getResend } from '../../../../lib/resend';
 import crypto from 'crypto';
 
 const prisma = new PrismaClient();
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
@@ -43,7 +42,11 @@ export async function POST(req: Request) {
     const resetUrl = `${process.env.NEXTAUTH_URL}/auth/reset-password?token=${resetToken}`;
     
     try {
-      const result = await resend.emails.send({
+      const resend = getResend();
+      if (!resend) {
+        console.warn('RESEND_API_KEY not set; skipping password reset email');
+      } else {
+        const result = await resend.emails.send({
         from: 'Seasoners <onboarding@resend.dev>',
         to: email,
         subject: 'Reset your Seasoners password',
@@ -90,8 +93,9 @@ export async function POST(req: Request) {
             </div>
           </div>
         `,
-      });
-      console.log('Password reset email sent:', result);
+        });
+        console.log('Password reset email sent:', result);
+      }
     } catch (emailError) {
       console.error('Failed to send reset email:', emailError);
       // Don't expose email failure to user
