@@ -43,7 +43,8 @@ export default defineConfig({
     port: 3100,
     reuseExistingServer: !process.env.CI,
     env: {
-      NODE_ENV: 'development'
+      NODE_ENV: 'development',
+      DATABASE_URL: process.env.DATABASE_URL || 'file:./tmp/ci-test.db'
     },
   },
 });
