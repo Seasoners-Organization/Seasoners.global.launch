@@ -3,15 +3,21 @@ import { getServerSession } from 'next-auth';
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../../../../lib/auth';
 import Stripe from 'stripe';
+import { getStripe } from '../../../../lib/stripe';
 
 const prisma = new PrismaClient();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2025-10-29.clover',
-});
 
 export async function POST(req: NextRequest) {
   try {
   const { tier, returnUrl, isEarlyBird, isEarlyBirdOneTime, email } = await req.json();
+
+    const stripe = getStripe();
+    if (!stripe) {
+      return NextResponse.json(
+        { error: 'Stripe not configured' },
+        { status: 500 }
+      );
+    }
 
     // Determine if this is a one-time early-bird lock-in (no auth required)
     const session = await getServerSession(authOptions);

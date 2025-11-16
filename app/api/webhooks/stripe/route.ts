@@ -2,16 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
 import { headers } from 'next/headers';
+import { getStripe, getStripeWebhookSecret } from '../../../../lib/stripe';
 
 const prisma = new PrismaClient();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2025-10-29.clover',
-});
-
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
 
 export async function POST(req: NextRequest) {
   try {
+    const stripe = getStripe();
+    const webhookSecret = getStripeWebhookSecret();
+
+    if (!stripe || !webhookSecret) {
+      return NextResponse.json(
+        { error: 'Stripe webhook not configured' },
+        { status: 500 }
+      );
+    }
     const body = await req.text();
     const signature = headers().get('stripe-signature');
 
@@ -57,7 +62,7 @@ export async function POST(req: NextRequest) {
 
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object as Stripe.Invoice;
-        await handlePaymentSucceeded(invoice);
+        await handlePaymentSucceeded(invoice, stripe);
         break;
       }
 
@@ -236,7 +241,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   console.log(`Subscription cancelled for user ${user.id}`);
 }
 
-async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
+async function handlePaymentSucceeded(invoice: Stripe.Invoice, stripe: Stripe) {
   if (!(invoice as any).subscription) return;
 
   const user = await prisma.user.findFirst({
