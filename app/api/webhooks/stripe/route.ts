@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
-import { headers } from 'next/headers';
 import { getStripe, getStripeWebhookSecret } from '../../../../lib/stripe';
 
 const prisma = new PrismaClient();
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,7 +19,8 @@ export async function POST(req: NextRequest) {
       );
     }
     const body = await req.text();
-    const signature = headers().get('stripe-signature');
+    const headersList = await req.headers;
+    const signature = headersList.get('stripe-signature');
 
     if (!signature) {
       return NextResponse.json(
