@@ -35,27 +35,42 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
     }
 
-  const body = await req.json();
+    const body = await req.json();
 
     const validatedData = registrationSchema.parse(body);
 
     // Verify captcha
     if (!process.env.RECAPTCHA_SECRET_KEY) {
+      console.error('[Register] RECAPTCHA_SECRET_KEY not configured');
       return NextResponse.json({ error: 'Captcha not configured' }, { status: 500 });
     }
+    
     const remoteip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
-    const captchaRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        secret: process.env.RECAPTCHA_SECRET_KEY,
-        response: validatedData.captchaToken,
-        ...(remoteip ? { remoteip } : {}),
-      }).toString(),
-    });
-    const captchaJson = await captchaRes.json();
-    if (!captchaJson.success) {
-      return NextResponse.json({ error: 'Captcha verification failed' }, { status: 400 });
+    
+    try {
+      const captchaRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: validatedData.captchaToken,
+          ...(remoteip ? { remoteip } : {}),
+        }).toString(),
+      });
+      
+      if (!captchaRes.ok) {
+        console.error('[Register] Captcha API error:', captchaRes.status);
+        return NextResponse.json({ error: 'Captcha verification failed' }, { status: 400 });
+      }
+      
+      const captchaJson = await captchaRes.json();
+      if (!captchaJson.success) {
+        console.error('[Register] Captcha failed:', captchaJson['error-codes']);
+        return NextResponse.json({ error: 'Captcha verification failed' }, { status: 400 });
+      }
+    } catch (captchaError) {
+      console.error('[Register] Captcha fetch error:', captchaError);
+      return NextResponse.json({ error: 'Captcha verification error' }, { status: 500 });
     }
 
     // Block disposable email addresses
@@ -68,15 +83,20 @@ export async function POST(req: Request) {
     }
 
     // Check if email already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email: validatedData.email }
-    });
+    try {
+      const existingUser = await prisma.user.findUnique({
+        where: { email: validatedData.email }
+      });
 
-    if (existingUser) {
-      return NextResponse.json(
-        { error: 'Email already registered' },
-        { status: 400 }
-      );
+      if (existingUser) {
+        return NextResponse.json(
+          { error: 'Email already registered' },
+          { status: 400 }
+        );
+      }
+    } catch (dbError) {
+      console.error('[Register] Database check error:', dbError);
+      return NextResponse.json({ error: 'Database error' }, { status: 500 });
     }
 
     // Hash password
