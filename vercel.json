@@ -1,7 +1,25 @@
 {
-  "build": {
-    "env": {
-      "VERCEL_FORCE_NO_BUILD_CACHE": "1"
+  "headers": [
+    {
+      "source": "/api/auth/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     }
-  }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!www\\.).*)",
+      "destination": "https://www.seasoners.eu/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "seasoners\\.eu"
+        }
+      ]
+    }
+  ]
 }
