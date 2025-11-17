@@ -237,16 +237,5 @@ export const authOptions: NextAuthOptions = {
     verifyRequest: '/auth/verify',
     error: '/auth/error',
   },
-  cookies: {
-    sessionToken: {
-      name: `__Secure-next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: true,
-      },
-    },
-  },
-  useSecureCookies: true,
+  debug: true, // Enable debug logging
 };
