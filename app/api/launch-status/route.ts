@@ -1,22 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    // If explicitly disabled via env var, consider site launched
-    if (process.env.DISABLE_LAUNCH_GATE === 'true') {
-      return NextResponse.json({ isLaunched: true, earlyBirdActive: false });
-    }
-
-    const settings = await (prisma as any).launchSettings.findFirst();
-    return NextResponse.json({
-      // Default to launched when no settings exist to avoid unintended gating in prod
-      isLaunched: settings?.isLaunched ?? true,
-      // Be conservative on early-bird when no settings exist
-      earlyBirdActive: settings?.earlyBirdActive ?? false,
-    });
+    // Launch gate retired during production; always return launched
+    return NextResponse.json({ isLaunched: true, earlyBirdActive: false });
   } catch (e) {
     console.error('Error fetching launch status', e);
     return NextResponse.json({ isLaunched: true, earlyBirdActive: false });

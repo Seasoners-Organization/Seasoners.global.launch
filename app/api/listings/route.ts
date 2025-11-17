@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { PrismaClient } from '@prisma/client';
-import { authOptions } from '../../../lib/auth';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 import { REGION_DISPLAY_TO_ENUM } from '../../../utils/regions';
 import { trackActivity } from '../../../utils/activity-tracker';
-
-const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
@@ -141,6 +139,11 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
+    // If no database configured, return empty array to allow builds to succeed
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ listings: [] }, { status: 200 });
+    }
+
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type');
     const region = searchParams.get('region');

@@ -13,6 +13,7 @@ export default function Navbar() {
   const [userDetails, setUserDetails] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const dropdownRef = useRef(null);
   const destinationsRef = useRef(null);
 
@@ -210,8 +211,8 @@ export default function Navbar() {
           <a href="/about" className="hover:text-sky-700">{t('about')}</a>
         </nav>
 
-        {/* Right side - Auth or Language */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Right side - Auth or Language (desktop) */}
+        <div className="hidden md:flex items-center gap-3 ml-auto">
           {!session && (
             <>
               <button
@@ -230,7 +231,87 @@ export default function Navbar() {
           )}
           <LanguageToggle />
         </div>
+
+        {/* Mobile menu toggle */}
+        <button
+          aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
+          className="md:hidden ml-auto p-2 rounded-md text-slate-700 hover:bg-slate-100"
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+        >
+          {isMobileOpen ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
       </div>
+      {/* Mobile menu panel */}
+      {isMobileOpen && (
+        <div className="md:hidden border-t border-slate-200 bg-white">
+          <div className="max-w-6xl mx-auto px-6 py-4 grid gap-3 text-slate-800">
+            {session && (
+              <a href="/list" className="py-2" onClick={() => setIsMobileOpen(false)}>
+                {t('list')}
+              </a>
+            )}
+            <a href="/stays" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('stays')}</a>
+            <a href="/flatshares" className="py-2" onClick={() => setIsMobileOpen(false)}>🏠 Flatshares</a>
+            <a href="/jobs" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('jobs')}</a>
+            <div className="py-2">
+              <details>
+                <summary className="cursor-pointer select-none flex items-center gap-2">
+                  {t('destinations')}
+                </summary>
+                <div className="mt-2 pl-4">
+                  <div className="text-xs text-slate-500 mb-1">❄️ Winter</div>
+                  {ZONES.filter(z => z.season === 'winter').map(z => (
+                    <a key={z.slug} href={`/zones/${z.slug}`} className="block py-1.5" onClick={() => setIsMobileOpen(false)}>{z.title}</a>
+                  ))}
+                  <div className="text-xs text-slate-500 mt-3 mb-1">☀️ Summer</div>
+                  {ZONES.filter(z => z.season === 'summer').map(z => (
+                    <a key={z.slug} href={`/zones/${z.slug}`} className="block py-1.5" onClick={() => setIsMobileOpen(false)}>{z.title}</a>
+                  ))}
+                </div>
+              </details>
+            </div>
+            <a href="/agreement" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('agreement')}</a>
+            <a href="/about" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('about')}</a>
+            <div className="h-px bg-slate-200 my-2" />
+            {!session ? (
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => { setIsMobileOpen(false); signIn(); }}
+                  className="px-3 py-2 rounded-md text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition w-full"
+                >
+                  {t('signIn')}
+                </button>
+                <a
+                  href="/auth/register"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="px-3 py-2 rounded-md text-sm font-medium bg-sky-600 hover:bg-sky-700 text-white transition w-full text-center"
+                >
+                  {t('register')}
+                </a>
+              </div>
+            ) : (
+              <button
+                onClick={() => { setIsMobileOpen(false); signOut(); }}
+                className="px-3 py-2 rounded-md text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition w-full text-left"
+              >
+                {t('signOut')}
+              </button>
+            )}
+            <div className="flex items-center justify-between pt-2">
+              <span className="text-sm text-slate-600">Language</span>
+              <LanguageToggle />
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

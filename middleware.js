@@ -6,7 +6,16 @@ export async function middleware(request) {
   if (process.env.DISABLE_LAUNCH_GATE === 'true' || process.env.CI === 'true') {
     return NextResponse.next();
   }
-  const token = await getToken({ req: request });
+
+  // Be resilient to missing NEXTAUTH_SECRET or token parsing issues
+  let token = null;
+  try {
+    token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+  } catch (err) {
+    // On any token decode error in middleware, proceed unauthenticated
+    console.warn('middleware getToken failed, proceeding unauthenticated');
+  }
+
   const path = request.nextUrl.pathname;
 
   // Exempt paths from launch gate
@@ -29,27 +38,7 @@ export async function middleware(request) {
 
   const isExempt = exemptPaths.some(exemptPath => path.startsWith(exemptPath));
 
-  // Check launch status for all non-exempt routes
-  if (!isExempt) {
-    try {
-      // Fetch launch status via an API route (Node runtime), avoid Prisma in Edge
-      const res = await fetch(new URL('/api/launch-status', request.url), {
-        headers: { 'accept': 'application/json' },
-        cache: 'no-store',
-      });
-      const launchSettings = res.ok ? await res.json() : { isLaunched: true };
-
-      // If site is not launched, only allow early-bird users
-      if (!launchSettings?.isLaunched) {
-        if (!token?.isEarlyBird || token?.waitlistStatus !== 'active') {
-          return NextResponse.redirect(new URL('/waitlist', request.url));
-        }
-      }
-    } catch (error) {
-      // On error, allow access to prevent site lockout
-      console.error('Middleware launch status fetch failed:', error);
-    }
-  }
+  // Launch gate permanently bypassed for production launch; rely only on auth below
 
   // Check if this is an admin route
   if (path.startsWith('/admin')) {

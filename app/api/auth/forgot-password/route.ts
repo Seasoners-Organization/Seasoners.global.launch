@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { getResend } from '../../../../lib/resend';
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
-
-const prisma = new PrismaClient();
+import { getResend } from '@/lib/resend';
 
 export async function POST(req: Request) {
   try {

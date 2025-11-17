@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // Simple in-memory rate limiter per IP (dev-friendly; replace with Redis in prod)
 const registerAttempts = new Map<string, number[]>();

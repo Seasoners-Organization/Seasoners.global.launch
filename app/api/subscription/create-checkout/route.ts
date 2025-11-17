@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { PrismaClient } from '@prisma/client';
-import { authOptions } from '../../../../lib/auth';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 import Stripe from 'stripe';
-import { getStripe } from '../../../../lib/stripe';
-
-const prisma = new PrismaClient();
+import { getStripe } from '@/lib/stripe';
 
 export async function POST(req: NextRequest) {
   try {

@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../../lib/auth';
-import { PrismaClient } from '@prisma/client';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 import trustMetrics from '../../../../utils/trust-metrics';
-
-const prisma = new PrismaClient();
 const { calculateTrustScore, getTrustSuggestions } = trustMetrics;
 
 /**
