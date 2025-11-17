@@ -111,44 +111,49 @@ export async function POST(req: Request) {
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
 
     // Create user with password
-    const user = await prisma.user.create({
-      data: {
-        email: validatedData.email,
-        password: hashedPassword,
-        name: validatedData.name,
-        phoneNumber: validatedData.phoneNumber,
-        role: validatedData.role,
-        verificationAttempts: {
-          create: [
-            { type: 'EMAIL', status: 'PENDING' }
-          ]
-        }
-      }
-    });
-
-    // Trigger email verification flow (server-side call to existing verify-email route)
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXTAUTH_URL ?? 'http://localhost:3000';
-      const verifyRes = await fetch(`${baseUrl}/api/auth/verify-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user.id, email: user.email })
+      const user = await prisma.user.create({
+        data: {
+          email: validatedData.email,
+          password: hashedPassword,
+          name: validatedData.name,
+          phoneNumber: validatedData.phoneNumber,
+          role: validatedData.role,
+        }
       });
+      
+      console.log('[Register] User created successfully:', user.id);
 
-      if (!verifyRes.ok) {
-        const errorText = await verifyRes.text();
-        console.error('❌ Failed to send verification email:', errorText);
-      } else {
-        console.log('✅ Verification email sent successfully to:', user.email);
+      // Trigger email verification flow (server-side call to existing verify-email route)
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXTAUTH_URL ?? 'http://localhost:3000';
+        const verifyRes = await fetch(`${baseUrl}/api/auth/verify-email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, email: user.email })
+        });
+
+        if (!verifyRes.ok) {
+          const errorText = await verifyRes.text();
+          console.error('❌ Failed to send verification email:', errorText);
+        } else {
+          console.log('✅ Verification email sent successfully to:', user.email);
+        }
+      } catch (err) {
+        console.error('❌ Error calling verify-email route:', err);
       }
-    } catch (err) {
-      console.error('❌ Error calling verify-email route:', err);
-    }
 
-    return NextResponse.json({
-      message: 'Registration successful. Please verify your email.',
-      userId: user.id
-    }, { status: 201 });
+      return NextResponse.json({
+        message: 'Registration successful. Please verify your email.',
+        userId: user.id
+      }, { status: 201 });
+    } catch (createError) {
+      console.error('[Register] User creation failed:', createError);
+      return NextResponse.json({ 
+        error: 'Failed to create user account',
+        details: createError instanceof Error ? createError.message : 'Unknown error'
+      }, { status: 500 });
+    }
 
   } catch (error) {
     if (error instanceof z.ZodError) {
