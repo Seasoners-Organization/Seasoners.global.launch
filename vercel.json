@@ -10,6 +10,17 @@
       ]
     }
   ],
+  "security": {
+    "challenge": {
+      "bypass": [
+        {
+          "type": "header",
+          "key": "User-Agent",
+          "value": "com.apple.WebKit.Networking"
+        }
+      ]
+    }
+  },
   "rewrites": [
     {
       "source": "/((?!www\\.).*)",
