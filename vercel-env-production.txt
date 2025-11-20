@@ -1,0 +1,113 @@
+VERCEL PRODUCTION ENVIRONMENT VARIABLES
+========================================
+
+⚠️  IMPORTANT: This file contains INSTRUCTIONS ONLY - no actual secrets.
+⚠️  Store actual secrets securely in Vercel dashboard.
+
+Go to: https://vercel.com/seasoners-organization/seasoners-global-launch/settings/environment-variables
+
+Add these variables (select "Production" environment for each):
+
+1. DATABASE_URL
+⚠️  CRITICAL: Use the EXACT connection string format below!
+
+CORRECT FORMAT (update with your actual password):
+postgresql://postgres:YOUR_PASSWORD_URL_ENCODED@db.owftpnisfdzkgjvrepjt.supabase.co:6543/postgres?pgbouncer=true
+
+CRITICAL REQUIREMENTS:
+- MUST use port 6543 (connection pooler) NOT 5432 (direct connection)
+- Password MUST be URL-encoded (! becomes %21, & becomes %26, etc.)
+- MUST include ?pgbouncer=true at the end
+- NO line breaks or spaces in the connection string
+- If you get "Can't reach database server" or "Tenant or user not found", your password is WRONG
+
+To get your actual password:
+a) Go to: https://supabase.com/dashboard/project/owftpnisfdzkgjvrepjt
+b) Settings → Database → Connection string
+c) Toggle "Use connection pooling" to ON
+d) Click "Show password" and copy the full connection string
+
+2. NEXTAUTH_URL
+https://www.seasoners.eu
+
+3. NEXTAUTH_SECRET
+Generate with: openssl rand -base64 32
+Or use existing secret from Vercel dashboard
+
+4. GOOGLE_CLIENT_ID
+Your Google OAuth Client ID from Google Cloud Console
+
+5. GOOGLE_CLIENT_SECRET
+Your Google OAuth Client Secret from Google Cloud Console
+
+6. RESEND_API_KEY
+Your Resend API key from https://resend.com/api-keys
+
+7. STRIPE_SECRET_KEY
+Your Stripe secret key from https://dashboard.stripe.com/apikeys
+Format: sk_live_...
+
+8. NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+Your Stripe publishable key from https://dashboard.stripe.com/apikeys
+Format: pk_live_...
+
+9. STRIPE_WEBHOOK_SECRET
+Your Stripe webhook secret from https://dashboard.stripe.com/webhooks
+Format: whsec_...
+
+10. STRIPE_EARLY_BIRD_PRICE_ID
+Your Stripe price ID for early bird subscription
+Format: price_...
+
+11. STRIPE_LISTER_PRICE_ID
+Your Stripe price ID for lister subscription
+Format: price_...
+
+12. STRIPE_SEARCHER_PRICE_ID
+Your Stripe price ID for searcher subscription
+Format: price_...
+
+13. NEXT_PUBLIC_STRIPE_LISTER_PRICE_ID
+Same as STRIPE_LISTER_PRICE_ID (public)
+
+14. NEXT_PUBLIC_STRIPE_SEARCHER_PRICE_ID
+Same as STRIPE_SEARCHER_PRICE_ID (public)
+
+15. RECAPTCHA_SECRET_KEY
+Your Google reCAPTCHA secret key
+
+16. NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+Your Google reCAPTCHA site key (public)
+
+17. NEXT_PUBLIC_APP_URL
+https://www.seasoners.eu
+
+18. VERCEL_FORCE_NO_BUILD_CACHE
+1
+
+========================================
+After adding all variables, trigger a new deployment by:
+- Going to Deployments tab
+- Click "..." on the latest deployment
+- Click "Redeploy"
+- Or push new code to main branch
+
+========================================
+TROUBLESHOOTING:
+========================================
+
+If you get "Can't reach database server":
+- Check DATABASE_URL has port 6543 (not 5432)
+- Check password is URL-encoded
+- Check ?pgbouncer=true is at the end
+
+If you get "Tenant or user not found":
+- Your database password is incorrect
+- Get the correct password from Supabase dashboard
+
+If you get "NO_SECRET" error:
+- Check NEXTAUTH_SECRET is set in Vercel
+
+If Google OAuth doesn't work:
+- Check GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET are set
+- Check redirect URI is configured in Google Cloud Console
