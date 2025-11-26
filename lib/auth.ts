@@ -7,6 +7,7 @@ import { prisma } from './prisma';
 import { getResend } from './resend';
 import { getEmailConfig } from './email-config';
 import type { NextAuthOptions } from 'next-auth';
+import { sendWelcomeEmail } from '@/utils/onboarding-emails';
 
 // Build providers array conditionally based on available env vars
 const providers: any[] = [];
@@ -148,7 +149,7 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
-    async signIn({ user, account, profile, isNewUser }) {
+    async signIn({ user, account, profile }) {
       if (account?.provider === 'google') {
         // Check if user exists with this email
         const existingUser = await prisma.user.findUnique({
