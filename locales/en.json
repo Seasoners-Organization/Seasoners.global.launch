@@ -309,5 +309,20 @@
   "agreementTemplateEn": "Rental Agreement: [Tenant Full Name] rents from [Landlord Full Name] the property at [Full Address] from [Start Date] to [End Date]. Monthly rent: €[Amount], due [DueDay] via [Payment Method]. Utilities included: [List]. Security deposit: €[Deposit] (if applicable). Notice period: [NoticeDays] days. Both parties agree to the Smart Stay Agreement clauses above.",
   "agreementTemplateDe": "Mietvertrag: [Vollständiger Name des Mieters] mietet von [Vollständiger Name des Vermieters] die Immobilie unter [Vollständige Adresse] vom [Startdatum] bis [Enddatum]. Monatliche Miete: €[Betrag], fällig am [Fälligkeitstag] über [Zahlungsmethode]. Enthaltene Nebenkosten: [Liste]. Kaution: €[Kaution] (falls zutreffend). Kündigungsfrist: [AnzahlTage] Tage. Beide Parteien stimmen den oben genannten Smart Stay Agreement-Klauseln zu.",
   "countryNotesEn": "Legal requirements vary by country and city. Germany: Max 3 months rent deposit, Anmeldung required. Austria: Deposits regulated, registration mandatory. Spain: Empadronamiento may be needed. France: Notice periods protected by law. Always verify local tenant rights, deposit limits ([MaxDeposit] months rent), mandatory registration, and minimum notice periods ([MinNoticeDays] days) before signing. Update placeholders to reflect local law.",
-  "countryNotesDe": "Rechtliche Anforderungen variieren je nach Land und Stadt. Deutschland: Max. 3 Monatsmieten Kaution, Anmeldung erforderlich. Österreich: Kautionen reguliert, Anmeldung verpflichtend. Spanien: Empadronamiento möglicherweise erforderlich. Frankreich: Kündigungsfristen gesetzlich geschützt. Überprüfen Sie immer lokale Mieterrechte, Kautionsgrenzen ([MaxKaution] Monatsmieten), Meldepflicht und Mindestkündigungsfristen ([MinKündigungstage] Tage) vor Unterzeichnung. Platzhalter an lokales Recht anpassen."
+  "countryNotesDe": "Rechtliche Anforderungen variieren je nach Land und Stadt. Deutschland: Max. 3 Monatsmieten Kaution, Anmeldung erforderlich. Österreich: Kautionen reguliert, Anmeldung verpflichtend. Spanien: Empadronamiento möglicherweise erforderlich. Frankreich: Kündigungsfristen gesetzlich geschützt. Überprüfen Sie immer lokale Mieterrechte, Kautionsgrenzen ([MaxKaution] Monatsmieten), Meldepflicht und Mindestkündigungsfristen ([MinKündigungstage] Tage) vor Unterzeichnung. Platzhalter an lokales Recht anpassen.",
+  "help": "Help",
+  "helpCenter": "Help Center",
+  "docs": "Documentation",
+  "documentation": "Documentation",
+  "community": "Community",
+  "communityForum": "Community Forum",
+  "guides": "Guides",
+  "featuredDestinations": "Featured Destinations",
+  "trustedStayGuide": "Trusted Stay Guide",
+  "trustedStayGuideDesc": "Short explanations of local norms, deposits, notice periods and staff housing expectations will live here. This section will help you understand what to expect when renting in {zone} and ensure you're prepared for local rental customs and requirements.",
+  "resourcesGuides": "Resources & Guides",
+  "howToFindJob": "How to find a job in {zone}",
+  "staffHousingOptions": "Staff Housing Options",
+  "comingSoonJobTips": "Coming soon: Tips and strategies for landing seasonal work",
+  "comingSoonStaffHousing": "Coming soon: Best hostels and accommodations offering staff housing"
 }

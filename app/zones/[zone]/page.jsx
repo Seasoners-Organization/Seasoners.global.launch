@@ -1,33 +1,21 @@
+"use client";
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import { getZoneBySlug } from '../../../data/zones';
 import Link from 'next/link';
 import ZoneAgreementCTA from '../../../components/ZoneAgreementCTA';
-
-export async function generateMetadata({ params }) {
-  const zoneData = getZoneBySlug(params.zone);
-  if (!zoneData) return { title: 'Zone' };
-
-  return {
-    title: `${zoneData.title} — Seasoners`,
-    description: zoneData.summary,
-    openGraph: {
-      title: `${zoneData.title} — Seasoners`,
-      description: zoneData.summary,
-      images: [zoneData.hero]
-    }
-  };
-}
+import { useLanguage } from '../../../components/LanguageProvider';
 
 export default function ZonePage({ params }) {
   const { zone } = params;
+  const { t } = useLanguage();
   const zoneData = getZoneBySlug(zone);
 
   if (!zoneData) {
     return (
       <main>
         <Navbar />
-        <div className="max-w-4xl mx-auto p-6">Zone not found</div>
+        <div className="max-w-4xl mx-auto p-6">{t('listingNotFound')}</div>
         <Footer />
       </main>
     );
@@ -68,19 +56,19 @@ export default function ZonePage({ params }) {
         {/* Navigation Tabs */}
         <div className="flex gap-3 mb-8">
           <Link href={`/zones/${zone}/stays`} className="px-6 py-3 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-medium transition">
-            Stays
+            {t('stays')}
           </Link>
           <Link href={`/zones/${zone}/jobs`} className="px-6 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
-            Jobs
+            {t('jobs')}
           </Link>
           <Link href={`/zones/${zone}/guides`} className="px-6 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
-            Guides
+            {t('guides')}
           </Link>
         </div>
 
         {/* Featured Hotspots */}
         <div className="mb-12">
-          <h3 className="text-2xl font-semibold text-sky-800 mb-6">Featured Destinations</h3>
+          <h3 className="text-2xl font-semibold text-sky-800 mb-6">{t('featuredDestinations')}</h3>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
             {zoneData.hotspots.map((h) => (
               <div key={h} className="rounded-xl p-6 border border-slate-200 bg-white hover:shadow-lg transition text-center">
@@ -92,25 +80,23 @@ export default function ZonePage({ params }) {
 
         {/* Trusted Stay Guide */}
         <div className="rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white p-8 mb-12">
-          <h2 className="text-2xl font-semibold text-sky-800 mb-4">Trusted Stay Guide</h2>
+          <h2 className="text-2xl font-semibold text-sky-800 mb-4">{t('trustedStayGuide')}</h2>
           <p className="text-slate-700 leading-relaxed">
-            Short explanations of local norms, deposits, notice periods and staff housing expectations will live here. 
-            This section will help you understand what to expect when renting in {zoneData.title} and ensure 
-            you're prepared for local rental customs and requirements.
+            {t('trustedStayGuideDesc').replace('{zone}', zoneData.title)}
           </p>
         </div>
 
         {/* Resources & Guides */}
         <div className="mb-12">
-          <h3 className="text-2xl font-semibold text-sky-800 mb-6">Resources & Guides</h3>
+          <h3 className="text-2xl font-semibold text-sky-800 mb-6">{t('resourcesGuides')}</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="rounded-xl border border-slate-200 bg-white p-6 hover:shadow-md transition">
-              <h4 className="font-semibold text-slate-900 mb-2">🏔️ How to find a job in {zoneData.title}</h4>
-              <p className="text-sm text-slate-600">Coming soon: Tips and strategies for landing seasonal work</p>
+              <h4 className="font-semibold text-slate-900 mb-2">🏔️ {t('howToFindJob').replace('{zone}', zoneData.title)}</h4>
+              <p className="text-sm text-slate-600">{t('comingSoonJobTips')}</p>
             </div>
             <div className="rounded-xl border border-slate-200 bg-white p-6 hover:shadow-md transition">
-              <h4 className="font-semibold text-slate-900 mb-2">🏠 Staff Housing Options</h4>
-              <p className="text-sm text-slate-600">Coming soon: Best hostels and accommodations offering staff housing</p>
+              <h4 className="font-semibold text-slate-900 mb-2">🏠 {t('staffHousingOptions')}</h4>
+              <p className="text-sm text-slate-600">{t('comingSoonStaffHousing')}</p>
             </div>
           </div>
         </div>

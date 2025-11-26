@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { REGION_DISPLAY_TO_ENUM } from '../../../utils/regions';
 import { trackActivity } from '../../../utils/activity-tracker';
+import { sendListingPublishedEmail } from '@/utils/onboarding-emails';
 
 export async function POST(req: NextRequest) {
   try {
@@ -118,6 +119,11 @@ export async function POST(req: NextRequest) {
 
     // Track activity
     trackActivity(user.id);
+
+    // Send listing published email (non-blocking)
+    sendListingPublishedEmail(listing, user).catch(err => {
+      console.error('❌ Failed to send listing published email:', err);
+    });
 
     return NextResponse.json({
       message: 'Listing created successfully',

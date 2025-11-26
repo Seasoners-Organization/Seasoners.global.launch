@@ -1,4 +1,5 @@
 import { getResend } from '@/lib/resend';
+import { getEmailConfig } from '@/lib/email-config';
 
 /**
  * Send email notification when an agreement is created
@@ -13,12 +14,19 @@ export async function sendAgreementCreatedEmail(agreement, guest) {
       console.warn('RESEND_API_KEY not set; skipping sendAgreementCreatedEmail');
       return;
     }
-    await resend.emails.send({
-      from: 'onboarding@resend.dev',
+    const emailConfig = getEmailConfig('agreement');
+    const result = await resend.emails.send({
+      from: emailConfig.from,
+      replyTo: emailConfig.replyTo,
       to: guest.email,
       subject: `New Agreement: ${agreement.listing.title}`,
       html: generateAgreementCreatedEmail(agreement, guest, agreementUrl),
     });
+    if ((result as any)?.error) {
+      console.error('Resend agreement created email error:', (result as any).error);
+    } else {
+      console.log('✅ Agreement created email sent:', (result as any)?.data?.id);
+    }
   } catch (error) {
     console.error('Failed to send agreement created email:', error);
   }
@@ -39,8 +47,10 @@ export async function sendAgreementSignedEmail(agreement, recipient, signerName)
       console.warn('RESEND_API_KEY not set; skipping sendAgreementSignedEmail');
       return;
     }
-    await resend.emails.send({
-      from: 'onboarding@resend.dev',
+    const emailConfig = getEmailConfig('agreement');
+    const result = await resend.emails.send({
+      from: emailConfig.from,
+      replyTo: emailConfig.replyTo,
       to: recipient.email,
       subject: isFullySigned
         ? `✓ Agreement Fully Signed: ${agreement.listing.title}`
@@ -49,6 +59,11 @@ export async function sendAgreementSignedEmail(agreement, recipient, signerName)
         ? generateFullySignedEmail(agreement, recipient, agreementUrl)
         : generatePartiallySignedEmail(agreement, recipient, signerName, agreementUrl),
     });
+    if ((result as any)?.error) {
+      console.error('Resend agreement signed email error:', (result as any).error);
+    } else {
+      console.log('✅ Agreement signed email sent:', (result as any)?.data?.id);
+    }
   } catch (error) {
     console.error('Failed to send agreement signed email:', error);
   }
@@ -67,12 +82,19 @@ export async function sendAgreementRequestEmail(agreement, host) {
       console.warn('RESEND_API_KEY not set; skipping sendAgreementRequestEmail');
       return;
     }
-    await resend.emails.send({
-      from: 'onboarding@resend.dev',
+    const emailConfig = getEmailConfig('agreement');
+    const result = await resend.emails.send({
+      from: emailConfig.from,
+      replyTo: emailConfig.replyTo,
       to: host.email,
       subject: `Agreement Request: ${agreement.listing.title}`,
       html: generateAgreementRequestEmail(agreement, host, agreementUrl),
     });
+    if ((result as any)?.error) {
+      console.error('Resend agreement request email error:', (result as any).error);
+    } else {
+      console.log('✅ Agreement request email sent:', (result as any)?.data?.id);
+    }
   } catch (error) {
     console.error('Failed to send agreement request email:', error);
   }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getResend } from '@/lib/resend';
+import { getEmailConfig } from '@/lib/email-config';
 import crypto from 'crypto';
 
 const prisma = new PrismaClient();
@@ -56,8 +57,10 @@ export async function POST(req: Request) {
       console.warn('RESEND_API_KEY not set; skipping verification email');
       return NextResponse.json({ message: 'Verification email skipped (no email provider configured).' });
     }
+    const emailConfig = getEmailConfig('verification');
     const sendResult = await resend.emails.send({
-      from: 'onboarding@resend.dev', // Resend's test domain - works immediately
+      from: emailConfig.from,
+      replyTo: emailConfig.replyTo,
       to: email,
       subject: 'Welcome to Seasoners – Verify your email',
       html: `
@@ -107,6 +110,11 @@ export async function POST(req: Request) {
         </div>
       `,
     });
+    if ((sendResult as any)?.error) {
+      console.error('Resend verification email error:', (sendResult as any).error);
+    } else {
+      console.log('✅ Verification email sent:', (sendResult as any)?.data?.id);
+    }
 
     if ((sendResult as any)?.error) {
       console.error('Resend send error:', (sendResult as any).error);

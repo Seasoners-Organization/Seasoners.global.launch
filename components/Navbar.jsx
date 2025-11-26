@@ -209,6 +209,7 @@ export default function Navbar() {
           </div>
           <a href="/agreement" className="hover:text-sky-700">{t('agreement')}</a>
           <a href="/about" className="hover:text-sky-700">{t('about')}</a>
+          <a href="/community" className="hover:text-sky-700">💬 Community</a>
         </nav>
 
         {/* Right side - Auth or Language (desktop) */}
@@ -280,6 +281,7 @@ export default function Navbar() {
             </div>
             <a href="/agreement" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('agreement')}</a>
             <a href="/about" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('about')}</a>
+            <a href="/community" className="py-2" onClick={() => setIsMobileOpen(false)}>💬 Community</a>
             <div className="h-px bg-slate-200 my-2" />
             {!session ? (
               <div className="flex items-center gap-3">

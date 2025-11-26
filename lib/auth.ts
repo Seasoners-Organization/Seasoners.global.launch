@@ -5,6 +5,7 @@ import zxcvbn from 'zxcvbn';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from './prisma';
 import { getResend } from './resend';
+import { getEmailConfig } from './email-config';
 import type { NextAuthOptions } from 'next-auth';
 
 // Build providers array conditionally based on available env vars
@@ -32,9 +33,10 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 
 // Email provider (requires Resend)
 if (process.env.RESEND_API_KEY) {
+  const emailConfig = getEmailConfig('verification');
   providers.push(
     EmailProvider({
-      from: 'Seasoners <onboarding@resend.dev>',
+      from: emailConfig.from,
       sendVerificationRequest: async ({ identifier, url }) => {
         const resend = getResend();
         if (!resend) {
@@ -43,7 +45,7 @@ if (process.env.RESEND_API_KEY) {
         }
         try {
           const result = await resend.emails.send({
-            from: 'Seasoners <onboarding@resend.dev>',
+            from: emailConfig.from,
             to: identifier,
             subject: 'Sign in to Seasoners',
             html: `
@@ -146,13 +148,24 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile, isNewUser }) {
       if (account?.provider === 'google') {
         // Check if user exists with this email
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email! },
           include: { accounts: true }
         });
+        
+        // Send welcome email for brand new Google users
+        if (!existingUser) {
+          sendWelcomeEmail({ 
+            id: user.id, 
+            email: user.email!, 
+            name: user.name || 'there' 
+          }).catch(err => {
+            console.error('❌ Failed to send welcome email to Google user:', err);
+          });
+        }
         
         if (existingUser) {
           // Check if this Google account is already linked

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { sendWelcomeEmail } from '@/utils/onboarding-emails';
 
 // Simple in-memory rate limiter per IP (dev-friendly; replace with Redis in prod)
 const registerAttempts = new Map<string, number[]>();
@@ -123,6 +124,11 @@ export async function POST(req: Request) {
       });
       
       console.log('[Register] User created successfully:', user.id);
+
+      // Send welcome email (non-blocking)
+      sendWelcomeEmail(user).catch(err => {
+        console.error('❌ Failed to send welcome email:', err);
+      });
 
       // Trigger email verification flow (server-side call to existing verify-email route)
       try {

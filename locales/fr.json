@@ -289,5 +289,22 @@
   "clausePayments": "Le loyer est dû le [DueDay] chaque mois via [Method]. Les cautions éventuelles sont retenues pour les dommages dépassant l'usure normale. Fournir les reçus et les renvoyer en temps voulu après le passage en caisse.",
   "clauseHouseRules": "Heures de tranquillité, zones communes, invités, tabagisme, animaux de compagnie et enregistrement local si nécessaire. Les règles sont raisonnables, claires et communiquées avant la signature.",
   "clauseDisputes": "Nous résolvons les problèmes en toute bonne foi. Commencez par une conversation, puis un avis écrit. Si nécessaire, recherchez des ressources locales de médiation avant d'entamer des démarches juridiques.",
-  "countryNotes": "Les limites de dépôt, les délais de préavis et les règles d'enregistrement varient selon les pays et les villes. Avant de signer, vérifiez les exigences locales et mettez à jour les espaces réservés tels que [NoticeDays], [DueDay] et [Method]."
+  "countryNotes": "Les limites de dépôt, les délais de préavis et les règles d'enregistrement varient selon les pays et les villes. Avant de signer, vérifiez les exigences locales et mettez à jour les espaces réservés tels que [NoticeDays], [DueDay] et [Method].",
+  "help": "Aide",
+  "helpCenter": "Centre d'aide",
+  "docs": "Documentation",
+  "documentation": "Documentation",
+  "community": "Communauté",
+  "communityForum": "Forum communautaire",
+  "agreementEnglish": "Anglais",
+  "agreementGerman": "Allemand (Deutsch)",
+  "guides": "Guides",
+  "featuredDestinations": "Destinations en vedette",
+  "trustedStayGuide": "Guide de séjour de confiance",
+  "trustedStayGuideDesc": "De courtes explications sur les normes locales, les dépôts, les périodes de préavis et les attentes en matière de logement du personnel figureront ici. Cette section vous aidera à comprendre ce qui vous attend lorsque vous louez dans {zone} et vous permettra de vous préparer aux coutumes et aux exigences locales en matière de location.",
+  "resourcesGuides": "Ressources et guides",
+  "howToFindJob": "Comment trouver un emploi dans {zone}",
+  "staffHousingOptions": "Options de logement pour le personnel",
+  "comingSoonJobTips": "Prochainement : Conseils et stratégies pour trouver un emploi saisonnier",
+  "comingSoonStaffHousing": "Prochainement : Les meilleures auberges et hébergements offrant un logement pour le personnel"
 }

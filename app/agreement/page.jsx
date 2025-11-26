@@ -9,12 +9,12 @@ export default function Agreement() {
   const { t } = useLanguage();
 
   const clauses = [
-    { title: t("clauseBasicsTitle"), en: t("clauseBasicsEn"), de: t("clauseBasicsDe") },
-    { title: t("clauseCultureTitle"), en: t("clauseCultureEn"), de: t("clauseCultureDe") },
-    { title: t("clauseMutualExitTitle"), en: t("clauseMutualExitEn"), de: t("clauseMutualExitDe") },
-    { title: t("clausePaymentsTitle"), en: t("clausePaymentsEn"), de: t("clausePaymentsDe") },
-    { title: t("clauseHouseRulesTitle"), en: t("clauseHouseRulesEn"), de: t("clauseHouseRulesDe") },
-    { title: t("clauseDisputesTitle"), en: t("clauseDisputesEn"), de: t("clauseDisputesDe") }
+    { title: t("clauseBasicsTitle"), content: t("clauseBasics") },
+    { title: t("clauseCultureTitle"), content: t("clauseCulture") },
+    { title: t("clauseMutualExitTitle"), content: t("clauseMutualExit") },
+    { title: t("clausePaymentsTitle"), content: t("clausePayments") },
+    { title: t("clauseHouseRulesTitle"), content: t("clauseHouseRules") },
+    { title: t("clauseDisputesTitle"), content: t("clauseDisputes") }
   ];
 
   return (
@@ -34,8 +34,7 @@ export default function Agreement() {
             {/* Preamble */}
             <div className="bg-white shadow-sm border rounded-2xl p-6 mb-10">
               <h2 className="text-xl font-semibold text-sky-700 mb-3">Trust Preamble</h2>
-              <p className="text-sm leading-relaxed text-slate-700 mb-4">{t("agreementPreambleEn")}</p>
-              <p className="text-sm leading-relaxed text-slate-700 italic">{t("agreementPreambleDe")}</p>
+              <p className="text-sm leading-relaxed text-slate-700">{t("agreementPreamble")}</p>
             </div>
 
             {/* Core Clauses */}
@@ -43,8 +42,7 @@ export default function Agreement() {
               {clauses.map((c, idx) => (
                 <div key={idx} className="bg-white border rounded-xl p-5 shadow-sm">
                   <h3 className="font-semibold text-sky-700 mb-2 text-sm tracking-wide">{c.title}</h3>
-                  <p className="text-sm text-slate-700 mb-2">{c.en}</p>
-                  <p className="text-sm text-slate-700 italic">{c.de}</p>
+                  <p className="text-sm text-slate-700">{c.content}</p>
                 </div>
               ))}
             </div>
@@ -52,17 +50,13 @@ export default function Agreement() {
             {/* Template Examples */}
             <div className="bg-gradient-to-br from-slate-50 to-slate-100 border rounded-2xl p-6 mb-10 text-sm leading-relaxed text-slate-700">
               <h2 className="text-lg font-semibold text-sky-800 mb-4">Plain-Language Template</h2>
-              <h3 className="font-semibold text-sky-700 mb-2">{t("agreementEnglish")}</h3>
-              <p>{t("agreementTemplateEn")}</p>
-              <h3 className="font-semibold text-amber-600 mt-6 mb-2">{t("agreementGerman")}</h3>
-              <p>{t("agreementTemplateDe")}</p>
+              <p>{t("agreementTemplate")}</p>
             </div>
 
             {/* Country Notes */}
             <div className="bg-white shadow-sm border rounded-2xl p-6 mb-8">
               <h2 className="text-lg font-semibold text-sky-800 mb-3">{t("countryNotesTitle")}</h2>
-              <p className="text-sm text-slate-700 mb-2">{t("countryNotesEn")}</p>
-              <p className="text-sm text-slate-700 italic">{t("countryNotesDe")}</p>
+              <p className="text-sm text-slate-700">{t("countryNotes")}</p>
               <div className="mt-4 text-xs text-slate-500 space-y-1">
                 <p><strong>Placeholders:</strong> [NoticeDays], [DueDay], [Method]</p>
                 <p>Replace with local legal norms before signing. We will automate country defaults soon.</p>

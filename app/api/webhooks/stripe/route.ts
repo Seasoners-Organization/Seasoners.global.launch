@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getStripe, getStripeWebhookSecret } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
+import { sendSubscriptionConfirmationEmail } from '@/utils/onboarding-emails';
 
 export const dynamic = 'force-dynamic';
 
@@ -262,6 +263,15 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice, stripe: Stripe) {
   });
 
   console.log(`Payment succeeded for user ${user.id}`);
+  
+  // Send subscription confirmation email (non-blocking)
+  sendSubscriptionConfirmationEmail(user, {
+    tier: user.subscriptionTier || 'FREE',
+    status: 'ACTIVE',
+    expiresAt: new Date((subscription as any).current_period_end * 1000),
+  }).catch(err => {
+    console.error('❌ Failed to send subscription confirmation email:', err);
+  });
 }
 
 async function handlePaymentFailed(invoice: Stripe.Invoice) {

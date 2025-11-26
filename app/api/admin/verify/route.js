@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from '@/lib/auth';
 import { getResend } from '@/lib/resend';
+import { getEmailConfig } from '@/lib/email-config';
 
 const prisma = new PrismaClient();
 
@@ -59,8 +60,10 @@ export async function POST(req) {
     if (!resend) {
       console.warn('RESEND_API_KEY not set; skipping admin verification email');
     } else {
+      const emailConfig = getEmailConfig('admin');
       await resend.emails.send({
-        from: 'Seasoners <onboarding@resend.dev>',
+        from: emailConfig.from,
+        replyTo: emailConfig.replyTo,
         to: verification.user.email,
         subject: `Verification ${action === 'approve' ? 'Approved' : 'Rejected'} - Seasoners`,
         html: `
