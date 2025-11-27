@@ -3,10 +3,12 @@ import { PrismaClient } from '@prisma/client';
 import twilio from 'twilio';
 
 const prisma = new PrismaClient();
+
 const twilioClient = twilio(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
+const TWILIO_VERIFY_SERVICE_SID = process.env.TWILIO_VERIFY_SERVICE_SID || 'VA3f330d423cba8010c2a57cf1debfd348';
 
 // Cache verification codes with expiry (5 minutes)
 const verificationCodes = new Map();
@@ -33,53 +35,27 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { action, userId, phoneNumber, code } = body;
 
-    if (action === 'send') {
-      // Generate and send new verification code
-      const verificationCode = generateCode();
-      storeCode(userId, verificationCode);
 
-      // Send SMS
-      await twilioClient.messages.create({
-        body: `Your Seasoners verification code is: ${verificationCode}`,
-        to: phoneNumber,
-        from: process.env.TWILIO_PHONE_NUMBER
-      });
+    if (action === 'send') {
+      // Use Twilio Verify API to send code
+      await twilioClient.verify.v2.services(TWILIO_VERIFY_SERVICE_SID)
+        .verifications
+        .create({ to: phoneNumber, channel: 'sms' });
 
       return NextResponse.json({
         message: 'Verification code sent successfully'
       });
 
+
     } else if (action === 'verify') {
-      // Verify submitted code
-      const storedData = verificationCodes.get(userId);
-      
-      if (!storedData) {
-        return NextResponse.json(
-          { error: 'No verification code found' },
-          { status: 400 }
-        );
-      }
+      // Use Twilio Verify API to check code
+      const verificationCheck = await twilioClient.verify.v2.services(TWILIO_VERIFY_SERVICE_SID)
+        .verificationChecks
+        .create({ to: phoneNumber, code });
 
-      if (storedData.expires < Date.now()) {
-        verificationCodes.delete(userId);
+      if (verificationCheck.status !== 'approved') {
         return NextResponse.json(
-          { error: 'Verification code expired' },
-          { status: 400 }
-        );
-      }
-
-      if (storedData.attempts >= 3) {
-        verificationCodes.delete(userId);
-        return NextResponse.json(
-          { error: 'Too many attempts. Please request a new code.' },
-          { status: 400 }
-        );
-      }
-
-      if (storedData.code !== code) {
-        storedData.attempts++;
-        return NextResponse.json(
-          { error: 'Invalid verification code' },
+          { error: 'Invalid or expired verification code' },
           { status: 400 }
         );
       }
@@ -97,9 +73,6 @@ export async function POST(req: Request) {
           }
         }
       });
-
-      // Clean up used code
-      verificationCodes.delete(userId);
 
       return NextResponse.json({
         message: 'Phone number verified successfully'
