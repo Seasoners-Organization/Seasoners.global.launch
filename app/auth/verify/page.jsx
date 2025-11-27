@@ -17,6 +17,21 @@ export default function Verify() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [sendingEmail, setSendingEmail] = useState(false);
+  
+  // Read success/error from URL params for email verification status
+  useEffect(() => {
+    const s = search?.get('success');
+    const e = search?.get('error');
+    if (s === 'email_verified') {
+      setSuccess(t('emailVerifiedSuccess') || 'Email verified successfully.');
+    }
+    if (e === 'invalid_or_expired') {
+      setError(t('verificationLinkExpired') || 'The verification link is invalid or expired. Please resend the email.');
+    }
+    if (e === 'missing_token') {
+      setError(t('missingToken') || 'Verification token missing. Please resend the email.');
+    }
+  }, [search, t]);
   useEffect(() => {
     const s = search?.get('success');
     const e = search?.get('error');
