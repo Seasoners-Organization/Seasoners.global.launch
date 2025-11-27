@@ -175,11 +175,15 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   // Payment Link fallback: try to match user by email if no userId/metadata
   const email = session.customer_email || session.customer_details?.email;
+  console.log('[Stripe Webhook] Payment Link fallback. Stripe session:', {
+    customer_email: session.customer_email,
+    customer_details: session.customer_details,
+    metadata: session.metadata,
+    email,
+  });
   if (email) {
-    // Try to find user by email
     let user = await prisma.user.findUnique({ where: { email } });
     if (user) {
-      // Upgrade user to LISTER (or SEARCHER if you add more links)
       await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -188,14 +192,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
           subscriptionExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         },
       });
-      console.log(`Payment Link: Upgraded user ${email} to LISTER`);
+      console.log(`[Stripe Webhook] Payment Link: Upgraded user ${email} to LISTER (User ID: ${user.id})`);
     } else {
-      // Optionally, create a new user if not found
-      // user = await prisma.user.create({ ... });
-      console.warn(`Payment Link: No user found for email ${email}`);
+      console.warn(`[Stripe Webhook] Payment Link: No user found for email ${email}`);
     }
   } else {
-    console.error('Payment Link: No email found in session');
+    console.error('[Stripe Webhook] Payment Link: No email found in session', { session });
   }
 }
 
