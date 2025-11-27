@@ -281,22 +281,7 @@ export default function ProfileEditor({ user, onSave }) {
         </div>
       </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full border border-slate-300 rounded-lg p-3"
-              autoComplete="email"
-            />
-            {user?.emailVerified ? (
-              <span className="text-green-600 text-xs ml-2">Verified</span>
-            ) : (
-              <span className="text-yellow-600 text-xs ml-2">Not Verified. Please check your inbox for a verification link after saving changes."</span>
-            )}
-          </div>
+          {/* Duplicate email input removed to fix JSX error */
         <div className="flex gap-2">
           <input
             type="text"
