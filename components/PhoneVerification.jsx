@@ -104,8 +104,12 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
           type="tel"
           className="flex-1 border rounded px-3 py-2"
           value={localNumber}
-          onChange={e => setLocalNumber(e.target.value)}
-          placeholder="e.g., 664 1234567"
+          onChange={e => {
+            // allow digits and spaces only
+            const val = e.target.value.replace(/[^\d\s]/g, '');
+            setLocalNumber(val);
+          }}
+          placeholder={countryCode === '+43' ? 'e.g., 664 1234567' : 'Enter local number'}
           disabled={status === 'sending' || status === 'verifying'}
         />
       </div>

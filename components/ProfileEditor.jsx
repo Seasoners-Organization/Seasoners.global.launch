@@ -219,7 +219,11 @@ export default function ProfileEditor({ user, onSave }) {
             <input
               type="text"
               value={formData.nationality}
-              onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFormData({ ...formData, nationality: value });
+                scheduleAutoSave({ nationality: value });
+              }}
               placeholder="e.g., Austrian, German, etc."
               className="w-full border border-slate-300 rounded-lg p-3"
             />
@@ -230,7 +234,11 @@ export default function ProfileEditor({ user, onSave }) {
             <input
               type="text"
               value={formData.occupation}
-              onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFormData({ ...formData, occupation: value });
+                scheduleAutoSave({ occupation: value });
+              }}
               placeholder="e.g., Student, Bartender, Ski Instructor"
               className="w-full border border-slate-300 rounded-lg p-3"
             />
@@ -480,7 +488,11 @@ export default function ProfileEditor({ user, onSave }) {
           <label className="block text-sm font-medium text-slate-700 mb-2">Profile Visibility</label>
           <select
             value={formData.profileVisibility}
-            onChange={(e) => setFormData({ ...formData, profileVisibility: e.target.value })}
+            onChange={(e) => {
+              const value = e.target.value;
+              setFormData({ ...formData, profileVisibility: value });
+              scheduleAutoSave({ profileVisibility: value });
+            }}
             className="w-full border border-slate-300 rounded-lg p-3"
           >
             <option value="PUBLIC">Public - Anyone can see your profile</option>
