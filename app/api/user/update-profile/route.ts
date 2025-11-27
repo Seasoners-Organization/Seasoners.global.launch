@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
       profileVisibility,
       openToOpportunities,
       preferredRegions,
+      email,
+      phoneNumber,
     } = body;
 
     // Find user
@@ -63,6 +65,17 @@ export async function POST(req: NextRequest) {
     if (profileVisibility !== undefined) updateData.profileVisibility = profileVisibility;
     if (openToOpportunities !== undefined) updateData.openToOpportunities = openToOpportunities;
     if (preferredRegions !== undefined) updateData.preferredRegions = preferredRegions;
+
+    // Allow updating email and phone number, reset verification if changed
+    if (email !== undefined && email !== user.email) {
+      updateData.email = email;
+      updateData.emailVerified = null;
+      // TODO: Trigger email verification email here if needed
+    }
+    if (phoneNumber !== undefined && phoneNumber !== user.phoneNumber) {
+      updateData.phoneNumber = phoneNumber;
+      updateData.phoneVerified = null;
+    }
 
     // Update user
     const updatedUser = await prisma.user.update({

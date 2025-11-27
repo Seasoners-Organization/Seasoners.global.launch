@@ -1,9 +1,12 @@
 "use client";
 import { useState } from "react";
 import { REGIONS } from "../utils/regions";
+import PhoneVerification from "./PhoneVerification";
 
 export default function ProfileEditor({ user, onSave }) {
   const [formData, setFormData] = useState({
+    email: user?.email || '',
+    phoneNumber: user?.phoneNumber || '',
     dateOfBirth: user?.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
     nationality: user?.nationality || '',
     spokenLanguages: user?.spokenLanguages || [],
@@ -67,6 +70,10 @@ export default function ProfileEditor({ user, onSave }) {
 
       const data = await response.json();
       if (response.ok) {
+        // Automatically sync Stripe subscription if email was changed
+        if (formData.email !== user?.email) {
+          await fetch('/api/user/sync-stripe-subscription', { method: 'POST' });
+        }
         alert('Profile updated successfully!');
         if (onSave) onSave(data.user);
       } else {
@@ -143,10 +150,37 @@ export default function ProfileEditor({ user, onSave }) {
         </div>
       </div>
 
-      {/* Basic Information */}
+      {/* Contact & Basic Information */}
       <div className="bg-white rounded-xl shadow-sm border p-6">
-        <h3 className="text-lg font-semibold mb-4">Basic Information</h3>
+        <h3 className="text-lg font-semibold mb-4">Contact & Basic Information</h3>
         <div className="grid gap-4">
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full border border-slate-300 rounded-lg p-3"
+              autoComplete="email"
+            />
+            {user?.emailVerified ? (
+              <span className="text-green-600 text-xs ml-2">Verified</span>
+            ) : (
+              <span className="text-yellow-600 text-xs ml-2">Not Verified</span>
+            )}
+          </div>
+          {/* Phone */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+            <PhoneVerification
+              userId={user?.id}
+              initialPhone={formData.phoneNumber}
+              verified={user?.phoneVerified}
+              onVerified={() => window.location.reload()}
+            />
+          </div>
+          {/* Date of Birth */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">Date of Birth</label>
             <input
@@ -156,6 +190,7 @@ export default function ProfileEditor({ user, onSave }) {
               className="w-full border border-slate-300 rounded-lg p-3"
             />
           </div>
+          {/* Nationality */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">Nationality</label>
             <input
@@ -166,6 +201,7 @@ export default function ProfileEditor({ user, onSave }) {
               className="w-full border border-slate-300 rounded-lg p-3"
             />
           </div>
+          {/* Occupation */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">Occupation</label>
             <input
@@ -176,6 +212,7 @@ export default function ProfileEditor({ user, onSave }) {
               className="w-full border border-slate-300 rounded-lg p-3"
             />
           </div>
+          {/* Work Experience */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">Work Experience</label>
             <input
@@ -244,22 +281,22 @@ export default function ProfileEditor({ user, onSave }) {
         </div>
       </div>
 
-      {/* Skills */}
-      <div className="bg-white rounded-xl shadow-sm border p-6">
-        <h3 className="text-lg font-semibold mb-4">Skills</h3>
-        <div className="flex flex-wrap gap-2 mb-3">
-          {formData.skills.map((skill, idx) => (
-            <div key={idx} className="flex items-center gap-2 bg-amber-100 text-amber-700 px-3 py-1 rounded-full">
-              <span>{skill}</span>
-              <button
-                onClick={() => removeFromArray('skills', idx)}
-                className="text-amber-900 hover:text-red-600"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full border border-slate-300 rounded-lg p-3"
+              autoComplete="email"
+            />
+            {user?.emailVerified ? (
+              <span className="text-green-600 text-xs ml-2">Verified</span>
+            ) : (
+              <span className="text-yellow-600 text-xs ml-2">Not Verified. Please check your inbox for a verification link after saving changes."</span>
+            )}
+          </div>
         <div className="flex gap-2">
           <input
             type="text"
