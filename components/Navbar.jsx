@@ -191,7 +191,7 @@ export default function Navbar() {
             </a>
           )}
           <a href="/stays" className="hover:text-sky-700">{t('stays')}</a>
-          <a href="/flatshares" className="hover:text-sky-700">🏠 Flatshares</a>
+          <a href="/flatshares" className="hover:text-sky-700">{t('flatshares') || 'Flatshares'}</a>
           <a href="/jobs" className="hover:text-sky-700">{t('jobs')}</a>
           {/* Destinations dropdown */}
           <div className="relative" ref={destinationsRef}>
@@ -276,26 +276,26 @@ export default function Navbar() {
       {/* Mobile menu panel */}
       {isMobileOpen && (
         <div className="md:hidden border-t border-slate-200 bg-white">
-          <div className="max-w-6xl mx-auto px-6 py-4 grid gap-3 text-slate-800">
+          <div className="max-w-6xl mx-auto px-4 py-3 grid gap-2 text-slate-800">
             {session && (
               <a href="/list" className="py-2" onClick={() => setIsMobileOpen(false)}>
                 {t('list')}
               </a>
             )}
             <a href="/stays" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('stays')}</a>
-            <a href="/flatshares" className="py-2" onClick={() => setIsMobileOpen(false)}>🏠 Flatshares</a>
+            <a href="/flatshares" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('flatshares') || 'Flatshares'}</a>
             <a href="/jobs" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('jobs')}</a>
-            <div className="py-2">
+            <div className="py-1.5">
               <details>
                 <summary className="cursor-pointer select-none flex items-center gap-2">
                   {t('destinations')}
                 </summary>
-                <div className="mt-2 pl-4">
-                  <div className="text-xs text-slate-500 mb-1">❄️ Winter</div>
+                <div className="mt-1 pl-3">
+                  <div className="text-xs text-slate-500 mb-1">Winter</div>
                   {ZONES.filter(z => z.season === 'winter').map(z => (
                     <a key={z.slug} href={`/zones/${z.slug}`} className="block py-1.5" onClick={() => setIsMobileOpen(false)}>{z.title}</a>
                   ))}
-                  <div className="text-xs text-slate-500 mt-3 mb-1">☀️ Summer</div>
+                  <div className="text-xs text-slate-500 mt-2 mb-1">Summer</div>
                   {ZONES.filter(z => z.season === 'summer').map(z => (
                     <a key={z.slug} href={`/zones/${z.slug}`} className="block py-1.5" onClick={() => setIsMobileOpen(false)}>{z.title}</a>
                   ))}
@@ -313,9 +313,9 @@ export default function Navbar() {
               </div>
             </details>
             <a href="/about" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('about')}</a>
-            <div className="h-px bg-slate-200 my-2" />
+            <div className="h-px bg-slate-200 my-1" />
             {!session ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <button
                   onClick={() => { setIsMobileOpen(false); signIn(); }}
                   className="px-3 py-2 rounded-md text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition w-full"
