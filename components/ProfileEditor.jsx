@@ -281,7 +281,22 @@ export default function ProfileEditor({ user, onSave }) {
         </div>
       </div>
 
-          {/* Duplicate email input removed to fix JSX error */
+      {/* Skills */}
+      <div className="bg-white rounded-xl shadow-sm border p-6">
+        <h3 className="text-lg font-semibold mb-4">Skills</h3>
+        <div className="flex flex-wrap gap-2 mb-3">
+          {formData.skills.map((skill, idx) => (
+            <div key={idx} className="flex items-center gap-2 bg-amber-100 text-amber-700 px-3 py-1 rounded-full">
+              <span>{skill}</span>
+              <button
+                onClick={() => removeFromArray('skills', idx)}
+                className="text-amber-900 hover:text-red-600"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
         <div className="flex gap-2">
           <input
             type="text"
