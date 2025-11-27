@@ -26,6 +26,7 @@ export default function ProfilePage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deletingAccount, setDeletingAccount] = useState(false);
+  const [verificationToast, setVerificationToast] = useState("");
   const [profileCompleteness, setProfileCompleteness] = useState(0);
 
   useEffect(() => {
@@ -362,6 +363,11 @@ export default function ProfilePage() {
             {/* Tab Content */}
             {activeTab === "overview" && (
               <div className="space-y-6">
+                {verificationToast && (
+                  <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded">
+                    {verificationToast}
+                  </div>
+                )}
                 {/* Profile Insights */}
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Trust Score Card */}
@@ -447,7 +453,17 @@ export default function ProfilePage() {
                         {user.phoneVerified ? `✓ ${t('verified')}` : t('notVerified')}
                       </span>
                     </div>
-                    <PhoneVerification userId={user.id} initialPhone={user.phoneNumber} verified={user.phoneVerified} />
+                    <PhoneVerification
+                      userId={user.id}
+                      initialPhone={user.phoneNumber}
+                      verified={user.phoneVerified}
+                      onVerified={() => {
+                        setVerificationToast('Phone verified successfully');
+                        // refresh user data subtly
+                        fetchUserData();
+                        setTimeout(() => setVerificationToast(''), 3000);
+                      }}
+                    />
                     <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded text-yellow-800">
                       <strong>ID verification coming soon.</strong> For now, only phone and email verification are available.
                     </div>

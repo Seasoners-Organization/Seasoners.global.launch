@@ -110,6 +110,39 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
 
   return (
     <aside className="space-y-6" aria-label="Filters sidebar">
+      {/* Active filter chips */}
+      <div className="flex flex-wrap gap-2">
+        {season !== 'all' && (
+          <button onClick={() => setSeason('all')} className="px-2 py-1 text-xs rounded-full bg-sky-100 text-sky-700">Season: {season} ×</button>
+        )}
+        {country !== 'all' && (
+          <button onClick={() => setCountry('all')} className="px-2 py-1 text-xs rounded-full bg-sky-100 text-sky-700">Country: {getCountryName(country)} ×</button>
+        )}
+        {region !== 'all' && (
+          <button onClick={() => setRegion('all')} className="px-2 py-1 text-xs rounded-full bg-sky-100 text-sky-700">Region: {prettyRegionName(region)} ×</button>
+        )}
+        {location !== 'all' && (
+          <button onClick={() => setLocation('all')} className="px-2 py-1 text-xs rounded-full bg-sky-100 text-sky-700">Location: {location} ×</button>
+        )}
+        {priceMin && (
+          <button onClick={() => setPriceMin('')} className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-700">Min: €{priceMin} ×</button>
+        )}
+        {priceMax && (
+          <button onClick={() => setPriceMax('')} className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-700">Max: €{priceMax} ×</button>
+        )}
+        {bedrooms && (
+          <button onClick={() => setBedrooms('')} className="px-2 py-1 text-xs rounded-full bg-slate-100 text-slate-700">Bedrooms: {bedrooms} ×</button>
+        )}
+        {roommates && (
+          <button onClick={() => setRoommates('')} className="px-2 py-1 text-xs rounded-full bg-slate-100 text-slate-700">Roommates: {roommates} ×</button>
+        )}
+        {jobType !== 'all' && (
+          <button onClick={() => setJobType('all')} className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Job: {jobType.replace('_',' ').toLowerCase()} ×</button>
+        )}
+        {industry !== 'all' && (
+          <button onClick={() => setIndustry('all')} className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Industry: {industry.replace('_',' ').toLowerCase()} ×</button>
+        )}
+      </div>
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-700">Filters</h2>
         <button onClick={resetAll} className="text-xs text-sky-700 hover:underline" aria-label="Reset all filters">Reset</button>
