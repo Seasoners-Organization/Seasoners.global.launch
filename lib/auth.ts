@@ -100,8 +100,6 @@ if (process.env.RESEND_API_KEY) {
               </div>
             `,
             text: `Sign in to Seasoners\n\nYour secure sign-in link is ready.\n\nSign in: ${safeUrl}\n\nThis link expires in 24 hours and can only be used once. Never share this email with anyone.\n\nIf you didn't request this email, you can safely ignore it.\n\nNot seeing this email? Please check your spam or junk folder and mark this message as "Not Spam" to ensure future delivery.\n\n© ${new Date().getFullYear()} Seasoners. All rights reserved.`,
-              </div>
-            `,
           });
         } catch (error) {
           console.error('Failed to send verification email:', error);

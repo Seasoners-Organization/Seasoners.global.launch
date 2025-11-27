@@ -132,10 +132,6 @@ export async function POST(req: Request) {
     } else {
       console.log('✅ Verification email sent:', (sendResult as any)?.data?.id);
     }
-        { error: 'Failed to send verification email' },
-        { status: 500 }
-      );
-    }
 
     return NextResponse.json({
       message: 'Verification email sent successfully'
