@@ -31,6 +31,29 @@ export default function ProfileEditor({ user, onSave }) {
   const [newSkill, setNewSkill] = useState('');
   const [newInterest, setNewInterest] = useState('');
   const [newCountry, setNewCountry] = useState('');
+  const [autoSaving, setAutoSaving] = useState(false);
+  const [autoSaveMessage, setAutoSaveMessage] = useState('');
+
+  let autoSaveTimer;
+  const scheduleAutoSave = (data) => {
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(async () => {
+      try {
+        setAutoSaving(true);
+        const response = await fetch('/api/user/update-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          setAutoSaveMessage('Changes saved');
+          setTimeout(() => setAutoSaveMessage(''), 1500);
+        }
+      } finally {
+        setAutoSaving(false);
+      }
+    }, 600);
+  };
 
   const handleProfilePictureUpload = async (file) => {
     if (!file) return;
@@ -231,11 +254,18 @@ export default function ProfileEditor({ user, onSave }) {
         <h3 className="text-lg font-semibold mb-4">About Me</h3>
         <textarea
           value={formData.aboutMe}
-          onChange={(e) => setFormData({ ...formData, aboutMe: e.target.value })}
+          onChange={(e) => {
+            const value = e.target.value;
+            const next = { ...formData, aboutMe: value };
+            setFormData(next);
+            scheduleAutoSave({ aboutMe: value });
+          }}
           rows="6"
           placeholder="Tell others about yourself, your experience, what you're looking for..."
           className="w-full border border-slate-300 rounded-lg p-3"
         />
+        {autoSaving && <p className="text-xs text-slate-500 mt-1">Saving…</p>}
+        {!autoSaving && autoSaveMessage && <p className="text-xs text-green-600 mt-1">{autoSaveMessage}</p>}
         <p className="text-sm text-slate-500 mt-2">This will be visible to potential employers and roommates.</p>
       </div>
 
@@ -273,6 +303,7 @@ export default function ProfileEditor({ user, onSave }) {
             onClick={() => {
               addToArray('spokenLanguages', newLanguage);
               setNewLanguage('');
+              scheduleAutoSave({ spokenLanguages: [...formData.spokenLanguages, newLanguage].filter(Boolean) });
             }}
             className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700"
           >
@@ -315,6 +346,7 @@ export default function ProfileEditor({ user, onSave }) {
             onClick={() => {
               addToArray('skills', newSkill);
               setNewSkill('');
+              scheduleAutoSave({ skills: [...formData.skills, newSkill].filter(Boolean) });
             }}
             className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
           >
@@ -357,6 +389,7 @@ export default function ProfileEditor({ user, onSave }) {
             onClick={() => {
               addToArray('interests', newInterest);
               setNewInterest('');
+              scheduleAutoSave({ interests: [...formData.interests, newInterest].filter(Boolean) });
             }}
             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
