@@ -32,6 +32,8 @@ export default function ZonePage({ params }) {
   const langKey = safeLang.charAt(0).toUpperCase() + safeLang.slice(1);
   const summary = zoneData[`summary${langKey}`] || zoneData.summary;
   const description = zoneData[`description${langKey}`] || zoneData.description;
+  // Opening statement, translated
+  const opening = t('zoneOpening', { zone: zoneData.title });
 
   return (
     <main>
@@ -50,7 +52,10 @@ export default function ZonePage({ params }) {
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
               {zoneData.title}
             </h1>
-            <p className="text-xl text-white/95 max-w-3xl drop-shadow-md">
+            <p className="text-xl text-white/95 max-w-3xl drop-shadow-md mb-2">
+              {opening}
+            </p>
+            <p className="text-lg text-white/90 max-w-3xl drop-shadow-md">
               {summary}
             </p>
           </div>
