@@ -128,15 +128,19 @@ export default function ProfileEditor({ user, onSave }) {
   const toggleRegion = (region) => {
     const current = formData.preferredRegions;
     if (current.includes(region)) {
+      const next = current.filter(r => r !== region);
       setFormData({
         ...formData,
-        preferredRegions: current.filter(r => r !== region),
+        preferredRegions: next,
       });
+      scheduleAutoSave({ preferredRegions: next });
     } else {
+      const next = [...current, region];
       setFormData({
         ...formData,
-        preferredRegions: [...current, region],
+        preferredRegions: next,
       });
+      scheduleAutoSave({ preferredRegions: next });
     }
   };
 
@@ -249,7 +253,11 @@ export default function ProfileEditor({ user, onSave }) {
             <input
               type="text"
               value={formData.workExperience}
-              onChange={(e) => setFormData({ ...formData, workExperience: e.target.value })}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFormData({ ...formData, workExperience: value });
+                scheduleAutoSave({ workExperience: value });
+              }}
               placeholder="e.g., 3 years in hospitality"
               className="w-full border border-slate-300 rounded-lg p-3"
             />
