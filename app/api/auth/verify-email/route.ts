@@ -62,61 +62,25 @@ export async function POST(req: Request) {
       from: emailConfig.from,
       replyTo: emailConfig.replyTo,
       to: email,
-      subject: 'Welcome to Seasoners – Verify your email',
+      subject: 'Verify your email to activate Seasoners',
+      // Lightweight HTML for faster delivery and fewer filters
       html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
-                    max-width: 560px; margin: 0 auto; padding: 40px 20px; color: #334155;">
-          
-          <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="color: #0369a1; font-size: 28px; font-weight: 700; margin: 0 0 8px 0;">
-              Welcome to Seasoners
-            </h1>
-            <p style="color: #64748b; font-size: 15px; margin: 0;">
-              Let's get you connected.
-            </p>
-          </div>
-
-          <div style="background: #f8fafc; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
-            <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.6;">
-              You're one step away from joining a global community built on trust, fairness, and human connection.
-            </p>
-            <p style="margin: 0 0 24px 0; font-size: 15px; line-height: 1.6;">
-              Click the button below to verify your email and activate your account.
-            </p>
-            <div style="text-align: center; margin-bottom: 16px;">
-              <a href="${verificationUrl}" 
-                 style="display: inline-block; background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
-                        color: #ffffff; padding: 14px 32px; text-decoration: none; 
-                        border-radius: 8px; font-weight: 600; font-size: 15px;">
-                Verify Email Address
-              </a>
-            </div>
-            <div style="text-align: center;">
-              <a href="${appBaseUrl()}/profile" 
-                 style="display: inline-block; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-                        color: #ffffff; padding: 12px 28px; text-decoration: none; 
-                        border-radius: 8px; font-weight: 600; font-size: 15px; margin-top: 8px;">
-                Verify your phone number
-              </a>
-            </div>
-          </div>
-
-          <div style="border-top: 1px solid #e2e8f0; padding-top: 20px;">
-            <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0 0 8px 0;">
-              <strong>This link expires in 30 minutes.</strong>
-            </p>
-            <p style="color: #94a3b8; font-size: 13px; line-height: 1.5; margin: 0;">
-              Didn't create a Seasoners account? You can safely ignore this email.
-            </p>
-          </div>
-
-          <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e2e8f0; text-align: center;">
-            <p style="color: #94a3b8; font-size: 12px; margin: 0;">
-              Seasoners – Work. Live. Explore. Together.
-            </p>
-          </div>
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; max-width: 520px; margin: 0 auto; padding: 24px; color: #334155;">
+          <h1 style="color: #0ea5e9; font-size: 22px; margin: 0 0 12px;">Verify your email</h1>
+          <p style="font-size: 14px; line-height: 1.6; margin: 0 0 16px;">
+            Click the button below to confirm your email and activate your account.
+          </p>
+          <p style="text-align: center; margin: 16px 0;">
+            <a href="${verificationUrl}" style="display: inline-block; background: #0ea5e9; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px;">
+              Verify Email
+            </a>
+          </p>
+          <p style="font-size: 12px; color: #64748b; margin: 16px 0 0;">This link expires in 30 minutes.</p>
+          <p style="font-size: 12px; color: #94a3b8; margin: 8px 0 0;">If you didn't sign up, you can ignore this email.</p>
         </div>
       `,
+      text: `Verify your email\n\nUse this link to activate your account (expires in 30 minutes):\n${verificationUrl}\n\nIf you didn't sign up, ignore this email.`,
+      tags: [{ name: 'type', value: 'transactional' }, { name: 'feature', value: 'email_verification' }],
     });
     if ((sendResult as any)?.error) {
       console.error('Resend verification email error:', (sendResult as any).error);

@@ -92,6 +92,16 @@ export default function Navbar() {
                   {session.user.name?.charAt(0).toUpperCase() || 'U'}
                 </div>
               )}
+              {userDetails && (
+                <div className="flex items-center gap-1 ml-1">
+                  {userDetails.emailVerified && (
+                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-green-100 text-green-700">Email ✓</span>
+                  )}
+                  {userDetails.phoneVerified && (
+                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-green-100 text-green-700">Phone ✓</span>
+                  )}
+                </div>
+              )}
               <svg
                 className={`w-4 h-4 text-slate-600 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`}
                 fill="none"
