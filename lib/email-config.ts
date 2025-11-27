@@ -8,9 +8,9 @@
 export const EMAIL_CONFIG = {
   // Sender configuration
   from: {
-    default: process.env.EMAIL_FROM || 'Seasoners <onboarding@resend.dev>',
-    support: process.env.EMAIL_FROM_SUPPORT || 'Seasoners <onboarding@resend.dev>',
-    founder: process.env.EMAIL_FROM_FOUNDER || 'Seasoners <onboarding@resend.dev>',
+    default: process.env.EMAIL_FROM || 'Seasoners <noreply@seasoners.eu>',
+    support: process.env.EMAIL_FROM_SUPPORT || 'Seasoners Support <support@seasoners.eu>',
+    founder: process.env.EMAIL_FROM_FOUNDER || 'Tremayne Chivers <tremayne@seasoners.eu>',
   },
 
   // Reply-to addresses
