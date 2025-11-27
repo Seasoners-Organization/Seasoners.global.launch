@@ -32,19 +32,6 @@ export default function Verify() {
       setError(t('missingToken') || 'Verification token missing. Please resend the email.');
     }
   }, [search, t]);
-  useEffect(() => {
-    const s = search?.get('success');
-    const e = search?.get('error');
-    if (s === 'email_verified') {
-      setSuccess(t('emailVerifiedSuccess') || 'Email verified successfully.');
-    }
-    if (e === 'invalid_or_expired') {
-      setError(t('verificationLinkExpired') || 'The verification link is invalid or expired. Please resend the email.');
-    }
-    if (e === 'missing_token') {
-      setError(t('missingToken') || 'Verification token missing. Please resend the email.');
-    }
-  }, [search, t]);
 
   useEffect(() => {
     if (session?.user) {
@@ -74,6 +61,7 @@ export default function Verify() {
 
       if (!response.ok) {
         throw new Error(data.error);
+      }
 
       setSuccess(t('documentSubmittedSuccess', { type }));
     } catch (error) {
