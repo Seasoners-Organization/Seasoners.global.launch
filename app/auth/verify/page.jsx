@@ -2,11 +2,13 @@
 
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '../../../components/LanguageProvider';
 
 export default function Verify() {
   const { data: session } = useSession();
   const { t } = useLanguage();
+  const search = useSearchParams();
   const [verificationState, setVerificationState] = useState({
     email: false,
     identity: false,
@@ -15,6 +17,19 @@ export default function Verify() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [sendingEmail, setSendingEmail] = useState(false);
+  useEffect(() => {
+    const s = search?.get('success');
+    const e = search?.get('error');
+    if (s === 'email_verified') {
+      setSuccess(t('emailVerifiedSuccess') || 'Email verified successfully.');
+    }
+    if (e === 'invalid_or_expired') {
+      setError(t('verificationLinkExpired') || 'The verification link is invalid or expired. Please resend the email.');
+    }
+    if (e === 'missing_token') {
+      setError(t('missingToken') || 'Verification token missing. Please resend the email.');
+    }
+  }, [search, t]);
 
   useEffect(() => {
     if (session?.user) {
@@ -44,8 +59,6 @@ export default function Verify() {
 
       if (!response.ok) {
         throw new Error(data.error);
-      const [sendingEmail, setSendingEmail] = useState(false);
-      const [params, setParams] = useState({ success: '', error: '' });
 
       setSuccess(t('documentSubmittedSuccess', { type }));
     } catch (error) {
@@ -56,22 +69,6 @@ export default function Verify() {
   const handleResendVerificationEmail = async () => {
     setSendingEmail(true);
     setError('');
-  
-      useEffect(() => {
-        const sp = new URLSearchParams(window.location.search);
-        const success = sp.get('success') || '';
-        const error = sp.get('error') || '';
-        setParams({ success, error });
-        if (success === 'email_verified') {
-          setSuccess(t('emailVerifiedSuccess') || 'Email verified successfully.');
-        }
-        if (error === 'invalid_or_expired') {
-          setError(t('verificationLinkExpired') || 'The verification link is invalid or expired. Please resend the email.');
-        }
-        if (error === 'missing_token') {
-          setError(t('missingToken') || 'Verification token missing. Please resend the email.');
-        }
-      }, []);
     setSuccess('');
 
     try {

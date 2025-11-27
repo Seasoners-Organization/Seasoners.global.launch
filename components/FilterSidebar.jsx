@@ -108,10 +108,15 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
     setIndustry('all');
   }
 
+  const hasAny = (
+    season !== 'all' || country !== 'all' || region !== 'all' || location !== 'all' ||
+    priceMin || priceMax || bedrooms || roommates || (showJobs && (jobType !== 'all' || industry !== 'all'))
+  );
+
   return (
     <aside className="space-y-6" aria-label="Filters sidebar">
       {/* Active filter chips */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 items-center">
         {season !== 'all' && (
           <button onClick={() => setSeason('all')} className="px-2 py-1 text-xs rounded-full bg-sky-100 text-sky-700">Season: {season} ×</button>
         )}
@@ -142,7 +147,25 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
         {industry !== 'all' && (
           <button onClick={() => setIndustry('all')} className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Industry: {industry.replace('_',' ').toLowerCase()} ×</button>
         )}
+        {hasAny && (
+          <button onClick={resetAll} className="px-2 py-1 text-xs rounded-full bg-slate-200 text-slate-700">Clear all</button>
+        )}
       </div>
+      {/* Mobile compact summary */}
+      {hasAny && (
+        <div className="sm:hidden text-xs text-slate-600">Active: {[
+          season!=='all'&&`season:${season}`,
+          country!=='all'&&`country:${getCountryName(country)}`,
+          region!=='all'&&`region:${prettyRegionName(region)}`,
+          location!=='all'&&`location:${location}`,
+          priceMin&&`min:€${priceMin}`,
+          priceMax&&`max:€${priceMax}`,
+          bedrooms&&`beds:${bedrooms}`,
+          roommates&&`roommates:${roommates}`,
+          (showJobs&&jobType!=='all')&&`job:${jobType.toLowerCase()}`,
+          (showJobs&&industry!=='all')&&`industry:${industry.toLowerCase()}`
+        ].filter(Boolean).join(' · ')}</div>
+      )}
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-700">Filters</h2>
         <button onClick={resetAll} className="text-xs text-sky-700 hover:underline" aria-label="Reset all filters">Reset</button>

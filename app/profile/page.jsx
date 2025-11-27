@@ -27,6 +27,13 @@ export default function ProfilePage() {
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deletingAccount, setDeletingAccount] = useState(false);
   const [verificationToast, setVerificationToast] = useState("");
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.get('success') === 'email_verified') {
+      setVerificationToast('Email verified successfully');
+      setTimeout(() => setVerificationToast(''), 3000);
+    }
+  }, []);
   const [profileCompleteness, setProfileCompleteness] = useState(0);
 
   useEffect(() => {
