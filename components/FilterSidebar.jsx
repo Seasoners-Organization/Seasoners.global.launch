@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useMemo } from 'react';
-import { getCountriesBySeason, getRegionsByCountry, getLocations, applyFilters } from '../utils/geo';
+import { getCountriesBySeason, getRegionsByCountry, getLocations, applyFilters, getCountryName, prettyRegionName } from '../utils/geo';
 import { SEASONS } from '../utils/destinations';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
@@ -128,13 +128,13 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
           <label className="text-xs font-medium text-slate-600">Country
             <select aria-label="Country" value={country} onChange={e => setCountry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" disabled={season==='all'}>
               <option value="all">{season==='all' ? 'All' : 'Select country'}</option>
-              {countries.map(c => <option key={c} value={c}>{c}</option>)}
+              {countries.map(c => <option key={c} value={c}>{getCountryName(c)}</option>)}
             </select>
           </label>
           <label className="text-xs font-medium text-slate-600">Region
             <select aria-label="Region" value={region} onChange={e => setRegion(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" disabled={country==='all' || regions.length===0}>
               <option value="all">{country==='all' ? 'All' : 'Select region'}</option>
-              {regions.map(r => <option key={r} value={r}>{r}</option>)}
+              {regions.map(r => <option key={r} value={r}>{prettyRegionName(r)}</option>)}
             </select>
           </label>
           <label className="text-xs font-medium text-slate-600">Location

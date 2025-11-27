@@ -4,6 +4,24 @@ export const SEASON_COUNTRIES = {
   summer: ['GR','ES','IT','PT','AU','ID','TH','VN']
 };
 
+// Human-friendly country names
+export const COUNTRY_NAMES = {
+  AT: 'Austria',
+  CH: 'Switzerland',
+  FR: 'France',
+  JP: 'Japan',
+  NO: 'Norway',
+  ES: 'Spain',
+  PT: 'Portugal',
+  NZ: 'New Zealand',
+  AU: 'Australia',
+  GR: 'Greece',
+  IT: 'Italy',
+  ID: 'Indonesia',
+  TH: 'Thailand',
+  VN: 'Vietnam',
+};
+
 // Country -> Regions mapping (minimal starter sets; extend later)
 export const COUNTRY_REGIONS = {
   AT: ['BURGENLAND','CARINTHIA','LOWER_AUSTRIA','SALZBURG','STYRIA','TIROL','UPPER_AUSTRIA','VIENNA','VORARLBERG'],
@@ -58,6 +76,15 @@ export function getCountriesBySeason(season) {
     return Array.from(set);
   }
   return SEASON_COUNTRIES[season] || [];
+}
+
+export function getCountryName(code) {
+  return COUNTRY_NAMES[code] || code;
+}
+
+export function prettyRegionName(region) {
+  if (!region) return '';
+  return region.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
 // Get regions by country
