@@ -95,21 +95,16 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const isEarlyBirdOneTime = metadata.isEarlyBirdOneTime === 'true';
 
   if (mode === 'payment' && isEarlyBirdOneTime) {
-    // One-time early-bird lock-in: mark user/email as eligible
+    // ...existing code...
     const email = (metadata.email || (session.customer_details as any)?.email) as string | undefined;
     if (!email) {
       console.error('Early-bird one-time completed without email');
       return;
     }
-
-    console.log(`Processing early-bird payment for email: ${email}`);
-
-    // Check if user exists, if not create them
+    // ...existing code...
     let user = await prisma.user.findUnique({ where: { email } });
-    
     if (user) {
-      console.log(`Found existing user, updating with founding member status`);
-      // Update existing user
+      // ...existing code...
       await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -122,8 +117,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         } as any,
       });
     } else {
-      console.log(`No user found, creating new user with founding member status`);
-      // Create new user with founding member status
+      // ...existing code...
       user = await prisma.user.create({
         data: {
           email,
@@ -133,12 +127,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
           subscriptionTier: 'LISTER',
           subscriptionStatus: 'ACTIVE',
           subscriptionExpiresAt: new Date('2100-01-01T00:00:00.000Z'),
-          emailVerified: new Date(), // Mark as verified since they paid
+          emailVerified: new Date(),
         } as any,
       });
     }
-
-    // Upsert waitlist signup as locked
+    // ...existing code...
     await (prisma as any).waitlistSignup.upsert({
       where: { email },
       create: {
@@ -155,33 +148,55 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         userId: user.id,
       },
     });
-
+    // ...existing code...
     console.log(`✅ Early-bird founding member status granted to ${email} (User ID: ${user.id})`);
     return;
   }
 
-  // Subscription-based flow
+  // Subscription-based flow (Payment Link support)
   const userId = metadata.userId as string | undefined;
-  if (!userId || !tier) {
-    console.error('Missing metadata in subscription checkout session');
+  if (userId && tier) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        subscriptionTier: tier,
+        subscriptionStatus: 'ACTIVE',
+        stripeCustomerId: session.customer as string,
+        stripeSubscriptionId: session.subscription as string,
+        subscriptionExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        isEarlyBird: isEarlyBird,
+        earlyBirdSignupDate: isEarlyBird ? new Date() : undefined,
+        waitlistStatus: isEarlyBird ? 'active' : undefined,
+      } as any,
+    });
+    console.log(`Subscription activated for user ${userId} - ${tier}${isEarlyBird ? ' (Early-Bird)' : ''}`);
     return;
   }
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
-      subscriptionTier: tier,
-      subscriptionStatus: 'ACTIVE',
-      stripeCustomerId: session.customer as string,
-      stripeSubscriptionId: session.subscription as string,
-      subscriptionExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-      isEarlyBird: isEarlyBird,
-      earlyBirdSignupDate: isEarlyBird ? new Date() : undefined,
-      waitlistStatus: isEarlyBird ? 'active' : undefined,
-    } as any,
-  });
-
-  console.log(`Subscription activated for user ${userId} - ${tier}${isEarlyBird ? ' (Early-Bird)' : ''}`);
+  // Payment Link fallback: try to match user by email if no userId/metadata
+  const email = session.customer_email || session.customer_details?.email;
+  if (email) {
+    // Try to find user by email
+    let user = await prisma.user.findUnique({ where: { email } });
+    if (user) {
+      // Upgrade user to LISTER (or SEARCHER if you add more links)
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          subscriptionTier: 'LISTER',
+          subscriptionStatus: 'ACTIVE',
+          subscriptionExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
+      });
+      console.log(`Payment Link: Upgraded user ${email} to LISTER`);
+    } else {
+      // Optionally, create a new user if not found
+      // user = await prisma.user.create({ ... });
+      console.warn(`Payment Link: No user found for email ${email}`);
+    }
+  } else {
+    console.error('Payment Link: No email found in session');
+  }
 }
 
 async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
