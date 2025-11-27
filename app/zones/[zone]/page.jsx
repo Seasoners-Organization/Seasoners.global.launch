@@ -1,20 +1,28 @@
 "use client";
+
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import { getZoneBySlug } from '../../../data/zones';
 import Link from 'next/link';
 import ZoneAgreementCTA from '../../../components/ZoneAgreementCTA';
 import { useLanguage } from '../../../components/LanguageProvider';
+import { useEffect, useState } from 'react';
 
 export default function ZonePage({ params }) {
   const { zone } = params;
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const zoneData = getZoneBySlug(zone);
-  if (typeof window !== 'undefined') {
-    // Debug: log params and zoneData
-    // eslint-disable-next-line no-console
-    console.log('ZonePage params:', params, 'zoneData:', zoneData);
-  }
+  const [summary, setSummary] = useState('');
+  const [description, setDescription] = useState('');
+  const [opening, setOpening] = useState('');
+
+  useEffect(() => {
+    if (!zoneData) return;
+    const langKey = locale ? locale.charAt(0).toUpperCase() + locale.slice(1) : 'En';
+    setSummary(zoneData[`summary${langKey}`] || zoneData.summary);
+    setDescription(zoneData[`description${langKey}`] || zoneData.description);
+    setOpening(t('zoneOpening', { zone: zoneData.title }));
+  }, [zoneData, locale, t]);
 
   if (!zoneData) {
     return (
@@ -25,15 +33,6 @@ export default function ZonePage({ params }) {
       </main>
     );
   }
-
-  // Language selection for summary/description
-  const { lang } = useLanguage() || {};
-  const safeLang = typeof lang === 'string' && lang.length > 0 ? lang : 'en';
-  const langKey = safeLang.charAt(0).toUpperCase() + safeLang.slice(1);
-  const summary = zoneData[`summary${langKey}`] || zoneData.summary;
-  const description = zoneData[`description${langKey}`] || zoneData.description;
-  // Opening statement, translated
-  const opening = t('zoneOpening', { zone: zoneData.title });
 
   return (
     <main>

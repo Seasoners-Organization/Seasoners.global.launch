@@ -24,40 +24,15 @@ function SubscribeContent() {
     }
   }, [status, selectedTier, returnTo]);
 
-  const handleSubscribe = async (tier) => {
-    setLoading(true);
-    setError("");
 
-    try {
-      const response = await fetch("/api/subscription/create-checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          tier,
-          returnUrl: window.location.origin + returnTo,
-        }),
-      });
+  // Use static Stripe Payment Links
+  const paymentLinks = {
+    SEARCHER: "https://buy.stripe.com/fZudR17aPeAR5xU7my63K01",
+    LISTER: "https://buy.stripe.com/dRm4grdzd0K17G2dKW63K00"
+  };
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to create checkout session");
-      }
-
-      // Redirect to Stripe Checkout (or payment processor)
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
-      } else {
-        // For demo purposes without Stripe setup
-        setError("Payment integration not yet configured. Contact support to subscribe.");
-      }
-    } catch (err) {
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+  const handleSubscribe = (tier) => {
+    window.location.href = paymentLinks[tier];
   };
 
   if (status === "loading") {
