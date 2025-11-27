@@ -76,6 +76,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Create Stripe checkout session
+    // Set a long trial period (e.g., 90 days) for launch offer
+    const trialDays = 30; // 30-day free trial for launch
     const checkoutSession = await stripe.checkout.sessions.create({
       customer_email: isOneTime ? email : user.email,
       client_reference_id: isOneTime ? undefined : user.id,
@@ -89,15 +91,18 @@ export async function POST(req: NextRequest) {
         tier: isOneTime ? 'ALL' : tier,
         isEarlyBird: useEarlyBirdPricing ? 'true' : 'false',
         isEarlyBirdOneTime: isOneTime ? 'true' : 'false',
+        launchTrial: !isOneTime ? 'true' : 'false',
       },
       ...(isOneTime
         ? {}
         : {
             subscription_data: {
+              trial_period_days: trialDays,
               metadata: {
                 userId: user.id,
                 tier,
                 isEarlyBird: useEarlyBirdPricing ? 'true' : 'false',
+                launchTrial: 'true',
               },
             },
           }),

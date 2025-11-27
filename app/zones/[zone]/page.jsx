@@ -10,21 +10,28 @@ export default function ZonePage({ params }) {
   const { zone } = params;
   const { t } = useLanguage();
   const zoneData = getZoneBySlug(zone);
+  if (typeof window !== 'undefined') {
+    // Debug: log params and zoneData
+    // eslint-disable-next-line no-console
+    console.log('ZonePage params:', params, 'zoneData:', zoneData);
+  }
 
   if (!zoneData) {
     return (
       <main>
         <Navbar />
-        <div className="max-w-4xl mx-auto p-6">{t('listingNotFound')}</div>
+        <div className="max-w-4xl mx-auto p-6">{t('listingNotFound')}<br/>Zone slug: {zone}</div>
         <Footer />
       </main>
     );
   }
 
   // Language selection for summary/description
-  const { lang } = useLanguage();
-  const summary = zoneData[`summary${lang.charAt(0).toUpperCase() + lang.slice(1)}`] || zoneData.summary;
-  const description = zoneData[`description${lang.charAt(0).toUpperCase() + lang.slice(1)}`] || zoneData.description;
+  const { lang } = useLanguage() || {};
+  const safeLang = typeof lang === 'string' && lang.length > 0 ? lang : 'en';
+  const langKey = safeLang.charAt(0).toUpperCase() + safeLang.slice(1);
+  const summary = zoneData[`summary${langKey}`] || zoneData.summary;
+  const description = zoneData[`description${langKey}`] || zoneData.description;
 
   return (
     <main>

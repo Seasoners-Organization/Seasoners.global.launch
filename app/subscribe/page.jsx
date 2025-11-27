@@ -114,11 +114,19 @@ function SubscribeContent() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">
                     {plan.name}
                   </h2>
-                  <div className="flex items-baseline mb-6">
-                    <span className="text-5xl font-extrabold text-gray-900">
+                  <div className="flex items-baseline mb-6 gap-3">
+                    <span className="text-3xl font-bold text-gray-400 line-through">
                       €{plan.price}
                     </span>
+                    <span className="text-5xl font-extrabold text-green-600">
+                      €0
+                    </span>
                     <span className="text-gray-600 ml-2">{t('perMonth')}</span>
+                  </div>
+                  <div className="mb-4">
+                    <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
+                      30-day free trial
+                    </span>
                   </div>
 
                   <ul className="space-y-3 mb-8">
@@ -153,6 +161,9 @@ function SubscribeContent() {
                   >
                     {loading ? t('processing') : plan.cta}
                   </button>
+                  <div className="mt-2 text-xs text-gray-500 text-center">
+                    No charge today. You will be notified before the first payment when paid subscriptions begin. <a href="/subscribe/terms" className="text-sky-600 underline">Subscription Terms</a>
+                  </div>
 
                   {plan.tier === "LISTER" && (
                     <div className="mt-4 text-center">

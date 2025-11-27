@@ -208,8 +208,21 @@ export default function Navbar() {
             )}
           </div>
           <a href="/agreement" className="hover:text-sky-700">{t('agreement')}</a>
+          {/* Support Dropdown */}
+          <div className="relative group">
+            <button className="hover:text-sky-700 flex items-center gap-2 focus:outline-none">
+              {t('support') || 'Support'}
+              <svg className="w-4 h-4 text-slate-600 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div className="absolute left-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
+              <a href="/faq" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">FAQ</a>
+              <a href="/help" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Help</a>
+              <a href="/community" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">💬 Community</a>
+            </div>
+          </div>
           <a href="/about" className="hover:text-sky-700">{t('about')}</a>
-          <a href="/community" className="hover:text-sky-700">💬 Community</a>
         </nav>
 
         {/* Right side - Auth or Language (desktop) */}
@@ -280,8 +293,16 @@ export default function Navbar() {
               </details>
             </div>
             <a href="/agreement" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('agreement')}</a>
+            {/* Support Dropdown (Mobile) */}
+            <details>
+              <summary className="py-2 cursor-pointer select-none flex items-center gap-2">{t('support') || 'Support'}</summary>
+              <div className="pl-4 flex flex-col">
+                <a href="/faq" className="py-2" onClick={() => setIsMobileOpen(false)}>FAQ</a>
+                <a href="/help" className="py-2" onClick={() => setIsMobileOpen(false)}>Help</a>
+                <a href="/community" className="py-2" onClick={() => setIsMobileOpen(false)}>💬 Community</a>
+              </div>
+            </details>
             <a href="/about" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('about')}</a>
-            <a href="/community" className="py-2" onClick={() => setIsMobileOpen(false)}>💬 Community</a>
             <div className="h-px bg-slate-200 my-2" />
             {!session ? (
               <div className="flex items-center gap-3">
