@@ -45,6 +45,9 @@ if (process.env.RESEND_API_KEY) {
           return;
         }
         try {
+          // Ensure absolute URL fallback
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || 'https://seasoners.eu';
+          const safeUrl = url.startsWith('http') ? url : `${appUrl.replace(/\/$/, '')}${url}`;
           const result = await resend.emails.send({
             from: emailConfig.from,
             to: identifier,
@@ -67,7 +70,7 @@ if (process.env.RESEND_API_KEY) {
                     Click the button below to securely sign in to your Seasoners account.
                   </p>
                   
-                  <a href="${url}" 
+                  <a href="${safeUrl}" 
                      style="display: inline-block; background: #0369a1; color: white; 
                             padding: 14px 28px; border-radius: 8px; text-decoration: none; 
                             font-weight: 600; font-size: 15px;">
@@ -90,7 +93,13 @@ if (process.env.RESEND_API_KEY) {
                   <p style="margin: 0;">
                     © ${new Date().getFullYear()} Seasoners. All rights reserved.
                   </p>
+                  <p style="margin: 16px 0 0 0; font-size: 12px; color: #64748b;">
+                    <strong>Not seeing this email?</strong> Please check your spam or junk folder and mark this message as "Not Spam" to ensure future delivery.
+                  </p>
                 </div>
+              </div>
+            `,
+            text: `Sign in to Seasoners\n\nYour secure sign-in link is ready.\n\nSign in: ${safeUrl}\n\nThis link expires in 24 hours and can only be used once. Never share this email with anyone.\n\nIf you didn't request this email, you can safely ignore it.\n\nNot seeing this email? Please check your spam or junk folder and mark this message as "Not Spam" to ensure future delivery.\n\n© ${new Date().getFullYear()} Seasoners. All rights reserved.`,
               </div>
             `,
           });

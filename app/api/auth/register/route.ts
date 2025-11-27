@@ -40,14 +40,12 @@ export async function POST(req: Request) {
 
     const validatedData = registrationSchema.parse(body);
 
-    // Verify captcha
+    // Verify captcha (supports reCAPTCHA v2 and v3 tokens)
     if (!process.env.RECAPTCHA_SECRET_KEY) {
       console.error('[Register] RECAPTCHA_SECRET_KEY not configured');
       return NextResponse.json({ error: 'Captcha not configured' }, { status: 500 });
     }
-    
     const remoteip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
-    
     try {
       const captchaRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
         method: 'POST',
@@ -58,7 +56,6 @@ export async function POST(req: Request) {
           ...(remoteip ? { remoteip } : {}),
         }).toString(),
       });
-      
       if (!captchaRes.ok) {
         console.error('[Register] Captcha API error:', captchaRes.status);
         return NextResponse.json({ error: 'Captcha verification failed' }, { status: 400 });
@@ -127,7 +124,13 @@ export async function POST(req: Request) {
 
       // Send welcome email (non-blocking)
       sendWelcomeEmail(user).catch(err => {
-        console.error('❌ Failed to send welcome email:', err);
+        if (err?.response) {
+          err.response.text().then((text) => {
+            console.error('❌ Failed to send welcome email (response):', text);
+          });
+        } else {
+          console.error('❌ Failed to send welcome email:', err);
+        }
       });
 
       // Trigger email verification flow (server-side call to existing verify-email route)

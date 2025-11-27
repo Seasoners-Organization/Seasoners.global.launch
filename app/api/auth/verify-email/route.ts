@@ -83,12 +83,20 @@ export async function POST(req: Request) {
             <p style="margin: 0 0 24px 0; font-size: 15px; line-height: 1.6;">
               Click the button below to verify your email and activate your account.
             </p>
-            <div style="text-align: center;">
+            <div style="text-align: center; margin-bottom: 16px;">
               <a href="${verificationUrl}" 
                  style="display: inline-block; background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
                         color: #ffffff; padding: 14px 32px; text-decoration: none; 
                         border-radius: 8px; font-weight: 600; font-size: 15px;">
                 Verify Email Address
+              </a>
+            </div>
+            <div style="text-align: center;">
+              <a href="${appBaseUrl()}/profile" 
+                 style="display: inline-block; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+                        color: #ffffff; padding: 12px 28px; text-decoration: none; 
+                        border-radius: 8px; font-weight: 600; font-size: 15px; margin-top: 8px;">
+                Verify your phone number
               </a>
             </div>
           </div>
@@ -112,13 +120,18 @@ export async function POST(req: Request) {
     });
     if ((sendResult as any)?.error) {
       console.error('Resend verification email error:', (sendResult as any).error);
+      if ((sendResult as any).response) {
+        (sendResult as any).response.text().then((text) => {
+          console.error('Resend verification email response:', text);
+        });
+      }
+      return NextResponse.json(
+        { error: 'Failed to send verification email', details: (sendResult as any).error },
+        { status: 500 }
+      );
     } else {
       console.log('✅ Verification email sent:', (sendResult as any)?.data?.id);
     }
-
-    if ((sendResult as any)?.error) {
-      console.error('Resend send error:', (sendResult as any).error);
-      return NextResponse.json(
         { error: 'Failed to send verification email' },
         { status: 500 }
       );

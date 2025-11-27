@@ -8,6 +8,8 @@ import AnimatedPage from "../../components/AnimatedPage";
 import TrustScoreDisplay from "../../components/TrustScoreDisplay";
 import ProfileEditor from "../../components/ProfileEditor";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+const PhoneVerification = dynamic(() => import("../../components/PhoneVerification"), { ssr: false });
 import { formatSubscriptionStatus, formatExpiryDate, SUBSCRIPTION_PLANS } from "../../utils/subscription";
 import { useLanguage } from "../../components/LanguageProvider";
 
@@ -319,13 +321,17 @@ export default function ProfilePage() {
                         {user.emailVerified ? `✓ ${t('verified')}` : t('pending')}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-2">
                       <span className="text-slate-700">{t('phone')}</span>
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                         user.phoneVerified ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                       }`}>
                         {user.phoneVerified ? `✓ ${t('verified')}` : t('notVerified')}
                       </span>
+                    </div>
+                    <PhoneVerification userId={user.id} initialPhone={user.phoneNumber} verified={user.phoneVerified} />
+                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded text-yellow-800">
+                      <strong>ID verification coming soon.</strong> For now, only phone and email verification are available.
                     </div>
                   </div>
                 </div>

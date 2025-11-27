@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import ReCAPTCHA from 'react-google-recaptcha';
+import dynamic from 'next/dynamic';
 import { signIn } from 'next-auth/react';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common';
@@ -21,12 +22,15 @@ zxcvbnOptions.setOptions(options);
 const stepKeys = [
   'stepAccountDetails',
   'stepAccountType',
+  'stepPhoneVerification',
   'stepVerification',
 ];
+const PhoneVerification = dynamic(() => import('../../../components/PhoneVerification'), { ssr: false });
 
 function RegisterForm() {
   const { t } = useLanguage();
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaRef, setCaptchaRef] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     email: '',
@@ -35,7 +39,10 @@ function RegisterForm() {
     name: '',
     role: 'USER',
     agreeToTerms: false,
+    phoneNumber: '',
+    phoneVerified: false,
   });
+    const [phoneStepSkipped, setPhoneStepSkipped] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(null);
@@ -84,7 +91,13 @@ function RegisterForm() {
           return false;
         }
         break;
-      case 2: // Verification
+      case 2: // Phone Verification
+        if (!formData.phoneVerified && !phoneStepSkipped) {
+          setError(t('pleaseVerifyPhoneOrSkip'));
+          return false;
+        }
+        break;
+      case 3: // Verification
         if (!formData.agreeToTerms) {
           setError(t('mustAgreeTerms'));
           return false;
@@ -100,6 +113,18 @@ function RegisterForm() {
       setCurrentStep(prev => prev + 1);
     }
   };
+  // Handler for phone verification success
+  const handlePhoneVerified = (phone) => {
+    setFormData(prev => ({ ...prev, phoneNumber: phone, phoneVerified: true }));
+    setPhoneStepSkipped(false);
+  };
+
+  // Handler for skipping phone verification
+  const handleSkipPhone = () => {
+    setPhoneStepSkipped(true);
+    setFormData(prev => ({ ...prev, phoneVerified: false }));
+    setCurrentStep(prev => prev + 1);
+  };
 
   const handleBack = () => {
     setError('');
@@ -114,16 +139,17 @@ function RegisterForm() {
     setError('');
 
     try {
-      if (!executeRecaptcha) {
-        throw new Error(t('recaptchaNotLoaded'));
+      if (!captchaToken) {
+        // Trigger reCAPTCHA if not already triggered
+        if (captchaRef) captchaRef.execute();
+        setIsLoading(false);
+        setError(t('recaptchaNotLoaded'));
+        return;
       }
-      
-      const captchaToken = await executeRecaptcha('register');
-      
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, captchaToken }),
+        body: JSON.stringify({ ...formData, captchaToken, phoneNumber: formData.phoneNumber, phoneVerified: formData.phoneVerified }),
       });
 
       const data = await response.json();
@@ -182,6 +208,14 @@ function RegisterForm() {
             <span className="block sm:inline">{error}</span>
           </div>
         )}
+
+        {/* Invisible reCAPTCHA v2 */}
+        <ReCAPTCHA
+          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+          size="invisible"
+          ref={el => setCaptchaRef(el)}
+          onChange={token => setCaptchaToken(token)}
+        />
 
   <form className="mt-8 space-y-6" onSubmit={currentStep === stepKeys.length - 1 ? handleSubmit : e => e.preventDefault()}>
           {/* Step 1: Account Details */}
@@ -337,8 +371,33 @@ function RegisterForm() {
             </div>
           )}
 
-          {/* Step 3: Verification */}
+          {/* Step 3: Phone Verification */}
           {currentStep === 2 && (
+            <div className="space-y-4">
+              <PhoneVerification
+                userId={null}
+                initialPhone={formData.phoneNumber}
+                verified={formData.phoneVerified}
+                onVerified={() => {
+                  handlePhoneVerified(formData.phoneNumber);
+                  setCurrentStep(prev => prev + 1);
+                }}
+                showSkip={true}
+              />
+              {!formData.phoneVerified && (
+                <button
+                  type="button"
+                  className="mt-2 px-4 py-2 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
+                  onClick={handleSkipPhone}
+                >
+                  {t('skipForNow')}
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Step 4: Verification */}
+          {currentStep === 3 && (
             <div className="space-y-4">
               <div className="rounded-md bg-blue-50 p-4">
                 <div className="flex">
@@ -412,28 +471,9 @@ function RegisterForm() {
 }
 
 export default function Register() {
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
   const { t } = useLanguage();
-  
-  if (!siteKey) {
+  if (!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
     return <div>{t('captchaNotConfigured')}</div>;
   }
-  
-  return (
-    <GoogleReCaptchaProvider 
-      reCaptchaKey={siteKey}
-      scriptProps={{
-        async: true,
-        defer: true,
-        appendTo: 'head',
-      }}
-      container={{
-        parameters: {
-          badge: 'bottomright',
-        }
-      }}
-    >
-      <RegisterForm />
-    </GoogleReCaptchaProvider>
-  );
+  return <RegisterForm />;
 }

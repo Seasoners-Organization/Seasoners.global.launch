@@ -236,8 +236,15 @@ function generateWelcomeEmail(user, appUrl) {
             <a href="${appUrl}/profile" 
                style="display: inline-block; background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
                       color: white; text-decoration: none; padding: 16px 32px; border-radius: 8px;
-                      font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(3, 105, 161, 0.3);">
+                      font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(3, 105, 161, 0.3); margin-bottom: 12px;">
               Complete Your Profile
+            </a>
+            <br />
+            <a href="${appUrl}/profile" 
+               style="display: inline-block; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+                      color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px;
+                      font-weight: 600; font-size: 15px; margin-top: 12px;">
+              Verify your phone number
             </a>
           </div>
 

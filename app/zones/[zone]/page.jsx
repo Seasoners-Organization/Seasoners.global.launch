@@ -21,6 +21,11 @@ export default function ZonePage({ params }) {
     );
   }
 
+  // Language selection for summary/description
+  const { lang } = useLanguage();
+  const summary = zoneData[`summary${lang.charAt(0).toUpperCase() + lang.slice(1)}`] || zoneData.summary;
+  const description = zoneData[`description${lang.charAt(0).toUpperCase() + lang.slice(1)}`] || zoneData.description;
+
   return (
     <main>
       <Navbar />
@@ -39,7 +44,7 @@ export default function ZonePage({ params }) {
               {zoneData.title}
             </h1>
             <p className="text-xl text-white/95 max-w-3xl drop-shadow-md">
-              {zoneData.summary}
+              {summary}
             </p>
           </div>
         </div>
@@ -49,7 +54,7 @@ export default function ZonePage({ params }) {
         {/* Description */}
         <div className="mb-12">
           <p className="text-lg text-slate-700 leading-relaxed">
-            {zoneData.description}
+            {description}
           </p>
         </div>
 
