@@ -43,7 +43,7 @@ export default function StaysPage() {
     }
   }, [session]);
 
-  const handleContactSeller = (e, stayId) => {
+  const handleContactSeller = (e, listing) => {
     e.preventDefault();
     if (!session) {
       window.location.href = '/auth/signin?returnTo=/stays';
@@ -53,8 +53,7 @@ export default function StaysPage() {
       setShowSubscriptionGate(true);
       return;
     }
-    // TODO: Implement actual contact/messaging functionality
-    alert('Contact functionality coming soon!');
+    window.location.href = `/messages/${listing.userId}?listingId=${listing.id}`;
   };
 
   const handleUpgrade = async (tier) => {
@@ -179,7 +178,7 @@ export default function StaysPage() {
                     </a>
                     <div className="px-5 pb-5">
                       <button
-                        onClick={(e) => handleContactSeller(e, stay.id)}
+                        onClick={(e) => handleContactSeller(e, stay)}
                         className="w-full py-2 text-sm text-sky-700 hover:bg-sky-50 border border-sky-200 rounded-lg font-medium transition"
                       >
                         {t('contactSeller')}

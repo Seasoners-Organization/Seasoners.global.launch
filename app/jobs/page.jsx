@@ -42,7 +42,7 @@ export default function JobsPage() {
     }
   }, [session]);
 
-  const handleContactEmployer = (e, jobId) => {
+  const handleContactEmployer = (e, listing) => {
     e.preventDefault();
     if (!session) {
       window.location.href = '/auth/signin?returnTo=/jobs';
@@ -52,8 +52,7 @@ export default function JobsPage() {
       setShowSubscriptionGate(true);
       return;
     }
-    // TODO: Implement actual contact/messaging functionality
-    alert('Contact functionality coming soon!');
+    window.location.href = `/messages/${listing.userId}?listingId=${listing.id}`;
   };
 
   const handleUpgrade = async (tier) => {
@@ -183,7 +182,7 @@ export default function JobsPage() {
                     </a>
                     <div className="px-5 pb-5">
                       <button
-                        onClick={(e) => handleContactEmployer(e, job.id)}
+                        onClick={(e) => handleContactEmployer(e, job)}
                         className="w-full py-2 text-sm text-sky-700 hover:bg-sky-50 border border-sky-200 rounded-lg font-medium transition"
                       >
                         {t('contactEmployer')}
@@ -286,7 +285,7 @@ export default function JobsPage() {
                 {/* Contact Button */}
                 <div className="px-5 pb-5">
                   <button
-                    onClick={(e) => handleContactEmployer(e, job.id)}
+                    onClick={(e) => handleContactEmployer(e, job)}
                     className="w-full py-2 text-sm text-sky-700 hover:bg-sky-50 border border-sky-200 rounded-lg font-medium transition"
                   >
                     {t('contactEmployer')}

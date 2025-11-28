@@ -5,6 +5,7 @@ import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import AnimatedPage from "../../../components/AnimatedPage";
+import Toast from "../../../components/Toast";
 import { motion } from "framer-motion";
 import { useLanguage } from "../../../components/LanguageProvider";
 
@@ -20,6 +21,7 @@ export default function MessagesPage() {
   const [error, setError] = useState("");
   const [emailVisible, setEmailVisible] = useState(false);
   const [phoneVisible, setPhoneVisible] = useState(false);
+  const [toast, setToast] = useState({ message: '', type: 'success' });
 
   const listingId = searchParams.get("listingId");
 
@@ -77,14 +79,14 @@ export default function MessagesPage() {
   const handleEmailCopy = () => {
     if (recipient?.email) {
       navigator.clipboard.writeText(recipient.email);
-      alert('Email copied to clipboard!');
+      setToast({ message: 'Email copied to clipboard!', type: 'success' });
     }
   };
 
   const handlePhoneCopy = () => {
     if (recipient?.phoneNumber) {
       navigator.clipboard.writeText(recipient.phoneNumber);
-      alert('Phone copied to clipboard!');
+      setToast({ message: 'Phone copied to clipboard!', type: 'success' });
     }
   };
 
@@ -125,6 +127,7 @@ export default function MessagesPage() {
 
   return (
     <main>
+      <Toast message={toast.message} type={toast.type} onClose={() => setToast({ message: '', type: 'success' })} />
       <Navbar />
       <AnimatedPage>
         <section className="max-w-4xl mx-auto px-6 py-12">
