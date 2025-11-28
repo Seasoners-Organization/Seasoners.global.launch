@@ -24,20 +24,87 @@ export const COUNTRY_NAMES = {
 
 // Country -> Regions mapping (minimal starter sets; extend later)
 export const COUNTRY_REGIONS = {
-  AT: ['BURGENLAND','CARINTHIA','LOWER_AUSTRIA','SALZBURG','STYRIA','TIROL','UPPER_AUSTRIA','VIENNA','VORARLBERG'],
-  CH: ['Valais','Graubünden','Bernese Oberland'],
-  FR: ['Savoie','Haute-Savoie','Isère'],
-  JP: ['Hokkaido','Nagano','Niigata'],
-  NO: ['Troms','Svalbard'],
-  ES: ['Canary Islands','Balearic Islands'],
-  PT: ['Madeira','Lisbon District'],
-  NZ: ['Otago','Canterbury'],
-  AU: ['New South Wales','Queensland'],
-  GR: ['Cyclades','Dodecanese','Ionian Islands','Crete'],
-  IT: ['Sicily','Sardinia'],
-  ID: ['Bali'],
-  TH: ['Phuket'],
-  VN: ['Da Nang']
+  AT: [
+    'BURGENLAND','CARINTHIA','LOWER_AUSTRIA','SALZBURG','STYRIA','TIROL','UPPER_AUSTRIA','VIENNA','VORARLBERG',
+    'Innsbruck', 'St. Anton am Arlberg', 'Ischgl', 'Kitzbühel', 'Sölden',
+    'Zell am See', 'Saalbach', 'Mayrhofen', 'Schladming', 'Obertauern'
+  ],
+  CH: [
+    'Valais','Graubünden','Bernese Oberland','Uri','Ticino','Vaud',
+    'Zermatt', 'Verbier', 'St. Moritz', 'Davos', 'Interlaken',
+    'Saas-Fee', 'Crans-Montana', 'Gstaad', 'Andermatt', 'Engelberg',
+    'Lausanne', 'Geneva', 'Zurich', 'Lucerne', 'Lugano'
+  ],
+  FR: [
+    'Savoie','Haute-Savoie','Isère','Hautes-Alpes','Alpes-Maritimes',
+    'Provence-Alpes-Côte d\'Azur', 'Occitanie', 'Nouvelle-Aquitaine',
+    'Chamonix', 'Val d\'Isère', 'Courchevel', 'Les Deux Alpes', 'Tignes',
+    'Méribel', 'Val Thorens', 'La Plagne', 'Alpe d\'Huez', 'Megève',
+    'Nice', 'Cannes', 'Saint-Tropez', 'Marseille', 'Biarritz', 'Bordeaux'
+  ],
+  JP: [
+    'Hokkaido','Nagano','Niigata','Yamagata','Gunma',
+    'Niseko', 'Hakuba', 'Nozawa Onsen', 'Myoko Kogen', 'Furano',
+    'Rusutsu', 'Shiga Kogen', 'Appi Kogen', 'Zao Onsen', 'Tokyo'
+  ],
+  NO: [
+    'Troms','Svalbard','Trøndelag','Vestland','Viken',
+    'Tromsø', 'Hemsedal', 'Trysil', 'Geilo', 'Lillehammer',
+    'Lofoten', 'Bergen', 'Oslo', 'Stavanger'
+  ],
+  ES: [
+    'Canary Islands','Balearic Islands','Andalusia','Catalonia','Aragon','Asturias','Cantabria','Valencia',
+    'Sierra Nevada', 'Baqueira-Beret', 'Formigal', 'Candanchú',
+    'Barcelona', 'Madrid', 'Seville', 'Valencia', 'Málaga',
+    'Ibiza', 'Mallorca', 'Tenerife', 'Gran Canaria', 'Marbella'
+  ],
+  PT: [
+    'Madeira','Lisbon District','Algarve','Porto District','Azores',
+    'Faro', 'Albufeira', 'Lagos', 'Cascais', 'Sintra',
+    'Funchal', 'Ponta Delgada', 'Évora', 'Coimbra', 'Braga'
+  ],
+  NZ: [
+    'Otago','Canterbury','Southland','West Coast','Manawatu-Wanganui',
+    'Queenstown', 'Wanaka', 'Cardrona', 'Treble Cone', 'Mount Hutt',
+    'Ruapehu', 'Auckland', 'Wellington', 'Christchurch', 'Dunedin'
+  ],
+  AU: [
+    'New South Wales','Queensland','Victoria','Tasmania','South Australia',
+    'Thredbo', 'Perisher', 'Falls Creek', 'Mount Buller', 'Mount Hotham',
+    'Sydney', 'Melbourne', 'Brisbane', 'Gold Coast', 'Byron Bay',
+    'Cairns', 'Noosa', 'Bondi', 'Surfers Paradise', 'Port Douglas'
+  ],
+  GR: [
+    'Cyclades','Dodecanese','Ionian Islands','Crete','Attica','Central Macedonia',
+    'Santorini', 'Mykonos', 'Rhodes', 'Corfu', 'Zakynthos',
+    'Paros', 'Naxos', 'Chania', 'Heraklion', 'Athens',
+    'Thessaloniki', 'Ios', 'Milos', 'Skiathos', 'Halkidiki'
+  ],
+  IT: [
+    'Sicily','Sardinia','Trentino-Alto Adige','Veneto','Lombardy','Piedmont','Aosta Valley',
+    'Tuscany','Lazio','Campania',
+    'Cortina d\'Ampezzo', 'Val Gardena', 'Livigno', 'Cervinia', 'Courmayeur',
+    'Madonna di Campiglio', 'Rome', 'Florence', 'Venice', 'Milan',
+    'Naples', 'Amalfi Coast', 'Positano', 'Capri', 'Taormina'
+  ],
+  ID: [
+    'Bali','Jakarta','Lombok','Sumatra','Java',
+    'Seminyak', 'Canggu', 'Ubud', 'Uluwatu', 'Nusa Dua',
+    'Sanur', 'Gili Islands', 'Kuta', 'Jimbaran', 'Yogyakarta',
+    'Bandung', 'Surabaya', 'Medan', 'Denpasar', 'Bogor'
+  ],
+  TH: [
+    'Phuket','Bangkok','Krabi','Chiang Mai','Koh Samui',
+    'Pattaya', 'Hua Hin', 'Koh Phi Phi', 'Koh Phangan', 'Koh Tao',
+    'Patong', 'Kata Beach', 'Ao Nang', 'Railay Beach', 'Chaweng',
+    'Lamai', 'Sukhumvit', 'Silom', 'Khao San Road', 'Nana'
+  ],
+  VN: [
+    'Da Nang','Hanoi','Ho Chi Minh City','Nha Trang','Hoi An',
+    'Phu Quoc', 'Halong Bay', 'Dalat', 'Mui Ne', 'Vung Tau',
+    'Hue', 'Quy Nhon', 'Con Dao', 'Sapa', 'Cat Ba',
+    'My Khe Beach', 'An Bang Beach', 'Long Beach', 'Bai Sao', 'Can Tho'
+  ]
 };
 
 // Location (hotspot/city) -> Country mapping

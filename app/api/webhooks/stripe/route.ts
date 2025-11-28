@@ -225,7 +225,6 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.error('[Stripe Webhook] Payment Link: No email found in session', { session });
   }
 }
-}
 
 async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   const userId = subscription.metadata?.userId;

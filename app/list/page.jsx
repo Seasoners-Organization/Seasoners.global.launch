@@ -7,7 +7,7 @@ import AnimatedPage from "../../components/AnimatedPage";
 import { useLanguage } from "../../components/LanguageProvider";
 import SubscriptionGate from "../../components/SubscriptionGate";
 import { motion } from "framer-motion";
-import { getCountriesBySeason, getRegionsByCountry, getLocations } from "../../utils/geo";
+import { getCountriesBySeason, getRegionsByCountry, getLocations, getCountryName } from "../../utils/geo";
 import { canCreateListings } from "../../utils/subscription";
 
 export default function List() {
@@ -341,7 +341,7 @@ export default function List() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
                   <select aria-label="Country" className="w-full border p-3 rounded-lg" value={country} onChange={e=>setCountry(e.target.value)} disabled={status === "unauthenticated" || loading}>
                     <option value="all">Select country</option>
-                    {countries.map(c => <option key={c} value={c}>{c}</option>)}
+                    {countries.map(c => <option key={c} value={c}>{getCountryName(c)}</option>)}
                   </select>
                 </div>
               </div>
@@ -349,10 +349,10 @@ export default function List() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Region</label>
                   <select aria-label="Region" className="w-full border p-3 rounded-lg" value={region} onChange={e=>setRegion(e.target.value)} disabled={status === "unauthenticated" || loading || country==='all'}>
-                    <option value="all">{country==='AT' ? 'Select region' : 'N/A'}</option>
+                    <option value="all">{country === 'all' ? 'Select country first' : 'Select region'}</option>
                     {regions.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
-                  <p className="text-xs text-gray-500 mt-1">Region is required only for Austria.</p>
+                  <p className="text-xs text-gray-500 mt-1">Select a popular region or ski resort for your country.</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
