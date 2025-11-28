@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { TrustScoreSkeleton } from './SkeletonLoader';
 
 export default function TrustScoreDisplay({ userId }) {
   const [trustData, setTrustData] = useState(null);
@@ -26,12 +27,7 @@ export default function TrustScoreDisplay({ userId }) {
   };
 
   if (loading) {
-    return (
-      <div className="bg-white rounded-2xl border p-6 animate-pulse">
-        <div className="h-4 bg-slate-200 rounded w-1/3 mb-4"></div>
-        <div className="h-12 bg-slate-200 rounded"></div>
-      </div>
-    );
+    return <TrustScoreSkeleton />;
   }
 
   if (!trustData) {

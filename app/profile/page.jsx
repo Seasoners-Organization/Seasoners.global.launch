@@ -13,6 +13,7 @@ const PhoneVerification = dynamic(() => import("../../components/PhoneVerificati
 import { formatSubscriptionStatus, formatExpiryDate, SUBSCRIPTION_PLANS } from "../../utils/subscription";
 import { useLanguage } from "../../components/LanguageProvider";
 import Toast from "../../components/Toast";
+import { ProfileSkeleton } from "../../components/SkeletonLoader";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -188,8 +189,8 @@ export default function ProfilePage() {
     return (
       <main>
         <Navbar />
-        <div className="min-h-screen flex items-center justify-center">
-          <p className="text-slate-600">Loading profile...</p>
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <ProfileSkeleton />
         </div>
         <Footer />
       </main>

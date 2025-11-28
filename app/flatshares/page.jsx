@@ -8,6 +8,9 @@ import RoommateIndicator from '../../components/RoommateIndicator';
 import { useLanguage } from '../../components/LanguageProvider';
 import FilterSidebar from '../../components/FilterSidebar';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ListingGridSkeleton } from '../../components/SkeletonLoader';
+import EmptyState from '../../components/EmptyState';
+import ErrorState from '../../components/ErrorState';
 
 export default function FlatsharesPage() {
   const { t } = useLanguage();
@@ -74,19 +77,15 @@ export default function FlatsharesPage() {
             <FilterSidebar context="flatshares" listings={listings} onFiltered={setFiltered} />
             <div>
               {loading ? (
-                <div className="text-center py-12">
-                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-sky-600"></div>
-                  <p className="mt-4 text-slate-600">{t('loading')}</p>
-                </div>
+                <ListingGridSkeleton count={6} />
               ) : filtered.length === 0 ? (
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-                  <p className="text-slate-600 text-lg mb-4">
-                    No flatshares found. Be the first to{' '}
-                    <Link href="/list" className="text-sky-600 hover:text-sky-700 font-medium">
-                      list one
-                    </Link>
-                  </p>
-                </div>
+                <EmptyState
+                  icon="🏠"
+                  title="No flatshares found"
+                  description="Try adjusting your filters or be the first to list a flatshare."
+                  actionLabel="List Your Flatshare"
+                  actionHref="/list"
+                />
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filtered.map(listing => (
@@ -101,6 +100,7 @@ export default function FlatsharesPage() {
                             <img 
                               src={listing.photos[0]} 
                               alt={listing.title}
+                              loading="lazy"
                               className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                             />
                             {listing.photos.length > 1 && (

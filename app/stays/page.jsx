@@ -14,6 +14,9 @@ import { applyFilters } from "../../utils/geo";
 import { canContactSellers } from "../../utils/subscription";
 import { useLanguage } from "../../components/LanguageProvider";
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ListingGridSkeleton } from "../../components/SkeletonLoader";
+import EmptyState from "../../components/EmptyState";
+import ErrorState from "../../components/ErrorState";
 
 export default function StaysPage() {
   const { data: session } = useSession();
@@ -98,20 +101,24 @@ export default function StaysPage() {
         <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-8">
           <FilterSidebar context="stays" listings={stays} onFiltered={setFilteredStays} />
           <div>
-            {loading && (
-              <div className="text-center py-12">
-                <p className="text-slate-600">{t('loadingStays')}</p>
-              </div>
-            )}
+            {loading && <ListingGridSkeleton count={6} />}
+            
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                <p className="text-red-600">{error}</p>
-              </div>
+              <ErrorState
+                title="Failed to load stays"
+                description={error}
+                onRetry={() => window.location.reload()}
+              />
             )}
+            
             {!loading && !error && filteredStays.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-slate-600">{t('noStaysFound')} <a href="/list" className="text-sky-700 underline">{t('listOne')}</a>!</p>
-              </div>
+              <EmptyState
+                icon="🏠"
+                title="No stays found"
+                description="Try adjusting your filters or check back later for new listings."
+                actionLabel="List Your Stay"
+                actionHref="/list"
+              />
             )}
             {!loading && !error && filteredStays.length > 0 && (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -123,6 +130,7 @@ export default function StaysPage() {
                           <img 
                             src={stay.photos[0]} 
                             alt={stay.title}
+                            loading="lazy"
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                           />
                           {stay.photos.length > 1 && (
