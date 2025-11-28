@@ -71,13 +71,13 @@ export async function POST(req: NextRequest) {
     // Privacy settings (only if trust score is high enough)
     if (emailPrivacy !== undefined) {
       const trustScore = user.trustScore || 0;
-      if (trustScore >= 80 || emailPrivacy === 'PUBLIC') {
+      if (trustScore >= 50 || emailPrivacy === 'PUBLIC') {
         updateData.emailPrivacy = emailPrivacy;
       }
     }
     if (phonePrivacy !== undefined) {
       const trustScore = user.trustScore || 0;
-      if (trustScore >= 80 || phonePrivacy === 'PUBLIC') {
+      if (trustScore >= 50 || phonePrivacy === 'PUBLIC') {
         updateData.phonePrivacy = phonePrivacy;
       }
     }

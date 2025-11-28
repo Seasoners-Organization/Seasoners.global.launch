@@ -514,7 +514,7 @@ export default function ProfileEditor({ user, onSave }) {
           </div>
 
           {/* Contact Privacy Controls */}
-          {(user?.trustScore || 0) >= 80 && (
+          {(user?.trustScore || 0) >= 50 && (
             <>
               <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
                 <p className="text-sm text-green-800">
@@ -556,10 +556,10 @@ export default function ProfileEditor({ user, onSave }) {
             </>
           )}
 
-          {(user?.trustScore || 0) < 80 && (
+          {(user?.trustScore || 0) < 50 && (
             <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-sm text-blue-800">
-                <span className="font-semibold">📧 Email is public by default.</span> Build your trust score to 80%+ to unlock privacy controls for your contact information. Complete verifications, maintain agreements, and engage positively with the community.
+                <span className="font-semibold">📧 Email is public by default.</span> Build your trust score to 50%+ to unlock privacy controls for your contact information. Complete verifications, maintain agreements, and engage positively with the community.
               </p>
             </div>
           )}

@@ -48,7 +48,7 @@ export default function MessagesPage() {
       // Determine if contact info should be visible
       // Email is public by default unless user has high trust and opted to hide
       const trustScore = data.user.trustScore || 0;
-      const hasHighTrust = trustScore >= 80;
+      const hasHighTrust = trustScore >= 50;
       const emailHidden = data.user.emailPrivacy === 'HIDDEN' && hasHighTrust;
       const phoneHidden = data.user.phonePrivacy === 'HIDDEN' && hasHighTrust;
       
@@ -121,7 +121,7 @@ export default function MessagesPage() {
   }
 
   const trustScore = recipient?.trustScore || 0;
-  const hasHighTrust = trustScore >= 80;
+  const hasHighTrust = trustScore >= 50;
 
   return (
     <main>
@@ -250,7 +250,7 @@ export default function MessagesPage() {
                 {!hasHighTrust && (
                   <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <p className="text-sm text-blue-800">
-                      <span className="font-semibold">📧 Email is public by default.</span> Once you reach a trust score of 80%+, you can choose to hide your contact details from your profile privacy settings.
+                      <span className="font-semibold">📧 Email is public by default.</span> Once you reach a trust score of 50%+, you can choose to hide your contact details from your profile privacy settings.
                     </p>
                   </div>
                 )}
