@@ -184,21 +184,47 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (email) {
     let user = await prisma.user.findUnique({ where: { email } });
     if (user) {
+      // Detect tier from subscription
+      let detectedTier: 'SEARCHER' | 'LISTER' = 'LISTER';
+      if (session.subscription) {
+        try {
+          const stripe = getStripe();
+          const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+          const priceId = subscription.items.data[0]?.price.id;
+          
+          // Map price IDs to tiers
+          const searcherPriceId = process.env.NEXT_PUBLIC_STRIPE_SEARCHER_PRICE_ID || 'price_1SSHZ80ptPH0EtIsjljxjcKb';
+          const listerPriceId = process.env.NEXT_PUBLIC_STRIPE_LISTER_PRICE_ID || 'price_1SRJ710ptPH0EtIsYZpTMSRe';
+          
+          if (priceId === searcherPriceId) {
+            detectedTier = 'SEARCHER';
+          } else if (priceId === listerPriceId) {
+            detectedTier = 'LISTER';
+          }
+          console.log(`[Stripe Webhook] Detected tier from price ${priceId}: ${detectedTier}`);
+        } catch (err) {
+          console.error('[Stripe Webhook] Failed to detect tier from subscription:', err);
+        }
+      }
+      
       await prisma.user.update({
         where: { id: user.id },
         data: {
-          subscriptionTier: 'LISTER',
+          subscriptionTier: detectedTier,
           subscriptionStatus: 'ACTIVE',
+          stripeCustomerId: session.customer as string,
+          stripeSubscriptionId: session.subscription as string,
           subscriptionExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         },
       });
-      console.log(`[Stripe Webhook] Payment Link: Upgraded user ${email} to LISTER (User ID: ${user.id})`);
+      console.log(`[Stripe Webhook] Payment Link: Upgraded user ${email} to ${detectedTier} (User ID: ${user.id})`);
     } else {
       console.warn(`[Stripe Webhook] Payment Link: No user found for email ${email}`);
     }
   } else {
     console.error('[Stripe Webhook] Payment Link: No email found in session', { session });
   }
+}
 }
 
 async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {

@@ -171,6 +171,10 @@ model User {
   openToOpportunities Boolean   @default(true)
   preferredRegions    Json?     // Array of preferred regions to work/live
   
+  // Privacy settings for contact information
+  emailPrivacy        String    @default("PUBLIC") // PUBLIC or HIDDEN (requires trust 80+)
+  phonePrivacy        String    @default("PUBLIC") // PUBLIC or HIDDEN (requires trust 80+)
+  
   // Subscription
   subscriptionTier        SubscriptionTier   @default(FREE)
   subscriptionStatus      SubscriptionStatus @default(EXPIRED)

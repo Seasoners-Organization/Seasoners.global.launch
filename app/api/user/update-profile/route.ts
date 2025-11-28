@@ -33,6 +33,8 @@ export async function POST(req: NextRequest) {
       preferredRegions,
       email,
       phoneNumber,
+      emailPrivacy,
+      phonePrivacy,
     } = body;
 
     // Find user
@@ -65,6 +67,20 @@ export async function POST(req: NextRequest) {
     if (profileVisibility !== undefined) updateData.profileVisibility = profileVisibility;
     if (openToOpportunities !== undefined) updateData.openToOpportunities = openToOpportunities;
     if (preferredRegions !== undefined) updateData.preferredRegions = preferredRegions;
+
+    // Privacy settings (only if trust score is high enough)
+    if (emailPrivacy !== undefined) {
+      const trustScore = user.trustScore || 0;
+      if (trustScore >= 80 || emailPrivacy === 'PUBLIC') {
+        updateData.emailPrivacy = emailPrivacy;
+      }
+    }
+    if (phonePrivacy !== undefined) {
+      const trustScore = user.trustScore || 0;
+      if (trustScore >= 80 || phonePrivacy === 'PUBLIC') {
+        updateData.phonePrivacy = phonePrivacy;
+      }
+    }
 
     // Allow updating email and phone number, reset verification if changed
     if (email !== undefined && email !== user.email) {

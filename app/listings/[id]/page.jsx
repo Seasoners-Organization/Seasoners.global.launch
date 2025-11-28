@@ -68,7 +68,7 @@ export default function ListingDetailPage() {
       setShowSubscriptionGate(true);
       return;
     }
-    alert('Contact functionality coming soon!');
+    router.push(`/messages/${listing.userId}?listingId=${params.id}`);
   };
 
   const handleUpgrade = async (tier) => {

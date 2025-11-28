@@ -22,6 +22,8 @@ export default function ProfileEditor({ user, onSave }) {
     profileVisibility: user?.profileVisibility || 'PUBLIC',
     openToOpportunities: user?.openToOpportunities ?? true,
     preferredRegions: user?.preferredRegions || [],
+    emailPrivacy: user?.emailPrivacy || 'PUBLIC',
+    phonePrivacy: user?.phonePrivacy || 'PUBLIC',
   });
 
   const [profilePicture, setProfilePicture] = useState(null);
@@ -492,21 +494,75 @@ export default function ProfileEditor({ user, onSave }) {
       {/* Privacy Settings */}
       <div className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-4">Privacy Settings</h3>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Profile Visibility</label>
-          <select
-            value={formData.profileVisibility}
-            onChange={(e) => {
-              const value = e.target.value;
-              setFormData({ ...formData, profileVisibility: value });
-              scheduleAutoSave({ profileVisibility: value });
-            }}
-            className="w-full border border-slate-300 rounded-lg p-3"
-          >
-            <option value="PUBLIC">Public - Anyone can see your profile</option>
-            <option value="SUBSCRIBERS_ONLY">Subscribers Only - Only paid members can see</option>
-            <option value="PRIVATE">Private - Only visible to you</option>
-          </select>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Profile Visibility</label>
+            <select
+              value={formData.profileVisibility}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFormData({ ...formData, profileVisibility: value });
+                scheduleAutoSave({ profileVisibility: value });
+              }}
+              className="w-full border border-slate-300 rounded-lg p-3"
+            >
+              <option value="PUBLIC">Public - Anyone can see your profile</option>
+              <option value="SUBSCRIBERS_ONLY">Subscribers Only - Only paid members can see</option>
+              <option value="PRIVATE">Private - Only visible to you</option>
+            </select>
+          </div>
+
+          {/* Contact Privacy Controls */}
+          {(user?.trustScore || 0) >= 80 && (
+            <>
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm text-green-800">
+                  <span className="font-semibold">✓ High Trust Unlocked!</span> You can now hide your contact information if desired.
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Email Privacy</label>
+                <select
+                  value={formData.emailPrivacy}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData({ ...formData, emailPrivacy: value });
+                    scheduleAutoSave({ emailPrivacy: value });
+                  }}
+                  className="w-full border border-slate-300 rounded-lg p-3"
+                >
+                  <option value="PUBLIC">Public - Visible to all</option>
+                  <option value="HIDDEN">Hidden - Not displayed publicly</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Phone Privacy</label>
+                <select
+                  value={formData.phonePrivacy}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData({ ...formData, phonePrivacy: value });
+                    scheduleAutoSave({ phonePrivacy: value });
+                  }}
+                  className="w-full border border-slate-300 rounded-lg p-3"
+                >
+                  <option value="PUBLIC">Public - Visible to all</option>
+                  <option value="HIDDEN">Hidden - Not displayed publicly</option>
+                </select>
+              </div>
+            </>
+          )}
+
+          {(user?.trustScore || 0) < 80 && (
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <span className="font-semibold">📧 Email is public by default.</span> Build your trust score to 80%+ to unlock privacy controls for your contact information. Complete verifications, maintain agreements, and engage positively with the community.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
