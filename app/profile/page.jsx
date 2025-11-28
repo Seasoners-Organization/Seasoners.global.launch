@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 const PhoneVerification = dynamic(() => import("../../components/PhoneVerification"), { ssr: false });
 import { formatSubscriptionStatus, formatExpiryDate, SUBSCRIPTION_PLANS } from "../../utils/subscription";
 import { useLanguage } from "../../components/LanguageProvider";
+import Toast from "../../components/Toast";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -27,6 +28,7 @@ export default function ProfilePage() {
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deletingAccount, setDeletingAccount] = useState(false);
   const [verificationToast, setVerificationToast] = useState("");
+  const [toast, setToast] = useState(null);
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
     if (sp.get('success') === 'email_verified') {
@@ -103,7 +105,7 @@ export default function ProfilePage() {
   };
 
   const handleDeleteListing = async (listingId) => {
-    if (!confirm(t('areYouSure'))) return;
+    if (!window.confirm(t('areYouSure'))) return;
 
     try {
       const response = await fetch(`/api/listings/${listingId}`, {
@@ -138,20 +140,20 @@ export default function ProfilePage() {
       if (response.ok) {
         // Refresh user data to show new picture
         await fetchUserData();
-        alert('Profile picture updated successfully!');
+        setToast({ type: 'success', message: 'Profile picture updated successfully!' });
       } else {
-        alert(data.error || 'Failed to upload picture');
+        setToast({ type: 'error', message: data.error || 'Failed to upload picture' });
       }
     } catch (error) {
-      alert('Error uploading picture');
+      setToast({ type: 'error', message: 'Error uploading picture' });
     } finally {
       setUploadingPicture(false);
     }
   };
 
   const handleDeleteAccount = async () => {
-    if (deleteConfirmText !== "DELETE MY ACCOUNT") {
-      alert('Please type "DELETE MY ACCOUNT" to confirm');
+    if (deleteConfirmText !== 'DELETE MY ACCOUNT') {
+      setToast({ type: 'warning', message: 'Please type "DELETE MY ACCOUNT" to confirm' });
       return;
     }
 
@@ -165,14 +167,16 @@ export default function ProfilePage() {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Your account has been deleted. You will be signed out.');
-        // Sign out and redirect
-        window.location.href = '/api/auth/signout';
+        setToast({ type: 'success', message: 'Your account has been deleted. Signing out...' });
+        // Sign out and redirect after delay
+        setTimeout(() => {
+          window.location.href = '/api/auth/signout';
+        }, 1500);
       } else {
-        alert(data.error || 'Failed to delete account');
+        setToast({ type: 'error', message: data.error || 'Failed to delete account' });
       }
     } catch (error) {
-      alert('Error deleting account');
+      setToast({ type: 'error', message: 'Error deleting account' });
     } finally {
       setDeletingAccount(false);
       setShowDeleteConfirm(false);
@@ -647,7 +651,7 @@ export default function ProfilePage() {
                     )}
                     {user.subscriptionStatus === 'ACTIVE' && user.subscriptionTier !== 'FREE' && (
                       <button
-                        onClick={() => alert('Cancel subscription feature coming soon')}
+                        onClick={() => setToast({ type: 'info', message: 'Cancel subscription feature coming soon' })}
                         className="px-6 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition"
                       >
                         Cancel Subscription
@@ -693,8 +697,8 @@ export default function ProfilePage() {
                   </div>
                   <div className="pt-4 border-t">
                     <button
-                      onClick={() => alert('Password change feature coming soon')}
-                      className="px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-medium transition"
+                      onClick={() => setToast({ type: 'info', message: 'Password change feature coming soon' })}
+                      className="px-6 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition"
                     >
                       Change Password
                     </button>
@@ -765,6 +769,14 @@ export default function ProfilePage() {
         </section>
       </AnimatedPage>
       <Footer />
+
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
     </main>
   );
 }

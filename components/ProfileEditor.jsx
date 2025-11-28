@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { REGIONS } from "../utils/regions";
 import PhoneVerification from "./PhoneVerification";
+import Toast from "./Toast";
 
 export default function ProfileEditor({ user, onSave }) {
   const [formData, setFormData] = useState({
@@ -29,6 +30,7 @@ export default function ProfileEditor({ user, onSave }) {
   const [profilePicture, setProfilePicture] = useState(null);
   const [uploadingPicture, setUploadingPicture] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState(null);
   const [newLanguage, setNewLanguage] = useState('');
   const [newSkill, setNewSkill] = useState('');
   const [newInterest, setNewInterest] = useState('');
@@ -576,6 +578,14 @@ export default function ProfileEditor({ user, onSave }) {
           {saving ? 'Saving...' : 'Save Profile'}
         </button>
       </div>
+
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }
