@@ -13,6 +13,7 @@ export default function Navbar() {
   const [userDetails, setUserDetails] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false);
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const dropdownRef = useRef(null);
   const destinationsRef = useRef(null);
@@ -49,6 +50,7 @@ export default function Navbar() {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsProfileOpen(false);
+        setIsSupportOpen(false);
       }
       if (destinationsRef.current && !destinationsRef.current.contains(event.target)) {
         setIsDestinationsOpen(false);
@@ -95,10 +97,10 @@ export default function Navbar() {
               {userDetails && (
                 <div className="flex items-center gap-1 ml-1">
                   {userDetails.emailVerified && (
-                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-green-100 text-green-700">Email ✓</span>
+                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-green-100 text-green-700">{t('emailVerifiedBadge')}</span>
                   )}
                   {userDetails.phoneVerified && (
-                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-green-100 text-green-700">Phone ✓</span>
+                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-green-100 text-green-700">{t('phoneVerifiedBadge')}</span>
                   )}
                 </div>
               )}
@@ -152,7 +154,7 @@ export default function Navbar() {
                     {userDetails && (
                       <>
                         {userDetails.isEarlyBird && userDetails.waitlistStatus === 'active' ? (
-                          <span>⭐ Founding Member</span>
+                          <span>{t('foundingMember')}</span>
                         ) : userDetails.subscriptionTier === 'FREE' || userDetails.subscriptionStatus !== 'ACTIVE' ? (
                           <span>{t('upgrade')}</span>
                         ) : userDetails.subscriptionTier === 'LISTER' ? (
@@ -206,11 +208,11 @@ export default function Navbar() {
             </button>
             {isDestinationsOpen && (
               <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 py-3 z-50">
-                <div className="px-4 pb-2 text-xs text-slate-500">❄️ Winter</div>
+                <div className="px-4 pb-2 text-xs text-slate-500">❄️ {t('seasonWinter')}</div>
                 {ZONES.filter(z => z.season === 'winter').map(z => (
                   <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">{z.title}</a>
                 ))}
-                <div className="px-4 pt-2 text-xs text-slate-500">☀️ Summer</div>
+                <div className="px-4 pt-2 text-xs text-slate-500">☀️ {t('seasonSummer')}</div>
                 {ZONES.filter(z => z.season === 'summer').map(z => (
                   <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">{z.title}</a>
                 ))}
@@ -218,19 +220,24 @@ export default function Navbar() {
             )}
           </div>
           <a href="/agreement" className="hover:text-sky-700">{t('agreement')}</a>
-          {/* Support Dropdown */}
-          <div className="relative group">
-            <button className="hover:text-sky-700 flex items-center gap-2 focus:outline-none">
+          {/* Support Dropdown (click-controlled for better usability) */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsSupportOpen(prev => !prev)}
+              className="hover:text-sky-700 flex items-center gap-2 focus:outline-none"
+            >
               {t('support') || 'Support'}
-              <svg className="w-4 h-4 text-slate-600 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-4 h-4 text-slate-600 transition-transform ${isSupportOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <div className="absolute left-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
-              <a href="/faq" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">FAQ</a>
-              <a href="/help" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Help</a>
-              <a href="/community" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">💬 Community</a>
-            </div>
+            {isSupportOpen && (
+              <div className="absolute left-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50">
+                <a href="/faq" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setIsSupportOpen(false)}>{t('faq')}</a>
+                <a href="/help" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setIsSupportOpen(false)}>{t('help')}</a>
+                <a href="/community" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setIsSupportOpen(false)}>💬 {t('community')}</a>
+              </div>
+            )}
           </div>
           <a href="/about" className="hover:text-sky-700">{t('about')}</a>
         </nav>
@@ -291,11 +298,11 @@ export default function Navbar() {
                   {t('destinations')}
                 </summary>
                 <div className="mt-1 pl-3">
-                  <div className="text-xs text-slate-500 mb-1">Winter</div>
+                  <div className="text-xs text-slate-500 mb-1">{t('seasonWinter')}</div>
                   {ZONES.filter(z => z.season === 'winter').map(z => (
                     <a key={z.slug} href={`/zones/${z.slug}`} className="block py-1.5" onClick={() => setIsMobileOpen(false)}>{z.title}</a>
                   ))}
-                  <div className="text-xs text-slate-500 mt-2 mb-1">Summer</div>
+                  <div className="text-xs text-slate-500 mt-2 mb-1">{t('seasonSummer')}</div>
                   {ZONES.filter(z => z.season === 'summer').map(z => (
                     <a key={z.slug} href={`/zones/${z.slug}`} className="block py-1.5" onClick={() => setIsMobileOpen(false)}>{z.title}</a>
                   ))}
@@ -307,9 +314,9 @@ export default function Navbar() {
             <details>
               <summary className="py-2 cursor-pointer select-none flex items-center gap-2">{t('support') || 'Support'}</summary>
               <div className="pl-4 flex flex-col">
-                <a href="/faq" className="py-2" onClick={() => setIsMobileOpen(false)}>FAQ</a>
-                <a href="/help" className="py-2" onClick={() => setIsMobileOpen(false)}>Help</a>
-                <a href="/community" className="py-2" onClick={() => setIsMobileOpen(false)}>💬 Community</a>
+                <a href="/faq" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('faq')}</a>
+                <a href="/help" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('help')}</a>
+                <a href="/community" className="py-2" onClick={() => setIsMobileOpen(false)}>💬 {t('community')}</a>
               </div>
             </details>
             <a href="/about" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('about')}</a>
@@ -339,7 +346,7 @@ export default function Navbar() {
               </button>
             )}
             <div className="flex items-center justify-between pt-2">
-              <span className="text-sm text-slate-600">Language</span>
+              <span className="text-sm text-slate-600">{t('languageLabel')}</span>
               <LanguageToggle />
             </div>
           </div>
