@@ -31,6 +31,7 @@ export default function JobsPage() {
   const [error, setError] = useState("");
   const [showSubscriptionGate, setShowSubscriptionGate] = useState(false);
   const [userCanContact, setUserCanContact] = useState(false);
+  const [contactingId, setContactingId] = useState(null);
 
   useEffect(() => {
     if (session?.user) {
@@ -49,15 +50,17 @@ export default function JobsPage() {
 
   const handleContactEmployer = (e, listing) => {
     e.preventDefault();
+    if (!listing?.userId) return; // Defensive
     if (!session) {
-      window.location.href = `/auth/signin?returnTo=${encodeURIComponent(`/messages/${listing.userId}?listingId=${listing.id}`)}`;
+      router.push(`/auth/signin?returnTo=${encodeURIComponent(`/messages/${listing.userId}?listingId=${listing.id}`)}`);
       return;
     }
     if (!userCanContact) {
       setShowSubscriptionGate(true);
       return;
     }
-    window.location.href = `/messages/${listing.userId}?listingId=${listing.id}`;
+    setContactingId(listing.id);
+    router.push(`/messages/${listing.userId}?listingId=${listing.id}`);
   };
 
   const handleUpgrade = async (tier) => {
@@ -193,9 +196,11 @@ export default function JobsPage() {
                     <div className="px-5 pb-5">
                       <button
                         onClick={(e) => handleContactEmployer(e, job)}
-                        className="w-full py-2 text-sm text-sky-700 hover:bg-sky-50 border border-sky-200 rounded-lg font-medium transition"
+                        disabled={contactingId === job.id}
+                        className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===job.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
+                        aria-label={`Contact employer about ${job.title}`}
                       >
-                        {t('contactEmployer')}
+                        {contactingId === job.id ? t('loading') : t('contactEmployer')}
                       </button>
                     </div>
                   </div>
@@ -296,9 +301,11 @@ export default function JobsPage() {
                 <div className="px-5 pb-5">
                   <button
                     onClick={(e) => handleContactEmployer(e, job)}
-                    className="w-full py-2 text-sm text-sky-700 hover:bg-sky-50 border border-sky-200 rounded-lg font-medium transition"
+                    disabled={contactingId === job.id}
+                    className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===job.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
+                    aria-label={`Contact employer about ${job.title}`}
                   >
-                    {t('contactEmployer')}
+                    {contactingId === job.id ? t('loading') : t('contactEmployer')}
                   </button>
                 </div>
               </div>

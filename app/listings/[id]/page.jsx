@@ -62,6 +62,7 @@ export default function ListingDetailPage() {
   };
 
   const handleContact = () => {
+    if (!listing?.userId) return;
     if (!session) {
       router.push(`/auth/signin?returnTo=${encodeURIComponent(`/messages/${listing.userId}?listingId=${params.id}`)}`);
       return;
