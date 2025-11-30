@@ -48,7 +48,7 @@ export default function JobsPage() {
   const handleContactEmployer = (e, listing) => {
     e.preventDefault();
     if (!session) {
-      window.location.href = '/auth/signin?returnTo=/jobs';
+      window.location.href = `/auth/signin?returnTo=${encodeURIComponent(`/messages/${listing.userId}?listingId=${listing.id}`)}`;
       return;
     }
     if (!userCanContact) {

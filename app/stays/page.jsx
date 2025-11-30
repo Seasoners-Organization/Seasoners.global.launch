@@ -49,7 +49,7 @@ export default function StaysPage() {
   const handleContactSeller = (e, listing) => {
     e.preventDefault();
     if (!session) {
-      window.location.href = '/auth/signin?returnTo=/stays';
+      window.location.href = `/auth/signin?returnTo=${encodeURIComponent(`/messages/${listing.userId}?listingId=${listing.id}`)}`;
       return;
     }
     if (!userCanContact) {

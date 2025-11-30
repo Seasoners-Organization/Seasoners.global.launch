@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "../../../components/LanguageProvider";
 
 export default function MessagesPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { t } = useLanguage();
   const params = useParams();
   const searchParams = useSearchParams();
@@ -26,6 +26,8 @@ export default function MessagesPage() {
   const listingId = searchParams.get("listingId");
 
   useEffect(() => {
+    if (status === "loading") return;
+    
     if (!session) {
       router.push(`/auth/signin?returnTo=/messages/${params.userId}${listingId ? `?listingId=${listingId}` : ''}`);
       return;
@@ -34,7 +36,7 @@ export default function MessagesPage() {
     if (listingId) {
       fetchListing();
     }
-  }, [session, params.userId, listingId]);
+  }, [session, status, params.userId, listingId]);
 
   const fetchRecipient = async () => {
     try {

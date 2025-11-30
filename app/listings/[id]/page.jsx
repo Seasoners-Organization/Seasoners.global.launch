@@ -61,7 +61,7 @@ export default function ListingDetailPage() {
 
   const handleContact = () => {
     if (!session) {
-      router.push(`/auth/signin?returnTo=/listings/${params.id}`);
+      router.push(`/auth/signin?returnTo=${encodeURIComponent(`/messages/${listing.userId}?listingId=${params.id}`)}`);
       return;
     }
     if (!userCanContact) {
