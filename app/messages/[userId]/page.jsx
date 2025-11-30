@@ -17,6 +17,10 @@ export default function MessagesPage() {
   const router = useRouter();
   const [recipient, setRecipient] = useState(null);
   const [listing, setListing] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [sending, setSending] = useState(false);
+  const [input, setInput] = useState('');
+  const [threadError, setThreadError] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [emailVisible, setEmailVisible] = useState(false);
@@ -33,9 +37,8 @@ export default function MessagesPage() {
       return;
     }
     fetchRecipient();
-    if (listingId) {
-      fetchListing();
-    }
+    if (listingId) fetchListing();
+    fetchThread();
   }, [session, status, params.userId, listingId]);
 
   const fetchRecipient = async () => {
@@ -74,6 +77,58 @@ export default function MessagesPage() {
       }
     } catch (err) {
       // Listing fetch failed silently
+    }
+  };
+
+  const fetchThread = async () => {
+    try {
+      const url = `/api/messages/thread?userId=${params.userId}${listingId ? `&listingId=${listingId}` : ''}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (res.ok) {
+        setMessages(Array.isArray(data.messages) ? data.messages : []);
+      } else {
+        setThreadError(data.error || 'Failed to load messages');
+      }
+    } catch (err) {
+      setThreadError('Failed to load messages');
+    }
+  };
+
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if (!input.trim() || sending) return;
+    setSending(true);
+    const optimistic = {
+      id: `temp-${Date.now()}`,
+      body: input.trim(),
+      senderId: session?.user?.id || 'me',
+      recipientId: params.userId,
+      createdAt: new Date().toISOString(),
+      listingId: listingId || null,
+      optimistic: true,
+    };
+    setMessages(prev => [...prev, optimistic]);
+    try {
+      const res = await fetch('/api/messages/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipientId: params.userId, listingId, message: input })
+      });
+      const data = await res.json();
+      if (res.ok && data.message) {
+        setMessages(prev => prev.map(m => m.id === optimistic.id ? data.message : m));
+      } else {
+        setThreadError(data.error || 'Failed to send message');
+        setMessages(prev => prev.filter(m => m.id !== optimistic.id));
+      }
+    } catch (err) {
+      setThreadError('Failed to send message');
+      setMessages(prev => prev.filter(m => m.id !== optimistic.id));
+    } finally {
+      setSending(false);
+      setInput('');
+      setTimeout(fetchThread, 500); // refresh thread
     }
   };
 
@@ -203,6 +258,52 @@ export default function MessagesPage() {
                     </p>
                   )}
                 </div>
+              </div>
+
+              {/* Messages Thread */}
+              <div className="mb-8">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('conversation') || t('messagesTitle')}</h2>
+                {threadError && (
+                  <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">{threadError}</div>
+                )}
+                <div className="max-h-[340px] overflow-y-auto space-y-3 pr-1">
+                  {messages.length === 0 && !threadError && (
+                    <div className="p-4 bg-slate-50 rounded-lg text-sm text-slate-600">
+                      {t('emptyThread')}
+                    </div>
+                  )}
+                  {messages.map(msg => {
+                    const isMine = msg.senderId === (session?.user?.id);
+                    return (
+                      <div
+                        key={msg.id}
+                        className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div className={`max-w-xs md:max-w-sm px-4 py-2 rounded-2xl text-sm shadow-sm border ${isMine ? 'bg-sky-600 text-white border-sky-500' : 'bg-slate-100 text-slate-800 border-slate-200'}`}
+                        >
+                          <p className="whitespace-pre-wrap break-words">{msg.body}</p>
+                          <p className={`mt-1 text-[10px] ${isMine ? 'text-sky-100/80' : 'text-slate-500'}`}>{new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}{msg.optimistic ? ' …' : ''}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Message Form */}
+                <form onSubmit={handleSend} className="mt-4 flex gap-3">
+                  <textarea
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder={listing ? `${t('contactAboutListing')}: ${listing.title}` : t('messagePlaceholder')}
+                    className="flex-1 resize-none h-16 px-4 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                  <button
+                    type="submit"
+                    disabled={sending || !input.trim()}
+                    className={`px-5 h-16 rounded-xl text-sm font-semibold transition-colors ${sending || !input.trim() ? 'bg-slate-200 text-slate-500' : 'bg-sky-600 text-white hover:bg-sky-700'}`}
+                  >
+                    {sending ? t('sending') : t('sendMessage')}
+                  </button>
+                </form>
               </div>
 
               {/* Contact Information */}

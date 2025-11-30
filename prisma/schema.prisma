@@ -193,6 +193,8 @@ model User {
   agreementsAsHost  Agreement[] @relation("AgreementHost")
   agreementsAsGuest Agreement[] @relation("AgreementGuest")
   waitlistSignups   WaitlistSignup[] @relation("UserWaitlistSignups")
+  sentMessages      Message[] @relation("SentMessages")
+  receivedMessages  Message[] @relation("ReceivedMessages")
 }
 
 model Listing {
@@ -224,6 +226,7 @@ model Listing {
   user        User     @relation(fields: [userId], references: [id])
   reviews     Review[]
   agreements  Agreement[]
+  messages    Message[]
 }
 
 model Agreement {
@@ -312,4 +315,21 @@ model WaitlistSignup {
   notified        Boolean  @default(false) // Launch email sent
   userId          String?  // Optional link if the email corresponds to a User
   user            User?    @relation("UserWaitlistSignups", fields: [userId], references: [id])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  senderId    String
+  recipientId String
+  listingId   String?
+  body        String
+  createdAt   DateTime @default(now())
+  readAt      DateTime?
+
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id])
+  recipient   User     @relation("ReceivedMessages", fields: [recipientId], references: [id])
+  listing     Listing? @relation(fields: [listingId], references: [id])
+
+  @@index([senderId, recipientId])
+  @@index([listingId])
 }
