@@ -172,11 +172,15 @@ export async function GET(req: NextRequest) {
       include: {
         user: {
           select: {
+            id: true,
             name: true,
             email: true,
             role: true,
             trustScore: true,
             profilePicture: true,
+                      emailVerified: true,
+                      phoneVerified: true,
+                      identityVerified: true,
           } as any,
         },
       },

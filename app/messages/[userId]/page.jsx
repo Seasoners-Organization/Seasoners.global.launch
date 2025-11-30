@@ -137,6 +137,39 @@ export default function MessagesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
+            {/* Listing Context Banner - Show prominently at top */}
+            {listing && (
+              <div className="mb-6 p-6 bg-gradient-to-r from-sky-50 to-amber-50 rounded-2xl border border-sky-200">
+                <div className="flex items-start gap-4">
+                  {listing.photos && listing.photos[0] && (
+                    <img
+                      src={listing.photos[0]}
+                      alt={listing.title}
+                      className="w-24 h-24 rounded-lg object-cover flex-shrink-0"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <p className="text-xs text-sky-600 font-semibold uppercase mb-1">Contact About This Listing</p>
+                    <h2 className="text-xl font-bold text-slate-900 mb-1">{listing.title}</h2>
+                    <p className="text-sm text-slate-600">
+                      {listing.type === 'JOB' ? '💼 Job Opportunity' : listing.type === 'FLATSHARE' ? '🏠 Flatshare' : '🏡 Accommodation'} • {listing.location}
+                    </p>
+                    {listing.price && (
+                      <p className="text-sm font-semibold text-slate-700 mt-1">
+                        €{listing.price}/month
+                      </p>
+                    )}
+                  </div>
+                  <a
+                    href={`/listings/${listing.id}`}
+                    className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    View Listing
+                  </a>
+                </div>
+              </div>
+            )}
+
             <div className="bg-white rounded-2xl shadow-lg p-8">
               {/* Header */}
               <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
@@ -171,17 +204,6 @@ export default function MessagesPage() {
                   )}
                 </div>
               </div>
-
-              {/* Listing Context */}
-              {listing && (
-                <div className="mb-6 p-4 bg-slate-50 rounded-lg">
-                  <p className="text-sm text-slate-600 mb-1">Regarding:</p>
-                  <p className="font-semibold text-slate-900">{listing.title}</p>
-                  <p className="text-sm text-slate-600 mt-1">
-                    {listing.type === 'JOB' ? 'Job' : listing.type === 'FLATSHARE' ? 'Flatshare' : 'Stay'} • {listing.location}
-                  </p>
-                </div>
-              )}
 
               {/* Contact Information */}
               <div className="space-y-4">
