@@ -17,6 +17,7 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const dropdownRef = useRef(null);
   const destinationsRef = useRef(null);
+  const supportRef = useRef(null);
 
   useEffect(() => {
     if (session?.user) {
@@ -50,10 +51,12 @@ export default function Navbar() {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsProfileOpen(false);
-        setIsSupportOpen(false);
       }
       if (destinationsRef.current && !destinationsRef.current.contains(event.target)) {
         setIsDestinationsOpen(false);
+      }
+      if (supportRef.current && !supportRef.current.contains(event.target)) {
+        setIsSupportOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -221,7 +224,7 @@ export default function Navbar() {
           </div>
           <a href="/agreement" className="hover:text-sky-700">{t('agreement')}</a>
           {/* Support Dropdown (click-controlled for better usability) */}
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative" ref={supportRef}>
             <button
               onClick={() => setIsSupportOpen(prev => !prev)}
               className="hover:text-sky-700 flex items-center gap-2 focus:outline-none"
