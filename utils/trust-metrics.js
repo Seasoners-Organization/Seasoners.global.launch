@@ -13,23 +13,21 @@
 
 /**
  * Trust Factor Weights (total = 100)
- * Balanced to reward both verification AND active community participation
+ * Simplified to easily achievable metrics
  */
 export const TRUST_WEIGHTS = {
-  // Identity & Verification (30% total)
-  emailVerified: 10,           // Basic requirement
-  phoneVerified: 10,           // Security layer
-  identityVerified: 10,        // Government ID check
+  // Identity & Verification (50% total)
+  emailVerified: 15,           // Basic requirement
+  phoneVerified: 15,           // Security layer
+  identityVerified: 20,        // Government ID check
   
-  // Behavioral & Engagement (40% total)
-  responseRate: 15,            // How quickly/consistently they respond
-  profileCompleteness: 10,     // Full bio, photo, details
-  agreementCompletion: 15,     // Signed agreements with fair terms
+  // Profile & Listings (40% total)
+  profileCompleteness: 15,     // Full bio, photo, details
+  hasStayListing: 10,          // Posted at least 1 stay listing
+  hasJobListing: 15,           // Posted at least 1 job listing
   
-  // Community Reputation (30% total)
-  completedStays: 12,          // Successful stays without issues
-  mutualReviews: 10,           // Two-way reviews (both gave & received)
-  communityContribution: 8,    // Stories shared, cultural notes, helpful engagement
+  // Engagement (10% total)
+  responseRate: 10,            // How quickly/consistently they respond
 };
 
 /**
@@ -41,9 +39,9 @@ export function calculateTrustScore(user) {
   let score = 0;
   const factors = {};
 
-  // === VERIFICATION FACTORS (30 points max) ===
+  // === VERIFICATION FACTORS (50 points max) ===
   
-  // Email verified (10 points)
+  // Email verified (15 points)
   if (user.emailVerified) {
     score += TRUST_WEIGHTS.emailVerified;
     factors.emailVerified = { earned: TRUST_WEIGHTS.emailVerified, max: TRUST_WEIGHTS.emailVerified };
@@ -51,7 +49,7 @@ export function calculateTrustScore(user) {
     factors.emailVerified = { earned: 0, max: TRUST_WEIGHTS.emailVerified };
   }
 
-  // Phone verified (10 points)
+  // Phone verified (15 points)
   if (user.phoneVerified) {
     score += TRUST_WEIGHTS.phoneVerified;
     factors.phoneVerified = { earned: TRUST_WEIGHTS.phoneVerified, max: TRUST_WEIGHTS.phoneVerified };
@@ -59,7 +57,7 @@ export function calculateTrustScore(user) {
     factors.phoneVerified = { earned: 0, max: TRUST_WEIGHTS.phoneVerified };
   }
 
-  // Identity verified (10 points)
+  // Identity verified (20 points)
   if (user.identityVerified) {
     score += TRUST_WEIGHTS.identityVerified;
     factors.identityVerified = { earned: TRUST_WEIGHTS.identityVerified, max: TRUST_WEIGHTS.identityVerified };
@@ -67,20 +65,9 @@ export function calculateTrustScore(user) {
     factors.identityVerified = { earned: 0, max: TRUST_WEIGHTS.identityVerified };
   }
 
-  // === BEHAVIORAL FACTORS (40 points max) ===
+  // === PROFILE & LISTING FACTORS (40 points max) ===
 
-  // Response rate (15 points)
-  // Calculated as: (responses within 24h / total inquiries received) * weight
-  const responseRate = user.responseRate ?? 0; // 0-1 decimal
-  const responsePoints = Math.round(responseRate * TRUST_WEIGHTS.responseRate);
-  score += responsePoints;
-  factors.responseRate = { 
-    earned: responsePoints, 
-    max: TRUST_WEIGHTS.responseRate,
-    percentage: Math.round(responseRate * 100)
-  };
-
-  // Profile completeness (10 points)
+  // Profile completeness (15 points)
   // 1 point per field: name, bio, photo, phone, region, language
   const completenessFields = [
     user.name,
@@ -99,72 +86,44 @@ export function calculateTrustScore(user) {
     percentage: Math.round(completenessRatio * 100)
   };
 
-  // Agreement completion (15 points)
-  // Signed agreements with both parties completing the stay
-  const agreementCount = user.completedAgreements ?? 0;
-  const agreementPoints = Math.min(
-    Math.round((agreementCount / 5) * TRUST_WEIGHTS.agreementCompletion), // Full points at 5 agreements
-    TRUST_WEIGHTS.agreementCompletion
-  );
-  score += agreementPoints;
-  factors.agreementCompletion = {
-    earned: agreementPoints,
-    max: TRUST_WEIGHTS.agreementCompletion,
-    count: agreementCount
-  };
+  // Has stay listing (10 points)
+  const hasStayListing = user.hasStayListing ?? false;
+  if (hasStayListing) {
+    score += TRUST_WEIGHTS.hasStayListing;
+    factors.hasStayListing = { earned: TRUST_WEIGHTS.hasStayListing, max: TRUST_WEIGHTS.hasStayListing };
+  } else {
+    factors.hasStayListing = { earned: 0, max: TRUST_WEIGHTS.hasStayListing };
+  }
 
-  // === REPUTATION FACTORS (30 points max) ===
+  // Has job listing (15 points)
+  const hasJobListing = user.hasJobListing ?? false;
+  if (hasJobListing) {
+    score += TRUST_WEIGHTS.hasJobListing;
+    factors.hasJobListing = { earned: TRUST_WEIGHTS.hasJobListing, max: TRUST_WEIGHTS.hasJobListing };
+  } else {
+    factors.hasJobListing = { earned: 0, max: TRUST_WEIGHTS.hasJobListing };
+  }
 
-  // Completed stays (12 points)
-  // Stays where both parties marked as successful, no disputes
-  const stayCount = user.completedStays ?? 0;
-  const stayPoints = Math.min(
-    Math.round((stayCount / 10) * TRUST_WEIGHTS.completedStays), // Full points at 10 stays
-    TRUST_WEIGHTS.completedStays
-  );
-  score += stayPoints;
-  factors.completedStays = {
-    earned: stayPoints,
-    max: TRUST_WEIGHTS.completedStays,
-    count: stayCount
-  };
+  // === ENGAGEMENT FACTORS (10 points max) ===
 
-  // Mutual reviews (10 points)
-  // Reviews given AND received (both directions matter)
-  const reviewsGiven = user.reviewsGiven ?? 0;
-  const reviewsReceived = user.reviewsReceived ?? 0;
-  const mutualReviewRatio = reviewsReceived > 0 
-    ? Math.min(reviewsGiven / reviewsReceived, 1) 
-    : 0;
-  const reviewPoints = Math.round(mutualReviewRatio * TRUST_WEIGHTS.mutualReviews);
-  score += reviewPoints;
-  factors.mutualReviews = {
-    earned: reviewPoints,
-    max: TRUST_WEIGHTS.mutualReviews,
-    given: reviewsGiven,
-    received: reviewsReceived
+  // Response rate (10 points)
+  const responseRate = user.responseRate ?? 0;
+  const responsePoints = Math.round(responseRate * TRUST_WEIGHTS.responseRate);
+  score += responsePoints;
+  factors.responseRate = { 
+    earned: responsePoints, 
+    max: TRUST_WEIGHTS.responseRate,
+    percentage: Math.round(responseRate * 100)
   };
-
-  // Community contribution (8 points)
-  // Stories shared, cultural notes added, helpful flags
-  const storiesShared = user.storiesShared ?? 0;
-  const culturalNotes = user.culturalNotesAdded ?? 0;
-  const helpfulFlags = user.helpfulFlags ?? 0;
-  const contributionScore = Math.min(storiesShared + culturalNotes + (helpfulFlags / 5), 5);
-  const contributionPoints = Math.round((contributionScore / 5) * TRUST_WEIGHTS.communityContribution);
-  score += contributionPoints;
-  factors.communityContribution = {
-    earned: contributionPoints,
-    max: TRUST_WEIGHTS.communityContribution,
-    stories: storiesShared,
-    notes: culturalNotes,
-    helpful: helpfulFlags
-  };
+  // === FINAL SCORE ===
+  
+  // Cap score at 100
+  score = Math.min(score, 100);
 
   return {
-    score: Math.min(Math.round(score), 100), // Cap at 100
-    factors,
+    score: Math.round(score),
     level: getTrustLevel(score),
+    factors,
     lastCalculated: new Date().toISOString()
   };
 }
@@ -252,31 +211,30 @@ export function getTrustSuggestions(factors) {
     });
   }
 
-  // Engagement suggestions
+  // Listing suggestions
+  if (factors.hasStayListing && factors.hasStayListing.earned === 0) {
+    suggestions.push({
+      action: 'List at least one stay',
+      impact: factors.hasStayListing.max,
+      priority: 'medium',
+      link: '/list'
+    });
+  }
+
+  if (factors.hasJobListing && factors.hasJobListing.earned === 0) {
+    suggestions.push({
+      action: 'List at least one job',
+      impact: factors.hasJobListing.max,
+      priority: 'medium',
+      link: '/list'
+    });
+  }
+
+  // Response rate
   if (factors.responseRate.percentage < 80) {
     suggestions.push({
       action: 'Respond to inquiries within 24 hours',
       impact: factors.responseRate.max - factors.responseRate.earned,
-      priority: 'medium',
-      link: null
-    });
-  }
-
-  // Agreement & stays
-  if (factors.agreementCompletion.count < 5) {
-    suggestions.push({
-      action: 'Complete stays with signed agreements',
-      impact: factors.agreementCompletion.max - factors.agreementCompletion.earned,
-      priority: 'medium',
-      link: '/agreement'
-    });
-  }
-
-  // Reviews
-  if (factors.mutualReviews.given < factors.mutualReviews.received) {
-    suggestions.push({
-      action: 'Leave reviews for your past stays',
-      impact: factors.mutualReviews.max - factors.mutualReviews.earned,
       priority: 'low',
       link: null
     });

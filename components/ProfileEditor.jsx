@@ -23,8 +23,8 @@ export default function ProfileEditor({ user, onSave }) {
     profileVisibility: user?.profileVisibility || 'PUBLIC',
     openToOpportunities: user?.openToOpportunities ?? true,
     preferredRegions: user?.preferredRegions || [],
-    emailPrivacy: user?.emailPrivacy || 'PUBLIC',
-    phonePrivacy: user?.phonePrivacy || 'PUBLIC',
+    emailPrivacy: user?.emailPrivacy || 'HIDDEN',
+    phonePrivacy: user?.phonePrivacy || 'HIDDEN',
   });
 
   const [profilePicture, setProfilePicture] = useState(null);
@@ -516,11 +516,11 @@ export default function ProfileEditor({ user, onSave }) {
           </div>
 
           {/* Contact Privacy Controls */}
-          {(user?.trustScore || 0) >= 50 && (
+          {(user?.emailVerified && user?.phoneVerified && user?.identityVerified === 'VERIFIED') ? (
             <>
               <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
                 <p className="text-sm text-green-800">
-                  <span className="font-semibold">✓ High Trust Unlocked!</span> You can now hide your contact information if desired.
+                  <span className="font-semibold">✓ Fully Verified!</span> You can now choose to show your contact information publicly.
                 </p>
               </div>
 
@@ -535,8 +535,8 @@ export default function ProfileEditor({ user, onSave }) {
                   }}
                   className="w-full border border-slate-300 rounded-lg p-3"
                 >
-                  <option value="PUBLIC">Public - Visible to all</option>
-                  <option value="HIDDEN">Hidden - Not displayed publicly</option>
+                  <option value="HIDDEN">Hidden - Not displayed publicly (recommended)</option>
+                  <option value="VISIBLE">Visible - Show on contact page</option>
                 </select>
               </div>
 
@@ -551,17 +551,15 @@ export default function ProfileEditor({ user, onSave }) {
                   }}
                   className="w-full border border-slate-300 rounded-lg p-3"
                 >
-                  <option value="PUBLIC">Public - Visible to all</option>
-                  <option value="HIDDEN">Hidden - Not displayed publicly</option>
+                  <option value="HIDDEN">Hidden - Not displayed publicly (recommended)</option>
+                  <option value="VISIBLE">Visible - Show on contact page</option>
                 </select>
               </div>
             </>
-          )}
-
-          {(user?.trustScore || 0) < 50 && (
+          ) : (
             <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-sm text-blue-800">
-                <span className="font-semibold">📧 Email is public by default.</span> Build your trust score to 50%+ to unlock privacy controls for your contact information. Complete verifications, maintain agreements, and engage positively with the community.
+                <span className="font-semibold">🔒 Contact info is private by default.</span> Complete all verifications (email, phone, ID) to unlock the option to display your contact information publicly if you choose.
               </p>
             </div>
           )}

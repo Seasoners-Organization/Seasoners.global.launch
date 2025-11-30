@@ -50,14 +50,13 @@ export default function MessagesPage() {
       setRecipient(data.user);
       
       // Determine if contact info should be visible
-      // Email is public by default unless user has high trust and opted to hide
-      const trustScore = data.user.trustScore || 0;
-      const hasHighTrust = trustScore >= 50;
-      const emailHidden = data.user.emailPrivacy === 'HIDDEN' && hasHighTrust;
-      const phoneHidden = data.user.phonePrivacy === 'HIDDEN' && hasHighTrust;
+      // Email is hidden by default, user can choose to show if verified
+      const isFullyVerified = data.user.emailVerified && data.user.phoneVerified && data.user.identityVerified === 'VERIFIED';
+      const emailShown = data.user.emailPrivacy === 'VISIBLE' && isFullyVerified;
+      const phoneShown = data.user.phonePrivacy === 'VISIBLE' && isFullyVerified;
       
-      setEmailVisible(!emailHidden);
-      setPhoneVisible(!phoneHidden && data.user.phoneVerified);
+      setEmailVisible(emailShown);
+      setPhoneVisible(phoneShown);
     } catch (err) {
       setError(err.message || 'Failed to load user');
     } finally {
