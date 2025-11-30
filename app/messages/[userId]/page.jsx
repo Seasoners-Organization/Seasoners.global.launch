@@ -50,10 +50,10 @@ export default function MessagesPage() {
       setRecipient(data.user);
       
       // Determine if contact info should be visible
-      // Email is hidden by default, user can choose to show if verified
-      const isFullyVerified = data.user.emailVerified && data.user.phoneVerified && data.user.identityVerified === 'VERIFIED';
-      const emailShown = data.user.emailPrivacy === 'VISIBLE' && isFullyVerified;
-      const phoneShown = data.user.phonePrivacy === 'VISIBLE' && isFullyVerified;
+      // Email is hidden by default, user can choose to show if email and phone verified
+      const isVerified = data.user.emailVerified && data.user.phoneVerified;
+      const emailShown = data.user.emailPrivacy === 'VISIBLE' && isVerified;
+      const phoneShown = data.user.phonePrivacy === 'VISIBLE' && isVerified;
       
       setEmailVisible(emailShown);
       setPhoneVisible(phoneShown);
