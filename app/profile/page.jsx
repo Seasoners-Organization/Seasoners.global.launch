@@ -101,7 +101,7 @@ export default function ProfilePage() {
         setListings(data.listings);
       }
     } catch (err) {
-      console.error("Failed to load listings:", err);
+      // Failed to load listings
     }
   };
 

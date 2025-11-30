@@ -39,7 +39,9 @@ export default function List() {
             setUserCanCreate(canCreateListings(data.user));
           }
         })
-        .catch(err => console.error('Failed to fetch user details:', err));
+        .catch(err => {
+          // Failed to fetch user details
+        });
     }
   }, [session]);
 

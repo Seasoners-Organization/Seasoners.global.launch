@@ -42,7 +42,7 @@ export default function FlatsharesPage() {
         setListings(Array.isArray(data.listings) ? data.listings : []);
       }
     } catch (error) {
-      console.error('Failed to fetch flatshares:', error);
+      // Failed to fetch flatshares
       setListings([]);
     } finally {
       setLoading(false);

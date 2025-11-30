@@ -97,8 +97,8 @@ export default function HomePage() {
               href={`/zones/${zone.slug}`}
               className="group rounded-2xl border bg-white/80 p-4 shadow-sm hover:shadow-md transition"
             >
-              <div className="h-36 w-full rounded-lg overflow-hidden bg-slate-100 mb-3">
-                <img src={zone.hero} alt={zone.title} className="object-cover w-full h-full" />
+              <div className="h-36 w-full rounded-lg overflow-hidden bg-slate-100 mb-3 relative">
+                <Image src={zone.hero} alt={zone.title} fill className="object-cover" sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw" priority={false} />
               </div>
               <div className="flex items-center justify-between">
                 <div>

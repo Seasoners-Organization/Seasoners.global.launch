@@ -73,7 +73,7 @@ export default function MessagesPage() {
         setListing(data.listing);
       }
     } catch (err) {
-      console.error('Failed to fetch listing:', err);
+      // Listing fetch failed silently
     }
   };
 

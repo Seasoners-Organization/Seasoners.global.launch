@@ -47,7 +47,7 @@ export default function AgreementsPage() {
         setAgreements(data);
       }
     } catch (error) {
-      console.error('Error fetching agreements:', error);
+      // Error fetching agreements
     } finally {
       setLoading(false);
     }
@@ -62,7 +62,7 @@ export default function AgreementsPage() {
         setIsModalOpen(true);
       }
     } catch (error) {
-      console.error('Error fetching agreement:', error);
+      // Error fetching agreement
     }
   };
 

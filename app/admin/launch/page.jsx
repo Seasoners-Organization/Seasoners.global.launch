@@ -27,7 +27,7 @@ export default function LaunchControlPage() {
       const data = await response.json();
       setSettings(data);
     } catch (error) {
-      console.error('Error fetching settings:', error);
+      // Error fetching settings
     } finally {
       setLoading(false);
     }
