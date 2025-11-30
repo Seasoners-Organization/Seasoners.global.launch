@@ -23,7 +23,7 @@ export default function HelpCenter() {
         },
         {
           q: "Is Seasoners free to use?",
-          a: "Browsing and basic features are free. We offer a Founding Member subscription (€30/month or €300/year) for premium features like unlimited listings, verification badges, and priority support."
+          a: "Browsing and basic features are free. We offer premium subscriptions with a 30-day free trial. After the trial, choose monthly or annual plans for unlimited listings, verification badges, and priority support."
         },
         {
           q: "What countries does Seasoners operate in?",
@@ -53,7 +53,7 @@ export default function HelpCenter() {
         },
         {
           q: "How many listings can I post?",
-          a: "Free accounts can post 1 listing. Founding Members get unlimited listings plus featured placement."
+          a: "Free accounts can post 1 listing. Premium subscribers get unlimited listings plus featured placement and priority in search results."
         }
       ]
     },
@@ -88,8 +88,8 @@ export default function HelpCenter() {
           a: "We accept all major credit/debit cards (Visa, Mastercard, Amex) and SEPA payments through our secure payment processor Stripe."
         },
         {
-          q: "How does the Founding Member subscription work?",
-          a: "Choose monthly (€30) or annual (€300, save €60!). Benefits include unlimited listings, verification badge, priority support, and early access to new features."
+          q: "How does the subscription work?",
+          a: "Start with a 30-day free trial. After the trial, choose monthly or annual plans. Benefits include unlimited listings, verification badge, priority support, and early access to new features. Cancel anytime during the trial at no cost."
         },
         {
           q: "Can I cancel my subscription anytime?",
@@ -97,7 +97,7 @@ export default function HelpCenter() {
         },
         {
           q: "Do you offer refunds?",
-          a: "We offer a 14-day money-back guarantee for annual subscriptions. Monthly subscriptions are non-refundable but can be canceled anytime."
+          a: "You can cancel during your 30-day free trial at no cost. After the trial, subscriptions can be canceled anytime but are non-refundable for the current billing period."
         }
       ]
     },
