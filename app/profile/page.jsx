@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import AnimatedPage from "../../components/AnimatedPage";
@@ -14,11 +15,13 @@ import { formatSubscriptionStatus, formatExpiryDate, SUBSCRIPTION_PLANS } from "
 import { useLanguage } from "../../components/LanguageProvider";
 import Toast from "../../components/Toast";
 import { ProfileSkeleton } from "../../components/SkeletonLoader";
+import { useUserProfile } from "../../hooks/useUserProfile";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const { t } = useLanguage();
   const router = useRouter();
+  const { user: sharedUser, refreshUser } = useUserProfile();
   const [user, setUser] = useState(null);
   const [listings, setListings] = useState([]);
   const [activeTab, setActiveTab] = useState("overview");
@@ -38,6 +41,14 @@ export default function ProfilePage() {
     }
   }, []);
   const [profileCompleteness, setProfileCompleteness] = useState(0);
+
+  // Use shared user data if available
+  useEffect(() => {
+    if (sharedUser && !user) {
+      setUser(sharedUser);
+      setLoading(false);
+    }
+  }, [sharedUser]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -261,11 +272,15 @@ export default function ProfilePage() {
                 <div className="flex items-center gap-4">
                   <div className="relative group">
                     {user.profilePicture ? (
-                      <img 
-                        src={user.profilePicture} 
-                        alt={user.name}
-                        className="w-20 h-20 rounded-full object-cover"
-                      />
+                      <div className="relative w-20 h-20 rounded-full overflow-hidden">
+                        <Image 
+                          src={user.profilePicture} 
+                          alt={user.name}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      </div>
                     ) : (
                       <div className="w-20 h-20 bg-gradient-to-br from-sky-400 to-amber-400 rounded-full flex items-center justify-center text-white text-3xl font-bold">
                         {user.name?.charAt(0).toUpperCase() || "U"}

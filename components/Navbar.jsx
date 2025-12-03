@@ -6,11 +6,12 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import LanguageToggle from './LanguageToggle';
 import { useLanguage } from './LanguageProvider';
 import { ZONES } from '../data/zones';
+import { useUserProfile, clearUserCache } from '../hooks/useUserProfile';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const { t } = useLanguage();
-  const [userDetails, setUserDetails] = useState(null);
+  const { user: userDetails } = useUserProfile();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false);
   const [isSupportOpen, setIsSupportOpen] = useState(false);
@@ -20,37 +21,42 @@ export default function Navbar() {
   const destinationsRef = useRef(null);
   const supportRef = useRef(null);
 
+  // Listen for message events to refresh unread count
+  useEffect(() => {
+    const handleMessageEvent = () => {
+      if (session?.user) {
+        fetch('/api/messages/unread-count', {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+          }
+        })
+          .then(res => res.ok ? res.json() : null)
+          .then(data => {
+            if (data?.unreadCount !== undefined) {
+              setUnreadCount(data.unreadCount);
+            }
+          })
+          .catch(() => {});
+      }
+    };
+    
+    window.addEventListener('messagesRead', handleMessageEvent);
+    window.addEventListener('messageSent', handleMessageEvent);
+    
+    return () => {
+      window.removeEventListener('messagesRead', handleMessageEvent);
+      window.removeEventListener('messageSent', handleMessageEvent);
+    };
+  }, [session]);
+
   useEffect(() => {
     if (session?.user) {
-      fetch('/api/user/me', {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-        }
-      })
-        .then(res => {
-          if (!res.ok) {
-            throw new Error('Failed to fetch');
-          }
-          return res.json();
-        })
-        .then(data => {
-          if (data.user) {
-            setUserDetails(data.user);
-          }
-        })
-        .catch(err => {
-          console.error('Failed to fetch user details:', err);
-          // Don't show error to user, just use session data
-        });
-      
       // Fetch unread message count
       fetch('/api/messages/unread-count', {
-        cache: 'no-store',
         headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
+          'Cache-Control': 'max-age=30',
         }
       })
         .then(res => res.ok ? res.json() : null)
@@ -205,6 +211,7 @@ export default function Navbar() {
                   <button
                     onClick={() => {
                       setIsProfileOpen(false);
+                      clearUserCache();
                       signOut();
                     }}
                     className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors w-full text-left"
@@ -375,7 +382,7 @@ export default function Navbar() {
               </div>
             ) : (
               <button
-                onClick={() => { setIsMobileOpen(false); signOut(); }}
+                onClick={() => { setIsMobileOpen(false); clearUserCache(); signOut(); }}
                 className="px-3 py-2 rounded-md text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition w-full text-left"
               >
                 {t('signOut')}

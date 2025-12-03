@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import AnimatedPage from "../../../components/AnimatedPage";
@@ -10,39 +11,27 @@ import { motion } from "framer-motion";
 import { canContactSellers } from "../../../utils/subscription";
 import { REGION_ENUM_TO_DISPLAY } from "../../../utils/regions";
 import { useLanguage } from "../../../components/LanguageProvider";
+import { useUserProfile } from "../../../hooks/useUserProfile";
 
 export default function ListingDetailPage() {
   const { data: session } = useSession();
   const { t } = useLanguage();
+  const { user } = useUserProfile();
   const params = useParams();
   const router = useRouter();
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showSubscriptionGate, setShowSubscriptionGate] = useState(false);
-  const [userCanContact, setUserCanContact] = useState(false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+
+  const userCanContact = user ? canContactSellers(user) : false;
 
   useEffect(() => {
     if (params.id) {
       fetchListing();
     }
   }, [params.id]);
-
-  useEffect(() => {
-    if (session?.user) {
-      fetch('/api/user/me')
-        .then(res => res.json())
-        .then(data => {
-          if (data.user) {
-            setUserCanContact(canContactSellers(data.user));
-          }
-        })
-        .catch(err => {
-          // Failed to fetch user details
-        });
-    }
-  }, [session]);
 
   const fetchListing = async () => {
     try {

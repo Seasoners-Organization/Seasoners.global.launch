@@ -1,13 +1,36 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import AnimatedPage from "../../../components/AnimatedPage";
 import Toast from "../../../components/Toast";
 import { motion } from "framer-motion";
 import { useLanguage } from "../../../components/LanguageProvider";
+import { detectLanguage } from "../../../utils/translation";
+
+// Helper functions for date formatting
+const isSameDay = (date1, date2) => {
+  return date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear();
+};
+
+const formatDateSeparator = (date) => {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  if (isSameDay(date, today)) return 'Today';
+  if (isSameDay(date, yesterday)) return 'Yesterday';
+  
+  const daysDiff = Math.floor((today - date) / (1000 * 60 * 60 * 24));
+  if (daysDiff < 7) return date.toLocaleDateString('en-US', { weekday: 'long' });
+  
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined });
+};
 
 export default function MessagesPage() {
   const { data: session, status } = useSession();
@@ -26,6 +49,11 @@ export default function MessagesPage() {
   const [emailVisible, setEmailVisible] = useState(false);
   const [phoneVisible, setPhoneVisible] = useState(false);
   const [toast, setToast] = useState({ message: '', type: 'success' });
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [translatedMessages, setTranslatedMessages] = useState(new Map());
+  const [translatingId, setTranslatingId] = useState(null);
+  const messagesEndRef = useRef(null);
+  const pollingIntervalRef = useRef(null);
 
   const listingId = searchParams.get("listingId");
 
@@ -39,7 +67,25 @@ export default function MessagesPage() {
     fetchRecipient();
     if (listingId) fetchListing();
     fetchThread();
+    
+    // Set up polling for new messages every 10 seconds
+    pollingIntervalRef.current = setInterval(() => {
+      fetchThread(true); // silent refresh
+    }, 10000);
+    
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+      }
+    };
   }, [session, status, params.userId, listingId]);
+  
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (messagesEndRef.current && messages.length > 0) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const fetchRecipient = async () => {
     try {
@@ -80,18 +126,31 @@ export default function MessagesPage() {
     }
   };
 
-  const fetchThread = async () => {
+  const fetchThread = async (silent = false) => {
     try {
+      if (!silent) setIsRefreshing(true);
       const url = `/api/messages/thread?userId=${params.userId}${listingId ? `&listingId=${listingId}` : ''}`;
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        }
+      });
       const data = await res.json();
       if (res.ok) {
         setMessages(Array.isArray(data.messages) ? data.messages : []);
+        // Trigger navbar unread count update
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('messagesRead'));
+        }
       } else {
-        setThreadError(data.error || 'Failed to load messages');
+        if (!silent) setThreadError(data.error || 'Failed to load messages');
       }
     } catch (err) {
-      setThreadError('Failed to load messages');
+      if (!silent) setThreadError('Failed to load messages');
+    } finally {
+      if (!silent) setIsRefreshing(false);
     }
   };
 
@@ -128,7 +187,13 @@ export default function MessagesPage() {
     } finally {
       setSending(false);
       setInput('');
-      setTimeout(fetchThread, 500); // refresh thread
+      setTimeout(() => {
+        fetchThread(true);
+        // Trigger navbar unread count update after sending
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('messageSent'));
+        }
+      }, 500);
     }
   };
 
@@ -143,6 +208,39 @@ export default function MessagesPage() {
     if (recipient?.phoneNumber) {
       navigator.clipboard.writeText(recipient.phoneNumber);
       setToast({ message: 'Phone copied to clipboard!', type: 'success' });
+    }
+  };
+
+  const handleTranslate = async (messageId, text) => {
+    setTranslatingId(messageId);
+    try {
+      // Use browser's language preference or user's preferredLanguage
+      const targetLang = session?.user?.preferredLanguage || navigator.language.split('-')[0] || 'en';
+      
+      // Simple translation using browser API (experimental)
+      // For production, you'd want to use Google Translate API, DeepL, etc.
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          text, 
+          targetLang,
+          sourceLang: detectLanguage(text)
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setTranslatedMessages(prev => new Map(prev).set(messageId, data.translatedText));
+      } else {
+        // Fallback: show a notice
+        setTranslatedMessages(prev => new Map(prev).set(messageId, `[Auto-translate unavailable]`));
+      }
+    } catch (error) {
+      console.error('Translation failed:', error);
+      setToast({ message: 'Translation service unavailable', type: 'error' });
+    } finally {
+      setTranslatingId(null);
     }
   };
 
@@ -197,11 +295,15 @@ export default function MessagesPage() {
               <div className="mb-6 p-6 bg-gradient-to-r from-sky-50 to-amber-50 rounded-2xl border border-sky-200">
                 <div className="flex items-start gap-4">
                   {listing.photos && listing.photos[0] && (
-                    <img
-                      src={listing.photos[0]}
-                      alt={listing.title}
-                      className="w-24 h-24 rounded-lg object-cover flex-shrink-0"
-                    />
+                    <div className="relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+                      <Image
+                        src={listing.photos[0]}
+                        alt={listing.title}
+                        fill
+                        sizes="96px"
+                        className="object-cover"
+                      />
+                    </div>
                   )}
                   <div className="flex-1">
                     <p className="text-xs text-sky-600 font-semibold uppercase mb-1">Contact About This Listing</p>
@@ -229,11 +331,15 @@ export default function MessagesPage() {
               {/* Header */}
               <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
                 {recipient?.profilePicture ? (
-                  <img
-                    src={recipient.profilePicture}
-                    alt={recipient.name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={recipient.profilePicture}
+                      alt={recipient.name}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </div>
                 ) : (
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-sky-600 to-sky-800 flex items-center justify-center text-white font-semibold text-2xl">
                     {recipient?.name?.charAt(0).toUpperCase() || 'U'}
@@ -262,31 +368,73 @@ export default function MessagesPage() {
 
               {/* Messages Thread */}
               <div className="mb-8">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('conversation') || t('messagesTitle')}</h2>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-slate-900">{t('conversation') || t('messagesTitle')}</h2>
+                  <button
+                    onClick={() => fetchThread(false)}
+                    disabled={isRefreshing}
+                    className="px-3 py-1.5 text-xs font-medium text-sky-600 hover:bg-sky-50 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1"
+                  >
+                    <svg className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    {isRefreshing ? 'Refreshing...' : 'Refresh'}
+                  </button>
+                </div>
                 {threadError && (
                   <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">{threadError}</div>
                 )}
-                <div className="max-h-[340px] overflow-y-auto space-y-3 pr-1">
+                <div className="max-h-[400px] overflow-y-auto space-y-3 pr-1 scroll-smooth">
                   {messages.length === 0 && !threadError && (
-                    <div className="p-4 bg-slate-50 rounded-lg text-sm text-slate-600">
-                      {t('emptyThread')}
+                    <div className="p-8 bg-gradient-to-br from-slate-50 to-sky-50 rounded-2xl text-center border-2 border-dashed border-slate-200">
+                      <div className="text-4xl mb-3">💬</div>
+                      <p className="text-sm font-medium text-slate-700 mb-1">{t('emptyThread')}</p>
+                      <p className="text-xs text-slate-500">Send your first message below</p>
                     </div>
                   )}
-                  {messages.map(msg => {
+                  {messages.map((msg, idx) => {
                     const isMine = msg.senderId === (session?.user?.id);
+                    const prevMsg = idx > 0 ? messages[idx - 1] : null;
+                    const showDateSeparator = !prevMsg || !isSameDay(new Date(prevMsg.createdAt), new Date(msg.createdAt));
                     return (
-                      <div
-                        key={msg.id}
-                        className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
-                      >
-                        <div className={`max-w-xs md:max-w-sm px-4 py-2 rounded-2xl text-sm shadow-sm border ${isMine ? 'bg-sky-600 text-white border-sky-500' : 'bg-slate-100 text-slate-800 border-slate-200'}`}
-                        >
-                          <p className="whitespace-pre-wrap break-words">{msg.body}</p>
-                          <p className={`mt-1 text-[10px] ${isMine ? 'text-sky-100/80' : 'text-slate-500'}`}>{new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}{msg.optimistic ? ' …' : ''}</p>
+                      <div key={msg.id}>
+                        {showDateSeparator && (
+                          <div className="flex items-center justify-center my-4">
+                            <span className="px-3 py-1 bg-slate-200 text-slate-600 text-xs font-medium rounded-full">
+                              {formatDateSeparator(new Date(msg.createdAt))}
+                            </span>
+                          </div>
+                        )}
+                        <div className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`max-w-xs md:max-w-sm px-4 py-2 rounded-2xl text-sm shadow-sm border ${isMine ? 'bg-sky-600 text-white border-sky-500' : 'bg-slate-100 text-slate-800 border-slate-200'}`}>
+                            <p className="whitespace-pre-wrap break-words">{msg.body}</p>
+                            {translatedMessages.has(msg.id) && (
+                              <div className={`mt-2 pt-2 border-t ${isMine ? 'border-sky-400' : 'border-slate-300'}`}>
+                                <p className={`text-xs ${isMine ? 'text-sky-100' : 'text-slate-500'} mb-1`}>🌐 Translated:</p>
+                                <p className="whitespace-pre-wrap break-words">{translatedMessages.get(msg.id)}</p>
+                              </div>
+                            )}
+                            <div className="flex items-center justify-between mt-1">
+                              <p className={`text-[10px] ${isMine ? 'text-sky-100/80' : 'text-slate-500'}`}>
+                                {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}{msg.optimistic ? ' …' : ''}
+                              </p>
+                              {!isMine && !msg.optimistic && !translatedMessages.has(msg.id) && (
+                                <button
+                                  onClick={() => handleTranslate(msg.id, msg.body)}
+                                  disabled={translatingId === msg.id}
+                                  className="text-[10px] ml-2 px-2 py-0.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 transition disabled:opacity-50"
+                                  title="Translate this message"
+                                >
+                                  {translatingId === msg.id ? '...' : '🌐'}
+                                </button>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     );
                   })}
+                  <div ref={messagesEndRef} />
                 </div>
                 {/* Message Form */}
                 <form onSubmit={handleSend} className="mt-4 flex gap-3">

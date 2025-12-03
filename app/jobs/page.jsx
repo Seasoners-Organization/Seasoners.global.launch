@@ -1,5 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import AnimatedPage from "../../components/AnimatedPage";
@@ -17,10 +18,13 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ListingGridSkeleton } from "../../components/SkeletonLoader";
 import EmptyState from "../../components/EmptyState";
 import ErrorState from "../../components/ErrorState";
+import { useUserProfile } from "../../hooks/useUserProfile";
+import { SkeletonGrid } from "../../components/SkeletonCard";
 
 export default function JobsPage() {
   const { data: session } = useSession();
   const { t } = useLanguage();
+  const { user } = useUserProfile();
   const [filteredJobs, setFilteredJobs] = useState([]);
   const router = useRouter();
   const pathname = usePathname();
@@ -30,23 +34,9 @@ export default function JobsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showSubscriptionGate, setShowSubscriptionGate] = useState(false);
-  const [userCanContact, setUserCanContact] = useState(false);
   const [contactingId, setContactingId] = useState(null);
 
-  useEffect(() => {
-    if (session?.user) {
-      fetch('/api/user/me')
-        .then(res => res.json())
-        .then(data => {
-          if (data.user) {
-            setUserCanContact(canContactSellers(data.user));
-          }
-        })
-        .catch(err => {
-          // Failed to fetch user details
-        });
-    }
-  }, [session]);
+  const userCanContact = user ? canContactSellers(user) : false;
 
   const handleContactEmployer = (e, listing) => {
     e.preventDefault();
@@ -110,7 +100,7 @@ export default function JobsPage() {
         <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-8">
           <FilterSidebar context="jobs" listings={jobs} onFiltered={setFilteredJobs} />
           <div>
-            {loading && <ListingGridSkeleton count={6} />}
+            {loading && <SkeletonGrid count={6} />}
             
             {error && (
               <ErrorState
@@ -136,11 +126,12 @@ export default function JobsPage() {
                     {job.photos && job.photos.length > 0 && (
                       <a href={`/listings/${job.id}`} className="block">
                         <div className="relative aspect-[4/3] overflow-hidden">
-                          <img 
+                          <Image 
                             src={job.photos[0]} 
                             alt={job.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover hover:scale-105 transition-transform duration-300"
                           />
                           {job.photos.length > 1 && (
                             <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
@@ -153,11 +144,15 @@ export default function JobsPage() {
                     <div className="p-5 pb-4 border-b border-slate-100">
                       <div className="flex items-center gap-3">
                         {job.user?.profilePicture ? (
-                          <img 
-                            src={job.user.profilePicture} 
-                            alt={job.user.name}
-                            className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-                          />
+                          <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                            <Image 
+                              src={job.user.profilePicture} 
+                              alt={job.user.name}
+                              fill
+                              sizes="64px"
+                              className="object-cover"
+                            />
+                          </div>
                         ) : (
                           <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
                             {job.user?.name?.charAt(0).toUpperCase() || 'U'}
@@ -236,10 +231,12 @@ export default function JobsPage() {
                 {job.photos && job.photos.length > 0 && (
                   <a href={`/listings/${job.id}`} className="block">
                     <div className="relative aspect-[4/3] overflow-hidden">
-                      <img 
+                      <Image 
                         src={job.photos[0]} 
                         alt={job.title}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover hover:scale-105 transition-transform duration-300"
                       />
                       {job.photos.length > 1 && (
                         <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
@@ -254,11 +251,15 @@ export default function JobsPage() {
                 <div className="p-5 pb-4 border-b border-slate-100">
                   <div className="flex items-center gap-3">
                     {job.user?.profilePicture ? (
-                      <img 
-                        src={job.user.profilePicture} 
-                        alt={job.user.name}
-                        className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-                      />
+                      <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                        <Image 
+                          src={job.user.profilePicture} 
+                          alt={job.user.name}
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                        />
+                      </div>
                     ) : (
                       <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
                         {job.user?.name?.charAt(0).toUpperCase() || 'U'}

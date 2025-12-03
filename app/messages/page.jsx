@@ -15,6 +15,7 @@ export default function MessagesInbox() {
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -27,19 +28,27 @@ export default function MessagesInbox() {
     fetchInbox();
   }, [session, status, router]);
 
-  const fetchInbox = async () => {
+  const fetchInbox = async (silent = false) => {
     try {
-      const res = await fetch('/api/messages/inbox');
+      if (!silent) setIsRefreshing(true);
+      const res = await fetch('/api/messages/inbox', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        }
+      });
       const data = await res.json();
       if (res.ok) {
         setConversations(Array.isArray(data.conversations) ? data.conversations : []);
       } else {
-        setError(data.error || 'Failed to load inbox');
+        if (!silent) setError(data.error || 'Failed to load inbox');
       }
     } catch (err) {
-      setError('Failed to load inbox');
+      if (!silent) setError('Failed to load inbox');
     } finally {
       setLoading(false);
+      if (!silent) setIsRefreshing(false);
     }
   };
 
@@ -68,29 +77,45 @@ export default function MessagesInbox() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-bold text-sky-900 mb-2">{t('messagesTitle')}</h1>
-            <p className="text-slate-600 mb-8">{t('messagesSubtitle')}</p>
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h1 className="text-4xl font-bold text-sky-900 mb-2">{t('messagesTitle')}</h1>
+                <p className="text-slate-600">{t('messagesSubtitle')}</p>
+              </div>
+              <button
+                onClick={() => fetchInbox(false)}
+                disabled={isRefreshing}
+                className="px-4 py-2 text-sm font-medium text-sky-600 hover:bg-sky-50 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
+              >
+                <svg className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              </button>
+            </div>
 
             {error && (
               <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>
             )}
             {conversations.length === 0 && !error ? (
-              <div className="bg-white rounded-2xl shadow-md border border-slate-200 p-12 text-center">
-                <div className="text-6xl mb-4">💬</div>
-                <h2 className="text-2xl font-semibold text-slate-800 mb-2">{t('noMessagesYet') || t('emptyThread')}</h2>
-                <p className="text-slate-600 mb-6">{t('startConversationPrompt') || t('messagesSubtitle')}</p>
-                <div className="flex gap-4 justify-center">
+              <div className="bg-gradient-to-br from-white via-sky-50 to-amber-50 rounded-2xl shadow-lg border-2 border-slate-200 p-16 text-center">
+                <div className="text-7xl mb-6">💬</div>
+                <h2 className="text-3xl font-bold text-slate-900 mb-3">{t('noMessagesYet') || 'No messages yet'}</h2>
+                <p className="text-slate-600 text-lg mb-8 max-w-md mx-auto">{t('startConversationPrompt') || 'Start connecting with hosts and employers to find your next adventure!'}</p>
+                <div className="flex gap-4 justify-center flex-wrap">
                   <a
                     href="/stays"
-                    className="px-6 py-3 bg-sky-600 text-white rounded-xl font-semibold hover:bg-sky-700 transition-colors"
+                    className="px-8 py-4 bg-gradient-to-r from-sky-600 to-sky-700 text-white rounded-xl font-bold hover:from-sky-700 hover:to-sky-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2"
                   >
-                    {t('browseStays')}
+                    <span>🏡</span>
+                    {t('browseStays') || 'Browse Stays'}
                   </a>
                   <a
                     href="/jobs"
-                    className="px-6 py-3 bg-white border-2 border-slate-300 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-colors"
+                    className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-xl font-bold hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2"
                   >
-                    {t('findJobs')}
+                    <span>💼</span>
+                    {t('findJobs') || 'Find Jobs'}
                   </a>
                 </div>
               </div>

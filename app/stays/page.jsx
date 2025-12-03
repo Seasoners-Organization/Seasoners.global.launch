@@ -1,11 +1,13 @@
 "use client";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import AnimatedPage from "../../components/AnimatedPage";
 import SubscriptionGate from "../../components/SubscriptionGate";
 import TrustBadge from "../../components/TrustBadge";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { REGIONS } from "../../utils/regions";
 import { SEASONS, locationSeasonMap } from "../../utils/destinations";
@@ -17,10 +19,13 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ListingGridSkeleton } from "../../components/SkeletonLoader";
 import EmptyState from "../../components/EmptyState";
 import ErrorState from "../../components/ErrorState";
+import { useUserProfile } from "../../hooks/useUserProfile";
+import { SkeletonGrid } from "../../components/SkeletonCard";
 
 export default function StaysPage() {
   const { data: session } = useSession();
   const { t } = useLanguage();
+  const { user } = useUserProfile();
   // Sidebar will manage filters; keep a local filtered list state
   const [filteredStays, setFilteredStays] = useState([]);
   const router = useRouter();
@@ -31,23 +36,9 @@ export default function StaysPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showSubscriptionGate, setShowSubscriptionGate] = useState(false);
-  const [userCanContact, setUserCanContact] = useState(false);
   const [contactingId, setContactingId] = useState(null);
 
-  useEffect(() => {
-    if (session?.user) {
-      fetch('/api/user/me')
-        .then(res => res.json())
-        .then(data => {
-          if (data.user) {
-            setUserCanContact(canContactSellers(data.user));
-          }
-        })
-        .catch(err => {
-          // Failed to fetch user details
-        });
-    }
-  }, [session]);
+  const userCanContact = user ? canContactSellers(user) : false;
 
   const handleContactSeller = (e, listing) => {
     e.preventDefault();
@@ -106,7 +97,7 @@ export default function StaysPage() {
         <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-8">
           <FilterSidebar context="stays" listings={stays} onFiltered={setFilteredStays} />
           <div>
-            {loading && <ListingGridSkeleton count={6} />}
+            {loading && <SkeletonGrid count={6} />}
             
             {error && (
               <ErrorState
@@ -132,11 +123,12 @@ export default function StaysPage() {
                     {stay.photos && stay.photos.length > 0 && (
                       <a href={`/listings/${stay.id}`} className="block">
                         <div className="relative aspect-[4/3] overflow-hidden">
-                          <img 
+                          <Image 
                             src={stay.photos[0]} 
                             alt={stay.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover hover:scale-105 transition-transform duration-300"
                           />
                           {stay.photos.length > 1 && (
                             <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
@@ -149,11 +141,15 @@ export default function StaysPage() {
                     <div className="p-5 pb-4 border-b border-slate-100">
                       <div className="flex items-center gap-3">
                         {stay.user?.profilePicture ? (
-                          <img 
-                            src={stay.user.profilePicture} 
-                            alt={stay.user.name}
-                            className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-                          />
+                          <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                            <Image
+                              src={stay.user.profilePicture} 
+                              alt={stay.user.name}
+                              fill
+                              sizes="64px"
+                              className="object-cover"
+                            />
+                          </div>
                         ) : (
                           <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
                             {stay.user?.name?.charAt(0).toUpperCase() || 'U'}

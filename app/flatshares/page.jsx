@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import RoommateIndicator from '../../components/RoommateIndicator';
 import { useLanguage } from '../../components/LanguageProvider';
 import FilterSidebar from '../../components/FilterSidebar';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ListingGridSkeleton } from '../../components/SkeletonLoader';
+import { SkeletonGrid } from '../../components/SkeletonCard';
 import EmptyState from '../../components/EmptyState';
 import ErrorState from '../../components/ErrorState';
 
@@ -77,7 +78,7 @@ export default function FlatsharesPage() {
             <FilterSidebar context="flatshares" listings={listings} onFiltered={setFiltered} />
             <div>
               {loading ? (
-                <ListingGridSkeleton count={6} />
+                <SkeletonGrid count={6} />
               ) : filtered.length === 0 ? (
                 <EmptyState
                   icon="🏠"
@@ -97,11 +98,12 @@ export default function FlatsharesPage() {
                       {listing.photos && listing.photos.length > 0 && (
                         <Link href={`/listings/${listing.id}`} className="block">
                           <div className="relative aspect-[4/3] overflow-hidden">
-                            <img 
+                            <Image 
                               src={listing.photos[0]} 
                               alt={listing.title}
-                              loading="lazy"
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                              className="object-cover hover:scale-105 transition-transform duration-300"
                             />
                             {listing.photos.length > 1 && (
                               <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
@@ -114,11 +116,15 @@ export default function FlatsharesPage() {
                       <div className="p-5 pb-4 border-b border-slate-100">
                         <div className="flex items-center gap-3">
                           {listing.user?.profilePicture ? (
-                            <img 
-                              src={listing.user.profilePicture} 
-                              alt={listing.user.name}
-                              className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-                            />
+                            <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                              <Image 
+                                src={listing.user.profilePicture} 
+                                alt={listing.user.name}
+                                fill
+                                sizes="64px"
+                                className="object-cover"
+                              />
+                            </div>
                           ) : (
                             <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
                               {listing.user?.name?.charAt(0).toUpperCase() || 'U'}
