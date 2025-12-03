@@ -15,6 +15,7 @@ export default function Navbar() {
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false);
   const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const dropdownRef = useRef(null);
   const destinationsRef = useRef(null);
   const supportRef = useRef(null);
@@ -42,6 +43,24 @@ export default function Navbar() {
         .catch(err => {
           console.error('Failed to fetch user details:', err);
           // Don't show error to user, just use session data
+        });
+      
+      // Fetch unread message count
+      fetch('/api/messages/unread-count', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        }
+      })
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data?.unreadCount !== undefined) {
+            setUnreadCount(data.unreadCount);
+          }
+        })
+        .catch(err => {
+          console.error('Failed to fetch unread count:', err);
         });
     }
   }, [session]);
@@ -147,6 +166,11 @@ export default function Navbar() {
                   >
                     <span>💬</span>
                     <span>{t('messages')}</span>
+                    {unreadCount > 0 && (
+                      <span className="ml-auto flex items-center justify-center min-w-[20px] h-5 px-1.5 bg-red-500 text-white text-xs font-semibold rounded-full">
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    )}
                   </a>
 
                   <a
