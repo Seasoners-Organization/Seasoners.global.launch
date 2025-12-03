@@ -231,22 +231,12 @@ export function getTrustSuggestions(factors) {
   }
 
   // Response rate
-  if (factors.responseRate.percentage < 80) {
+  if (factors.responseRate && factors.responseRate.percentage < 80) {
     suggestions.push({
       action: 'Respond to inquiries within 24 hours',
       impact: factors.responseRate.max - factors.responseRate.earned,
       priority: 'low',
       link: null
-    });
-  }
-
-  // Community contribution
-  if (factors.communityContribution.earned < factors.communityContribution.max) {
-    suggestions.push({
-      action: 'Share your story or add cultural notes',
-      impact: factors.communityContribution.max - factors.communityContribution.earned,
-      priority: 'low',
-      link: '/about'
     });
   }
 
