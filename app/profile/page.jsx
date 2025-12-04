@@ -8,6 +8,9 @@ import Footer from "../../components/Footer";
 import AnimatedPage from "../../components/AnimatedPage";
 import TrustScoreDisplay from "../../components/TrustScoreDisplay";
 import ProfileEditor from "../../components/ProfileEditor";
+import ProfileCompletenessRoadmap from "../../components/ProfileCompletenessRoadmap";
+import SmartProfileTips from "../../components/SmartProfileTips";
+import InlineVerificationStatus from "../../components/InlineVerificationStatus";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 const PhoneVerification = dynamic(() => import("../../components/PhoneVerification"), { ssr: false });
@@ -395,6 +398,30 @@ export default function ProfilePage() {
                     {verificationToast}
                   </div>
                 )}
+
+                {/* Smart Profile Tips - Show contextual hints */}
+                <SmartProfileTips user={user} />
+
+                {/* Profile Completeness Roadmap - Interactive checklist */}
+                <ProfileCompletenessRoadmap 
+                  user={user} 
+                  onNavigate={(action) => {
+                    if (action === 'edit') {
+                      setActiveTab('edit');
+                    } else if (action === 'verify') {
+                      setActiveTab('verification');
+                    }
+                  }}
+                />
+
+                {/* Inline Verification Status - Clear verification progress */}
+                <InlineVerificationStatus 
+                  user={user}
+                  onEmailVerify={() => setActiveTab('verification')}
+                  onPhoneVerify={() => setActiveTab('verification')}
+                  onIdentityVerify={() => setActiveTab('verification')}
+                />
+
                 {/* Profile Insights */}
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Trust Score Card */}
