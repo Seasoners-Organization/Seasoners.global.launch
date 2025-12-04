@@ -3,6 +3,13 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SocialProof from "../components/SocialProof";
+import FeatureHighlights from "../components/FeatureHighlights";
+import TrustAndSafety from "../components/TrustAndSafety";
+import SubscriptionTiers from "../components/SubscriptionTiers";
+import FAQ from "../components/FAQ";
+import ZonePreview from "../components/ZonePreview";
+import HeroWithCTA from "../components/HeroWithCTA";
 import { useLanguage } from "../components/LanguageProvider";
 import { ZONES } from '../data/zones';
 
@@ -62,7 +69,7 @@ export default function HomePage() {
         </motion.p>
       </section>
 
-      {/* Mode selector */}
+      {/* Main Mode Selector */}
       <section className="max-w-6xl mx-auto px-6 pb-16">
         <div className="grid md:grid-cols-2 gap-6">
           <Card
@@ -82,85 +89,26 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Explore Seasons & Destinations */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
-        <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mb-6">Explore Seasons & Destinations</h2>
-        <div className="flex items-center gap-4 mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100">❄️ Winter</div>
-          <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100">☀️ Summer</div>
-        </div>
+      {/* Social Proof - Show community growth */}
+      <SocialProof />
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {ZONES.map((zone) => (
-            <a
-              key={zone.slug}
-              href={`/zones/${zone.slug}`}
-              className="group rounded-2xl border bg-white/80 p-4 shadow-sm hover:shadow-md transition"
-            >
-              <div className="h-36 w-full rounded-lg overflow-hidden bg-slate-100 mb-3 relative">
-                <Image src={zone.hero} alt={zone.title} fill className="object-cover" sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw" priority={false} />
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-sky-800">{zone.title}</h3>
-                  <p className="text-sm text-slate-600">{zone.summary}</p>
-                </div>
-                <div className="text-sky-600 font-semibold">→</div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
+      {/* Feature Highlights - Showcase key features */}
+      <FeatureHighlights />
 
-      {/* Story teaser */}
-      <section className="max-w-6xl mx-auto px-6 pb-12">
-        <div className="rounded-3xl border bg-white/70 backdrop-blur p-8 shadow-sm">
-          <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mb-3">{t('hpWhyTitle')}</h2>
-          <p className="text-slate-700 mb-4">{t('hpStorySnippet')}</p>
-          <a
-            href="/about"
-            className="inline-flex items-center px-4 py-2 rounded-md bg-sky-600 text-white hover:bg-sky-700"
-          >
-            {t('hpReadOurStory')} →
-          </a>
-        </div>
-      </section>
+      {/* Trust & Safety - Build confidence */}
+      <TrustAndSafety />
 
-      {/* Values */}
-      <section className="max-w-6xl mx-auto px-6 pb-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mb-6">{t('hpValuesTitle')}</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="rounded-2xl border bg-white/80 p-6">
-            <div className="text-3xl mb-3">🤝</div>
-            <h3 className="font-semibold text-sky-800 mb-1">{t('hpPillarConnection')}</h3>
-            <p className="text-sm text-slate-600">{t('pillarConnectionBody')}</p>
-          </div>
-          <div className="rounded-2xl border bg-white/80 p-6">
-            <div className="text-3xl mb-3">⚖️</div>
-            <h3 className="font-semibold text-sky-800 mb-1">{t('hpPillarFairness')}</h3>
-            <p className="text-sm text-slate-600">{t('pillarFairnessBody')}</p>
-          </div>
-          <div className="rounded-2xl border bg-white/80 p-6">
-            <div className="text-3xl mb-3">🌍</div>
-            <h3 className="font-semibold text-sky-800 mb-1">{t('hpPillarCulture')}</h3>
-            <p className="text-sm text-slate-600">{t('pillarCultureBody')}</p>
-          </div>
-        </div>
-      </section>
+      {/* Subscription Tiers - Show pricing options */}
+      <SubscriptionTiers />
 
-      {/* Agreement teaser */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
-        <div className="rounded-3xl border bg-white/80 backdrop-blur p-8 shadow-sm">
-          <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mb-3">{t('hpAgreementTeaserTitle')}</h2>
-          <p className="text-slate-700 mb-4">{t('hpAgreementTeaserBody')}</p>
-          <a
-            href="/agreement"
-            className="inline-flex items-center px-4 py-2 rounded-md border border-sky-600 text-sky-700 hover:bg-sky-50"
-          >
-            {t('hpExploreAgreement')} →
-          </a>
-        </div>
-      </section>
+      {/* Zone Preview - Updated with filters */}
+      <ZonePreview zones={ZONES} />
+
+      {/* FAQ - Reduce signup friction */}
+      <FAQ />
+
+      {/* Hero CTA - Strong call to action */}
+      <HeroWithCTA />
 
       <Footer />
     </main>
