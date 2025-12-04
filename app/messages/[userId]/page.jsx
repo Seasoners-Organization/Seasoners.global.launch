@@ -54,6 +54,7 @@ export default function MessagesPage() {
   const [translatingId, setTranslatingId] = useState(null);
   const messagesEndRef = useRef(null);
   const pollingIntervalRef = useRef(null);
+  const lastPollTimeRef = useRef(null);
 
   const listingId = searchParams.get("listingId");
 
@@ -68,10 +69,11 @@ export default function MessagesPage() {
     if (listingId) fetchListing();
     fetchThread();
     
-    // Set up polling for new messages every 10 seconds
+    // Set up optimized polling for new messages every 15 seconds (reduced from 10)
+    // Uses /api/messages/poll endpoint for incremental updates
     pollingIntervalRef.current = setInterval(() => {
-      fetchThread(true); // silent refresh
-    }, 10000);
+      pollNewMessages();
+    }, 15000);
     
     return () => {
       if (pollingIntervalRef.current) {
@@ -140,6 +142,7 @@ export default function MessagesPage() {
       const data = await res.json();
       if (res.ok) {
         setMessages(Array.isArray(data.messages) ? data.messages : []);
+        lastPollTimeRef.current = new Date().toISOString();
         // Trigger navbar unread count update
         if (typeof window !== 'undefined') {
           window.dispatchEvent(new CustomEvent('messagesRead'));
@@ -151,6 +154,40 @@ export default function MessagesPage() {
       if (!silent) setThreadError('Failed to load messages');
     } finally {
       if (!silent) setIsRefreshing(false);
+    }
+  };
+
+  const pollNewMessages = async () => {
+    // Optimized polling - only fetch messages since last check
+    try {
+      const since = lastPollTimeRef.current || new Date(Date.now() - 5 * 60 * 1000).toISOString();
+      const url = `/api/messages/poll?userId=${params.userId}&since=${encodeURIComponent(since)}&limit=50`;
+      const res = await fetch(url, {
+        cache: 'no-store',
+      });
+      
+      if (res.status === 429) {
+        // Rate limited - back off
+        return;
+      }
+
+      const data = await res.json();
+      if (res.ok && data.messages && data.messages.length > 0) {
+        // Append only new messages
+        setMessages(prev => {
+          const existingIds = new Set(prev.map(m => m.id));
+          const newMessages = data.messages.filter(m => !existingIds.has(m.id));
+          return [...prev, ...newMessages];
+        });
+        lastPollTimeRef.current = data.timestamp;
+        
+        // Trigger navbar unread count update
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('messagesRead'));
+        }
+      }
+    } catch (err) {
+      // Silent fail for polling - don't disrupt UX
     }
   };
 

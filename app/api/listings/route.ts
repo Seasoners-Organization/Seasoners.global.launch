@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { REGION_DISPLAY_TO_ENUM } from '../../../utils/regions';
 import { trackActivity } from '../../../utils/activity-tracker';
 import { sendListingPublishedEmail } from '@/utils/onboarding-emails';
+import { rateLimit } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,6 +15,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: 'Unauthorized. Please sign in.' },
         { status: 401 }
+      );
+    }
+
+    // Rate limit: max 5 listings created per hour per user
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+               req.headers.get('x-real-ip') ||
+               'unknown';
+    const userId = (session.user as any)?.id || session.user.email;
+    const result = rateLimit(`listing-create-${userId}-${ip}`, 5, 3600000);
+    if (!result.success) {
+      return NextResponse.json(
+        { error: 'Too many listings created. Please wait an hour before creating more.' },
+        { status: 429, headers: { 'Retry-After': String(result.retryAfter) } }
       );
     }
 
@@ -145,6 +159,18 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
+    // Rate limit: max 60 listing fetches per minute per IP
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+               req.headers.get('x-real-ip') ||
+               'unknown';
+    const result = rateLimit(`listing-fetch-${ip}`, 60, 60000);
+    if (!result.success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please slow down.' },
+        { status: 429, headers: { 'Retry-After': String(result.retryAfter) } }
+      );
+    }
+
     // If no database configured, return empty array to allow builds to succeed
     if (!process.env.DATABASE_URL) {
       return NextResponse.json({ listings: [] }, { status: 200 });
