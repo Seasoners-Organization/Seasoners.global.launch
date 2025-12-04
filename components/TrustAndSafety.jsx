@@ -32,7 +32,7 @@ export default function TrustAndSafety() {
     {
       icon: '🆔',
       title: 'Government ID Verification',
-      description: 'Premium users verify their identity with government-issued ID documents.',
+      description: 'Coming soon - We\'re building this feature for premium users.',
     },
     {
       icon: '⭐',

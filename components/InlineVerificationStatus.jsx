@@ -59,10 +59,10 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
     {
       id: 'identity',
       label: 'Government ID',
-      description: 'Unlocks premium features & trust',
+      description: 'Coming soon - we\'re building this feature',
       isVerified: !!user?.identityVerified,
       icon: '🆔',
-      onVerify: onIdentityVerify,
+      onVerify: null, // Disabled while in development
     },
   ];
 
@@ -139,7 +139,7 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
                 <p className="mb-2">
                   {verification.id === 'email' && 'Check your email for a verification link. You have 24 hours to verify.'}
                   {verification.id === 'phone' && 'We\'ll send you a code via SMS. This usually takes less than a minute.'}
-                  {verification.id === 'identity' && 'Upload a clear photo of your government ID. Takes about 5-10 minutes.'}
+                  {verification.id === 'identity' && '🔨 We\'re currently building this feature. Government ID verification coming soon!'}
                 </p>
                 <div className="text-xs text-slate-600 italic">
                   💡 Verified users get priority in search results

@@ -56,11 +56,11 @@ export async function GET(req: Request) {
       phone: user.phoneNumber,
       region: null, // Not using region in calculation yet
       preferredLanguage: (user as any).preferredLanguage,
-      bio: (user as any).bio,
+      bio: (user as any).aboutMe || (user as any).bio,
       emailVerified: !!user.emailVerified,
       phoneVerified: !!user.phoneVerified,
       identityVerified: user.identityVerified === 'VERIFIED',
-      responseRate: user.responseRate,
+      responseRate: (user.responseRate ?? 0),
       completedAgreements: (user as any).completedAgreements || 0,
       completedStays: (user as any).completedStays || 0,
       reviewsGiven: (user as any).reviewsGivenCount || 0,
@@ -76,8 +76,8 @@ export async function GET(req: Request) {
     const trustData: any = calculateTrustScore(userForCalc);
     const suggestions: any = getTrustSuggestions(trustData.factors);
 
-    // Update user's trust score in DB (async, don't wait)
-    (prisma.user.update({
+    // Update user's trust score in DB synchronously
+    await (prisma.user.update({
       where: { id: user.id },
       data: {
         trustScore: trustData.score,
