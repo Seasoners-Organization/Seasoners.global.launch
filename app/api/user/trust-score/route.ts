@@ -34,6 +34,21 @@ export async function GET(req: Request) {
       );
     }
 
+    // Count user's listings by type
+    const stayListings = await prisma.listing.count({
+      where: {
+        userId: user.id,
+        type: 'STAY'
+      }
+    });
+
+    const jobListings = await prisma.listing.count({
+      where: {
+        userId: user.id,
+        type: 'JOB'
+      }
+    });
+
     // Transform verification status to boolean
     const userForCalc = {
       name: user.name,
@@ -53,6 +68,8 @@ export async function GET(req: Request) {
       storiesShared: (user as any).storiesShared || 0,
       culturalNotesAdded: (user as any).culturalNotesAdded || 0,
       helpfulFlags: (user as any).helpfulFlags || 0,
+      hasStayListing: stayListings > 0,
+      hasJobListing: jobListings > 0,
     };
 
     // Calculate fresh trust score
