@@ -100,11 +100,12 @@ export default function MessagesPage() {
       
       setRecipient(data.user);
       
-      // Determine if contact info should be visible
-      // Email is hidden by default, user can choose to show if email and phone verified
-      const isVerified = data.user.emailVerified && data.user.phoneVerified;
-      const emailShown = data.user.emailPrivacy === 'VISIBLE' && isVerified;
-      const phoneShown = data.user.phonePrivacy === 'VISIBLE' && isVerified;
+      // Determine if contact info should be visible based on trust score and privacy settings
+      // Email/phone visible if: user has high trust (50+) AND has email/phone verified AND privacy setting allows
+      const trustScore = data.user.trustScore || 0;
+      const hasHighTrust = trustScore >= 50;
+      const emailShown = hasHighTrust && data.user.emailVerified && data.user.emailPrivacy === 'VISIBLE';
+      const phoneShown = hasHighTrust && data.user.phoneVerified && data.user.phonePrivacy === 'VISIBLE';
       
       setEmailVisible(emailShown);
       setPhoneVisible(phoneShown);
@@ -520,10 +521,7 @@ export default function MessagesPage() {
                 ) : (
                   <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
                     <p className="text-sm text-amber-800">
-                      <span className="font-semibold">Email hidden.</span> This user has reached a high trust level and opted to hide their email.
-                      {!recipient?.emailVerified && (
-                        <span className="block mt-2">They should verify their email to build more trust.</span>
-                      )}
+                      <span className="font-semibold">Email hidden.</span> {trustScore < 50 ? 'This user needs to build their trust score (currently ' + trustScore + '%) to share their email. Encourage them to verify their email, phone, and complete their profile.' : 'This user has chosen to hide their email address. They can share it directly in the conversation if they prefer.'}
                     </p>
                   </div>
                 )}
