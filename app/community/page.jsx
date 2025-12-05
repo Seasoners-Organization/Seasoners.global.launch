@@ -179,7 +179,7 @@ export default function CommunityForum() {
                   Share your story or ask the community
                 </p>
                 {session ? (
-                  <button className="w-full px-4 py-2 bg-white text-sky-600 rounded-lg font-semibold hover:bg-sky-50 transition-colors">
+                  <button onClick={() => alert('Community discussions coming soon! We\'re building the forum feature now.')} className="w-full px-4 py-2 bg-white text-sky-600 rounded-lg font-semibold hover:bg-sky-50 transition-colors">
                     ✏️ New Post
                   </button>
                 ) : (
@@ -324,7 +324,7 @@ export default function CommunityForum() {
 
               {/* Load More */}
               <div className="mt-8 text-center">
-                <button className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors">
+                <button onClick={() => alert('Community discussions feature coming soon!')} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors">
                   Load More Discussions
                 </button>
               </div>
