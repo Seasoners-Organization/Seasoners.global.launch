@@ -87,8 +87,8 @@ ${keysContext}
 
 Return ONLY a valid JSON object with the translated values, using the same keys. Do not include any other text or explanation.`;
 
-  const modelToUse = process.env.OPENAI_MODEL || 'gpt-4o';
-  // Use OPENAI_MODEL env var to allow switching to preview models (e.g. GPT-5.1-Codex-Max)
+  const modelToUse = process.env.OPENAI_MODEL || 'gpt-5.1-codex-max';
+  // Use OPENAI_MODEL env var to allow switching models (defaults to GPT-5.1-Codex-Max preview)
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
