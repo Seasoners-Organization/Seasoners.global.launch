@@ -27,30 +27,57 @@ export default function SocialProof() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Animate numbers on load
-    if (!loaded) {
-      setLoaded(true);
-      const targets = { users: 1250, listings: 380, connections: 890, countries: 12 };
-      const duration = 2000;
-      const startTime = Date.now();
+    // Fetch real stats from API
+    const fetchStats = async () => {
+      try {
+        const res = await fetch('/api/stats/public');
+        const data = await res.json();
+        
+        if (res.ok) {
+          // Animate from 0 to actual values
+          const targets = { 
+            users: data.users || 0, 
+            listings: data.listings || 0, 
+            connections: data.connections || 0, 
+            countries: data.countries || 0 
+          };
+          const duration = 2000;
+          const startTime = Date.now();
 
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
+          const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
 
-        setStats({
-          users: Math.floor(targets.users * progress),
-          listings: Math.floor(targets.listings * progress),
-          connections: Math.floor(targets.connections * progress),
-          countries: Math.floor(targets.countries * progress),
-        });
+            setStats({
+              users: Math.floor(targets.users * progress),
+              listings: Math.floor(targets.listings * progress),
+              connections: Math.floor(targets.connections * progress),
+              countries: Math.floor(targets.countries * progress),
+            });
 
-        if (progress < 1) {
-          requestAnimationFrame(animate);
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            }
+          };
+
+          animate();
+          setLoaded(true);
         }
-      };
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+        // Fallback to static values if API fails
+        setStats({
+          users: 1250,
+          listings: 380,
+          connections: 890,
+          countries: 12,
+        });
+        setLoaded(true);
+      }
+    };
 
-      animate();
+    if (!loaded) {
+      fetchStats();
     }
   }, [loaded]);
 
