@@ -1,7 +1,7 @@
 import GoogleProvider from 'next-auth/providers/google';
 import EmailProvider from 'next-auth/providers/email';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import zxcvbn from 'zxcvbn';
+import { zxcvbn } from '@zxcvbn-ts/core';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from './prisma';
 import { getResend } from './resend';

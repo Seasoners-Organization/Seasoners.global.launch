@@ -16,7 +16,7 @@ function rateLimit(ip: string, limit = 10, windowMs = 60_000) {
 
 import bcrypt from 'bcrypt';
 import disposableDomains from 'disposable-email-domains';
-import zxcvbn from 'zxcvbn';
+import { zxcvbn } from '@zxcvbn-ts/core';
 
 // Validation schema (password required)
 const registrationSchema = z.object({
