@@ -10,7 +10,7 @@ export default function SubscriptionTerms() {
         <div className="prose prose-sky max-w-none">
           <p><strong>Launch Offer:</strong> All subscriptions are <span style={{color:'#22c55e'}}>free</span> until the official paid launch date. You can sign up and enter your card details, but you will <strong>not</strong> be charged until we announce the start of paid subscriptions.</p>
           <ul>
-            <li>Your free trial lasts 30 days from the date you subscribe.</li>
+            <li>Your free trial lasts 7 days from the date you subscribe.</li>
             <li>You will be notified by email at least 7 days before your first payment is processed.</li>
             <li>You may cancel your subscription at any time before the paid period begins and you will not be charged.</li>
             <li>By subscribing now, you reserve your spot and lock in your launch offer benefits.</li>

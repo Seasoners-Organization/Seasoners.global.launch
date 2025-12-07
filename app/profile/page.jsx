@@ -34,6 +34,8 @@ export default function ProfilePage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deletingAccount, setDeletingAccount] = useState(false);
+  const [showCancelSubscriptionConfirm, setShowCancelSubscriptionConfirm] = useState(false);
+  const [cancellingSubscription, setCancellingSubscription] = useState(false);
   const [verificationToast, setVerificationToast] = useState("");
   const [toast, setToast] = useState(null);
   useEffect(() => {
@@ -196,6 +198,34 @@ export default function ProfilePage() {
       setDeletingAccount(false);
       setShowDeleteConfirm(false);
       setDeleteConfirmText("");
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    setCancellingSubscription(true);
+
+    try {
+      const response = await fetch('/api/subscription/cancel', {
+        method: 'POST',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setToast({ 
+          type: 'success', 
+          message: `Subscription cancelled. You\'ll keep access until ${new Date(data.endDate).toLocaleDateString()}`
+        });
+        // Refresh user data to reflect cancellation
+        setTimeout(() => fetchUserData(), 1500);
+      } else {
+        setToast({ type: 'error', message: data.error || 'Failed to cancel subscription' });
+      }
+    } catch (error) {
+      setToast({ type: 'error', message: 'Error cancelling subscription' });
+    } finally {
+      setCancellingSubscription(false);
+      setShowCancelSubscriptionConfirm(false);
     }
   };
 
@@ -694,7 +724,7 @@ export default function ProfilePage() {
                     )}
                     {user.subscriptionStatus === 'ACTIVE' && user.subscriptionTier !== 'FREE' && (
                       <button
-                        onClick={() => setToast({ type: 'info', message: 'Cancel subscription feature coming soon' })}
+                        onClick={() => setShowCancelSubscriptionConfirm(true)}
                         className="px-6 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition"
                       >
                         Cancel Subscription
@@ -819,6 +849,45 @@ export default function ProfilePage() {
           message={toast.message}
           onClose={() => setToast(null)}
         />
+      )}
+
+      {/* Cancel Subscription Confirmation Modal */}
+      {showCancelSubscriptionConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-xl max-w-md w-full p-6"
+          >
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Cancel Subscription?</h3>
+            <p className="text-slate-600 mb-4">
+              We're sad to see you go! Your subscription will be cancelled and you'll revert to the free plan after your current billing period ends.
+            </p>
+            
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
+              <p className="text-sm text-amber-800">
+                <strong>Access ends:</strong> {user.subscriptionExpiresAt ? formatExpiryDate(user.subscriptionExpiresAt) : 'N/A'}
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleCancelSubscription}
+                disabled={cancellingSubscription}
+                className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-300 disabled:cursor-not-allowed text-white rounded-lg font-medium transition"
+              >
+                {cancellingSubscription ? 'Cancelling...' : 'Yes, Cancel'}
+              </button>
+              <button
+                onClick={() => setShowCancelSubscriptionConfirm(false)}
+                disabled={cancellingSubscription}
+                className="flex-1 px-4 py-2 bg-slate-200 hover:bg-slate-300 disabled:bg-slate-100 text-slate-700 rounded-lg font-medium transition"
+              >
+                Keep Subscription
+              </button>
+            </div>
+          </motion.div>
+        </div>
       )}
     </main>
   );

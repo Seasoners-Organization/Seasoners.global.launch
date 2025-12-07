@@ -23,7 +23,7 @@ export default function HelpCenter() {
         },
         {
           q: "Is Seasoners free to use?",
-          a: "Browsing and basic features are free. We offer premium subscriptions with a 30-day free trial. After the trial, choose monthly or annual plans for unlimited listings, verification badges, and priority support."
+          a: "Browsing and basic features are free. We offer premium subscriptions with a 7-day free trial. After the trial, choose monthly or annual plans for unlimited listings, verification badges, and priority support."
         },
         {
           q: "What countries does Seasoners operate in?",
@@ -89,7 +89,7 @@ export default function HelpCenter() {
         },
         {
           q: "How does the subscription work?",
-          a: "Start with a 30-day free trial. After the trial, choose monthly or annual plans. Benefits include unlimited listings, verification badge, priority support, and early access to new features. Cancel anytime during the trial at no cost."
+          a: "Start with a 7-day free trial. After the trial, choose monthly or annual plans. Benefits include unlimited listings, verification badge, priority support, and early access to new features. Cancel anytime during the trial at no cost."
         },
         {
           q: "Can I cancel my subscription anytime?",
@@ -97,7 +97,7 @@ export default function HelpCenter() {
         },
         {
           q: "Do you offer refunds?",
-          a: "You can cancel during your 30-day free trial at no cost. After the trial, subscriptions can be canceled anytime but are non-refundable for the current billing period."
+          a: "You can cancel during your 7-day free trial at no cost. After the trial, subscriptions can be canceled anytime but are non-refundable for the current billing period."
         }
       ]
     },
