@@ -11,9 +11,10 @@ import { sendAgreementSignedEmail } from '../../../../utils/agreement-emails';
  */
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -28,7 +29,7 @@ export async function GET(
     }
 
     const agreement = await prisma.agreement.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         listing: true,
         host: {
@@ -71,9 +72,10 @@ export async function GET(
  */
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -88,7 +90,7 @@ export async function PATCH(
     }
 
     const agreement = await prisma.agreement.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!agreement) {
@@ -178,7 +180,7 @@ export async function PATCH(
       }
 
       const updatedAgreement = await prisma.agreement.update({
-        where: { id: params.id },
+        where: { id },
         data: {
           signatures,
           status: updatedStatus,
@@ -248,7 +250,7 @@ export async function PATCH(
       }
 
       const updatedAgreement = await prisma.agreement.update({
-        where: { id: params.id },
+        where: { id },
         data: { status: newStatus },
         include: {
           listing: true,
@@ -295,9 +297,10 @@ export async function PATCH(
  */
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -312,7 +315,7 @@ export async function DELETE(
     }
 
     const agreement = await prisma.agreement.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!agreement) {
@@ -335,7 +338,7 @@ export async function DELETE(
     }
 
     await prisma.agreement.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });

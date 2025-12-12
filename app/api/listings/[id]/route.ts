@@ -7,9 +7,10 @@ export const dynamic = 'force-dynamic';
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id: listingId } = await params;
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.email) {
@@ -29,8 +30,6 @@ export async function DELETE(
         { status: 404 }
       );
     }
-
-    const listingId = params.id;
 
     // Check if listing exists and belongs to user
     const listing = await prisma.listing.findUnique({
@@ -78,10 +77,10 @@ export async function DELETE(
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const listingId = params.id;
+    const { id: listingId } = await params;
 
     const listing = await prisma.listing.findUnique({
       where: { id: listingId },

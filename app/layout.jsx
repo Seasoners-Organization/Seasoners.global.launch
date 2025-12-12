@@ -66,21 +66,16 @@ export const viewport = {
 // components that use client hooks (like LanguageProvider) during build.
 export const dynamic = "force-dynamic";
 
-import nextDynamic from 'next/dynamic';
-
-// Load providers dynamically on the client only so `metadata` can remain
-// on this server layout and client hooks (useContext) are not invoked
-// during prerendering.
-const AppProviders = nextDynamic(() => import('./providers'), { ssr: false });
+import { RootLayoutClient } from './layout-client';
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased">
         <div className="fixed inset-0 bg-gradient-to-b from-sky-100 via-white to-amber-100 -z-10" />
-        <AppProviders>
+        <RootLayoutClient>
           {children}
-        </AppProviders>
+        </RootLayoutClient>
       </body>
     </html>
   );
