@@ -18,7 +18,7 @@
     "migrate:deploy": "./scripts/migrate-direct.sh"
   },
   "dependencies": {
-    "@auth/core": "^0.34.3",
+    "@auth/core": "^0.41.1",
     "@auth/prisma-adapter": "^2.11.1",
     "@aws-sdk/client-s3": "^3.927.0",
     "@aws-sdk/s3-presigned-post": "^3.927.0",
@@ -29,12 +29,13 @@
     "@zxcvbn-ts/language-common": "^3.0.4",
     "@zxcvbn-ts/language-en": "^3.0.2",
     "bcrypt": "^6.0.0",
+    "cookie": "^0.7.1",
     "disposable-email-domains": "^1.0.62",
     "framer-motion": "^11.0.0",
     "jspdf": "^3.0.3",
     "lucide-react": "^0.553.0",
     "multer": "^2.0.2",
-    "next": "15.1.6",
+    "next": "^15.5.9",
     "next-auth": "^4.24.13",
     "prisma": "^6.19.0",
     "react": "^18.3.1",
