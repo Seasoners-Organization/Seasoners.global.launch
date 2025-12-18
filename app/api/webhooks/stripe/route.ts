@@ -164,7 +164,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         subscriptionStatus: 'ACTIVE',
         stripeCustomerId: session.customer as string,
         stripeSubscriptionId: session.subscription as string,
-        subscriptionExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        subscriptionExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         isEarlyBird: isEarlyBird,
         earlyBirdSignupDate: isEarlyBird ? new Date() : undefined,
         waitlistStatus: isEarlyBird ? 'active' : undefined,
