@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { COUNTRY_CODES } from '@/utils/countryCodes';
-import { detectDefaultCountryCode } from '@/utils/localeCountry';
+import { detectDefaultCountryIso } from '@/utils/localeCountry';
 import { parsePhoneNumberFromString, AsYouType } from 'libphonenumber-js';
 
 export default function PhoneVerification({ userId, initialPhone, verified, onVerified, showSkip = false }) {
@@ -31,6 +31,36 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
     }
   }, [initialPhone]);
 
+  // Fallback: auto-load current user's phone if not provided
+  useEffect(() => {
+    if (!initialPhone && !localNumber) {
+      const controller = new AbortController();
+      (async () => {
+        try {
+          const res = await fetch('/api/user/me', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            signal: controller.signal,
+          });
+          if (!res.ok) return;
+          const data = await res.json();
+          const phoneNum = data?.phoneNumber || data?.phone || null;
+          if (phoneNum) {
+            const parsed = parsePhoneNumberFromString(phoneNum);
+            if (parsed) {
+              setCountryIso(parsed.country || detectDefaultCountryIso());
+              setLocalNumber(parsed.nationalNumber || '');
+              setPhone(`${parsed.countryCallingCode ? '+' + parsed.countryCallingCode : ''}${parsed.nationalNumber || ''}`);
+            }
+          }
+        } catch (_) {
+          // ignore
+        }
+      })();
+      return () => controller.abort();
+    }
+  }, [initialPhone, localNumber]);
+
   useEffect(() => {
     let timer;
     if (cooldown > 0) {
@@ -41,6 +71,26 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
 
   const selectedEntry = COUNTRY_CODES.find(e => e.iso === countryIso) || COUNTRY_CODES.find(e => e.code === '+43');
   const countryCode = selectedEntry?.code || '+43';
+
+  const isValid = useMemo(() => {
+    const digits = (localNumber || '').replace(/\D/g, '');
+    const e164 = `${countryCode}${digits}`;
+    try {
+      const p = parsePhoneNumberFromString(e164);
+      return !!p && p.isValid();
+    } catch (e) {
+      return false;
+    }
+  }, [countryCode, localNumber]);
+
+  const exampleFormatted = useMemo(() => {
+    try {
+      const ayt = new AsYouType(countryIso);
+      return `+${(countryCode || '+').replace('+', '')} ${ayt.input('1234567890')}`;
+    } catch {
+      return `${countryCode} 1234567890`;
+    }
+  }, [countryIso, countryCode]);
 
   const formattedE164 = () => {
     const digits = (localNumber || '').replace(/\D/g, '');
@@ -127,7 +177,19 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
         <select
           className="border rounded px-2 py-2 w-64"
           value={countryIso}
-          onChange={(e) => setCountryIso(e.target.value)}
+          onChange={(e) => {
+            const iso = e.target.value;
+            setCountryIso(iso);
+            // Reformat current local number to new country's national pattern
+            try {
+              const ayt = new AsYouType(iso);
+              const formatted = ayt.input((localNumber || '').replace(/\D/g, ''));
+              const national = formatted.replace(/^\+?\d+\s*/, '');
+              setLocalNumber(national);
+            } catch {
+              // noop
+            }
+          }}
           disabled={status === 'sending' || status === 'verifying'}
         >
           {COUNTRY_CODES.filter(({ name, code }) => {
@@ -157,7 +219,13 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
           placeholder={'Enter local number'}
           disabled={status === 'sending' || status === 'verifying'}
         />
+        {localNumber && !isValid && (
+          <p className="text-xs text-red-600 mt-1">Invalid phone format for selected country.</p>
+        )}
       </div>
+      {selectedEntry && (
+        <p className="text-xs text-slate-500">Example: {exampleFormatted}</p>
+      )}
       {phone && (
         <p className="text-xs text-slate-500">Sending to: {phone}</p>
       )}
@@ -178,12 +246,12 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
       <div className="flex gap-2">
         {!sent && (
           <button
-            className="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700"
-            onClick={sendCode}
-            disabled={!localNumber || status === 'sending' || cooldown > 0}
-          >
-            {status === 'sending' ? 'Sending...' : cooldown > 0 ? `Resend in ${cooldown}s` : 'Send Code'}
-          </button>
+             className="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700"
+             onClick={sendCode}
+             disabled={!localNumber || !isValid || status === 'sending' || cooldown > 0}
+           >
+             {status === 'sending' ? 'Sending...' : cooldown > 0 ? `Resend in ${cooldown}s` : 'Send Code'}
+           </button>
         )}
         {sent && (
           <button

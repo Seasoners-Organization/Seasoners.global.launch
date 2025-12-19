@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import twilio from 'twilio';
 import { prisma } from '@/lib/prisma';
+import { sendVerificationCompletedEmail } from '@/utils/onboarding-emails';
 
 const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_VERIFY_SERVICE_SID } = process.env;
 
@@ -63,6 +64,17 @@ export async function POST(req: Request) {
           }
         }
       });
+
+      // Send non-blocking verification completed email
+      try {
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        if (user && user.email) {
+          // fire-and-forget
+          sendVerificationCompletedEmail(user as any, 'phone').catch(() => {});
+        }
+      } catch (e) {
+        console.warn('sendVerificationCompletedEmail failed:', e);
+      }
 
       return NextResponse.json({
         message: 'Phone number verified successfully'
