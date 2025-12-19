@@ -1,39 +1,29 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import twilio from 'twilio';
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
+const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_VERIFY_SERVICE_SID } = process.env;
+
+if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_VERIFY_SERVICE_SID) {
+  console.warn('⚠️ Twilio env vars missing (TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_VERIFY_SERVICE_SID). Phone verification will fail.');
+}
 
 const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
+  TWILIO_ACCOUNT_SID || '',
+  TWILIO_AUTH_TOKEN || ''
 );
-const TWILIO_VERIFY_SERVICE_SID = process.env.TWILIO_VERIFY_SERVICE_SID || 'VA3f330d423cba8010c2a57cf1debfd348';
-
-// Cache verification codes with expiry (5 minutes)
-const verificationCodes = new Map();
-
-function generateCode() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-function storeCode(userId: string, code: string) {
-  verificationCodes.set(userId, {
-    code,
-    attempts: 0,
-    expires: Date.now() + 5 * 60 * 1000 // 5 minutes
-  });
-
-  // Clean up expired codes
-  setTimeout(() => {
-    verificationCodes.delete(userId);
-  }, 5 * 60 * 1000);
-}
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { action, userId, phoneNumber, code } = body;
+
+    if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_VERIFY_SERVICE_SID) {
+      return NextResponse.json(
+        { error: 'Phone verification not configured (Twilio env missing)' },
+        { status: 500 }
+      );
+    }
 
 
     if (action === 'send') {
