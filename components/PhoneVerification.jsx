@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { COUNTRY_CODES } from '@/utils/countryCodes';
 import { detectDefaultCountryCode } from '@/utils/localeCountry';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { parsePhoneNumberFromString, AsYouType } from 'libphonenumber-js';
 
 export default function PhoneVerification({ userId, initialPhone, verified, onVerified, showSkip = false }) {
-  const [countryCode, setCountryCode] = useState('+43');
+  const [countryIso, setCountryIso] = useState('AT');
   const [localNumber, setLocalNumber] = useState('');
   const [phone, setPhone] = useState(initialPhone || '');
   const [code, setCode] = useState('');
@@ -18,15 +18,16 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
     // Initialize localNumber/countryCode from initialPhone if provided
     if (initialPhone && initialPhone.startsWith('+')) {
       // naive split: country code up to 4 digits
-      const match = initialPhone.match(/^(\+\d{1,4})(\d.*)$/);
-      if (match) {
-        setCountryCode(match[1]);
-        setLocalNumber(match[2]);
+      const parsed = parsePhoneNumberFromString(initialPhone);
+      if (parsed) {
+        setCountryIso(parsed.country || 'AT');
+        // Set national part formatted for display
+        setLocalNumber(parsed.nationalNumber || initialPhone.replace(/^\+\d{1,4}/, ''));
       }
     } else {
       // Auto-detect country code from browser locale
-      const detected = detectDefaultCountryCode();
-      if (detected) setCountryCode(detected);
+      const detectedIso = detectDefaultCountryIso();
+      if (detectedIso) setCountryIso(detectedIso);
     }
   }, [initialPhone]);
 
@@ -38,10 +39,12 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
     return () => timer && clearInterval(timer);
   }, [cooldown]);
 
+  const selectedEntry = COUNTRY_CODES.find(e => e.iso === countryIso) || COUNTRY_CODES.find(e => e.code === '+43');
+  const countryCode = selectedEntry?.code || '+43';
+
   const formattedE164 = () => {
     const digits = (localNumber || '').replace(/\D/g, '');
-    const cc = (countryCode || '+').replace(/[^+\d]/g, '');
-    return `${cc}${digits}`;
+    return `${countryCode}${digits}`;
   };
 
   const isValidPhone = (e164) => {
@@ -112,7 +115,7 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
     <div className="space-y-3">
       <label className="block text-sm font-medium text-slate-700">Phone Number</label>
       <div className="flex gap-2">
-        <div className="flex flex-col w-60">
+        <div className="flex flex-col w-64">
         <input
           type="text"
           className="border rounded px-2 py-2 mb-2"
@@ -122,16 +125,16 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
           disabled={status === 'sending' || status === 'verifying'}
         />
         <select
-          className="border rounded px-2 py-2 w-44"
-          value={countryCode}
-          onChange={(e) => setCountryCode(e.target.value)}
+          className="border rounded px-2 py-2 w-64"
+          value={countryIso}
+          onChange={(e) => setCountryIso(e.target.value)}
           disabled={status === 'sending' || status === 'verifying'}
         >
           {COUNTRY_CODES.filter(({ name, code }) => {
             const q = countryQuery.toLowerCase();
             return !q || name.toLowerCase().includes(q) || code.includes(q);
-          }).map(({ code, name, flag }) => (
-            <option key={`${code}-${name}`} value={code}>
+          }).map(({ code, name, flag, iso }) => (
+            <option key={`${iso || code}-${name}`} value={iso || code}>
               {flag ? `${flag} ` : ''}{name} {code}
             </option>
           ))}
@@ -142,9 +145,14 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
           className="flex-1 border rounded px-3 py-2"
           value={localNumber}
           onChange={e => {
-            // allow digits and spaces only
-            const val = e.target.value.replace(/[^\d\s]/g, '');
-            setLocalNumber(val);
+            const raw = e.target.value.replace(/\D/g, '');
+            if (countryIso) {
+              const ayt = new AsYouType(countryIso);
+              const formatted = ayt.input(raw);
+              setLocalNumber(formatted.replace(/^\+?\d+\s*/, '') || raw);
+            } else {
+              setLocalNumber(raw);
+            }
           }}
           placeholder={'Enter local number'}
           disabled={status === 'sending' || status === 'verifying'}

@@ -22,3 +22,26 @@ export function detectDefaultCountryCode(): string | null {
   if (base === 'pt') return '+351';
   return null;
 }
+
+const REGION_TO_ISO: Record<string, string> = {
+  US: 'US', CA: 'CA', GB: 'GB', IE: 'IE', AU: 'AU', NZ: 'NZ',
+  AT: 'AT', DE: 'DE', CH: 'CH', FR: 'FR', ES: 'ES', IT: 'IT', PT: 'PT', NL: 'NL', BE: 'BE', DK: 'DK', SE: 'SE', NO: 'NO', FI: 'FI', PL: 'PL', CZ: 'CZ', SK: 'SK', HU: 'HU', RO: 'RO', BG: 'BG', HR: 'HR', SI: 'SI', GR: 'GR', TR: 'TR', UA: 'UA',
+  JP: 'JP', KR: 'KR', CN: 'CN', TW: 'TW', HK: 'HK', MO: 'MO', SG: 'SG', MY: 'MY', TH: 'TH', VN: 'VN', ID: 'ID', PH: 'PH', IN: 'IN', PK: 'PK', BD: 'BD', LK: 'LK',
+  AE: 'AE', SA: 'SA', IL: 'IL', EG: 'EG', MA: 'MA',
+  ZA: 'ZA', NG: 'NG', KE: 'KE',
+  MX: 'MX', BR: 'BR', AR: 'AR', CL: 'CL', CO: 'CO', PE: 'PE', EC: 'EC', UY: 'UY', PY: 'PY', BO: 'BO', VE: 'VE',
+};
+
+export function detectDefaultCountryIso(): string | null {
+  if (typeof navigator === 'undefined') return null;
+  const lang = navigator.languages?.[0] || navigator.language || '';
+  const region = lang.split('-')[1]?.toUpperCase() || '';
+  if (region && REGION_TO_ISO[region]) return REGION_TO_ISO[region];
+  const base = lang.split('-')[0]?.toLowerCase();
+  if (base === 'en') return 'GB';
+  if (base === 'de') return 'DE';
+  if (base === 'fr') return 'FR';
+  if (base === 'es') return 'ES';
+  if (base === 'pt') return 'PT';
+  return null;
+}
