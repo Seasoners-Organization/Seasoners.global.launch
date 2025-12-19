@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { COUNTRY_CODES } from '@/utils/countryCodes';
+import { detectDefaultCountryCode } from '@/utils/localeCountry';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 export default function PhoneVerification({ userId, initialPhone, verified, onVerified, showSkip = false }) {
   const [countryCode, setCountryCode] = useState('+43');
   const [localNumber, setLocalNumber] = useState('');
   const [phone, setPhone] = useState(initialPhone || '');
   const [code, setCode] = useState('');
+  const [countryQuery, setCountryQuery] = useState('');
   const [status, setStatus] = useState(verified ? 'verified' : 'idle');
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
@@ -20,6 +23,10 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
         setCountryCode(match[1]);
         setLocalNumber(match[2]);
       }
+    } else {
+      // Auto-detect country code from browser locale
+      const detected = detectDefaultCountryCode();
+      if (detected) setCountryCode(detected);
     }
   }, [initialPhone]);
 
@@ -37,10 +44,24 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
     return `${cc}${digits}`;
   };
 
+  const isValidPhone = (e164) => {
+    try {
+      const phone = parsePhoneNumberFromString(e164);
+      return !!phone && phone.isValid();
+    } catch (e) {
+      return false;
+    }
+  };
+
   const sendCode = async () => {
     setError('');
     setStatus('sending');
     const e164 = formattedE164();
+    if (!isValidPhone(e164)) {
+      setError('Invalid phone number format for selected country');
+      setStatus('idle');
+      return;
+    }
     const res = await fetch('/api/auth/verify-phone', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -62,6 +83,11 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
     setError('');
     setStatus('verifying');
     const e164 = phone || formattedE164();
+    if (!isValidPhone(e164)) {
+      setError('Invalid phone number format');
+      setStatus('code-sent');
+      return;
+    }
     const res = await fetch('/api/auth/verify-phone', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -86,18 +112,31 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
     <div className="space-y-3">
       <label className="block text-sm font-medium text-slate-700">Phone Number</label>
       <div className="flex gap-2">
+        <div className="flex flex-col w-60">
+        <input
+          type="text"
+          className="border rounded px-2 py-2 mb-2"
+          value={countryQuery}
+          onChange={(e) => setCountryQuery(e.target.value)}
+          placeholder="Search country"
+          disabled={status === 'sending' || status === 'verifying'}
+        />
         <select
           className="border rounded px-2 py-2 w-44"
           value={countryCode}
           onChange={(e) => setCountryCode(e.target.value)}
           disabled={status === 'sending' || status === 'verifying'}
         >
-          {COUNTRY_CODES.map(({ code, name, flag }) => (
+          {COUNTRY_CODES.filter(({ name, code }) => {
+            const q = countryQuery.toLowerCase();
+            return !q || name.toLowerCase().includes(q) || code.includes(q);
+          }).map(({ code, name, flag }) => (
             <option key={`${code}-${name}`} value={code}>
               {flag ? `${flag} ` : ''}{name} {code}
             </option>
           ))}
         </select>
+        </div>
         <input
           type="tel"
           className="flex-1 border rounded px-3 py-2"
