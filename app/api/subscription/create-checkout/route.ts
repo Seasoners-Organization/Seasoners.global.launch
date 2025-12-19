@@ -77,13 +77,14 @@ export async function POST(req: NextRequest) {
 
     // Create Stripe checkout session
     const trialDays = 7; // 7-day free trial
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
     const checkoutSession = await stripe.checkout.sessions.create({
       customer_email: isOneTime ? email : user.email,
       client_reference_id: isOneTime ? undefined : user.id,
       line_items: [{ price: priceId, quantity: 1 }],
       mode: isOneTime ? 'payment' : 'subscription',
-      success_url: `${returnUrl || process.env.NEXTAUTH_URL}?${isOneTime ? 'earlybird' : 'subscription'}=success`,
-      cancel_url: `${returnUrl || process.env.NEXTAUTH_URL}?${isOneTime ? 'earlybird' : 'subscription'}=cancelled`,
+      success_url: `${baseUrl}/subscribe/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/subscribe?cancelled=true`,
       metadata: {
         userId: isOneTime ? '' : user.id,
         email: isOneTime ? email : user.email,
@@ -92,6 +93,8 @@ export async function POST(req: NextRequest) {
         isEarlyBirdOneTime: isOneTime ? 'true' : 'false',
         launchTrial: !isOneTime ? 'true' : 'false',
       },
+      automatic_tax: { enabled: false },
+      billing_address_collection: 'auto',
       ...(isOneTime
         ? {}
         : {

@@ -98,6 +98,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const tier = metadata.tier as 'SEARCHER' | 'LISTER' | undefined;
   const isEarlyBird = metadata.isEarlyBird === 'true';
   const isEarlyBirdOneTime = metadata.isEarlyBirdOneTime === 'true';
+  const stripe = getStripe();
 
   if (mode === 'payment' && isEarlyBirdOneTime) {
     // ...existing code...
@@ -161,20 +162,29 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   // Subscription-based flow (Payment Link support)
   const userId = metadata.userId as string | undefined;
   if (userId && tier) {
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        subscriptionTier: tier,
-        subscriptionStatus: 'ACTIVE',
-        stripeCustomerId: session.customer as string,
-        stripeSubscriptionId: session.subscription as string,
-        subscriptionExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-        isEarlyBird: isEarlyBird,
-        earlyBirdSignupDate: isEarlyBird ? new Date() : undefined,
-        waitlistStatus: isEarlyBird ? 'active' : undefined,
-      } as any,
-    });
-    console.log(`Subscription activated for user ${userId} - ${tier}${isEarlyBird ? ' (Early-Bird)' : ''}`);
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (user) {
+      await prisma.user.update({
+        where: { id: userId },
+        data: {
+          subscriptionTier: tier,
+          subscriptionStatus: 'ACTIVE',
+          stripeCustomerId: session.customer as string,
+          stripeSubscriptionId: session.subscription as string,
+          subscriptionExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+          isEarlyBird: isEarlyBird,
+          earlyBirdSignupDate: isEarlyBird ? new Date() : undefined,
+          waitlistStatus: isEarlyBird ? 'active' : undefined,
+        } as any,
+      });
+      
+      // Send subscription confirmation email (non-blocking)
+      sendSubscriptionConfirmationEmail(user as any, { tier, startDate: new Date() }).catch(err => {
+        console.error('❌ Failed to send subscription confirmation email:', err);
+      });
+      
+      console.log(`Subscription activated for user ${userId} - ${tier}${isEarlyBird ? ' (Early-Bird)' : ''}`);
+    }
     return;
   }
 
@@ -222,6 +232,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
           subscriptionExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         },
       });
+      
+      // Send subscription confirmation email (non-blocking)
+      sendSubscriptionConfirmationEmail(user as any, { tier: detectedTier, startDate: new Date() }).catch(err => {
+        console.error('❌ Failed to send subscription confirmation email:', err);
+      });
+      
       console.log(`[Stripe Webhook] Payment Link: Upgraded user ${email} to ${detectedTier} (User ID: ${user.id})`);
     } else {
       console.warn(`[Stripe Webhook] Payment Link: No user found for email ${email}`);
