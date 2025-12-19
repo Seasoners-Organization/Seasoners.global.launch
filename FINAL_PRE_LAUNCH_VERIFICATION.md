@@ -1,6 +1,6 @@
 # ✅ FINAL PRE-LAUNCH VERIFICATION - READY TO SHIP
 
-**Date:** January 2025
+**Date:** December 19, 2025
 **Status:** 🟢 **CLEARED FOR PUBLIC LAUNCH**
 **Build Status:** ✅ Success (60 routes compiled, 0 errors)
 
@@ -139,11 +139,16 @@ Files Modified: 11
    - Verify subscription active
    - Test cancellation
 
-5. **Test Email** (once Resend key set)
-   - Register new account
-   - Verify welcome email received
-   - Test listing published email
-   - Check all email templates render correctly
+5. **Test Email / Resend** (once RESEND_API_KEY set)
+  - Confirm sender domain verified (SPF/DKIM/DMARC green) for `seasoners.eu`
+  - Ensure `EMAIL_FROM`, `EMAIL_FROM_SUPPORT`, `EMAIL_FROM_FOUNDER`, `EMAIL_REPLY_TO_SUPPORT`, `EMAIL_REPLY_TO_FOUNDER` set (or defaults ok)
+  - Register new account → welcome email received
+  - Complete checkout → subscription confirmation received
+  - Cancel subscription → cancellation email received
+  - Trigger payment failure (test card 4000 0000 0000 0341) → payment failed email received
+  - Create listing → listing published email received
+  - (Optional) Verification flow → verification completed email
+  - Check Resend dashboard for delivery/bounce
 
 6. **Quick QA Smoke Test**
    - Sign up (email & Google OAuth)
