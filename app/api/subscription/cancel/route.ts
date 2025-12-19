@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     // Cancel Stripe subscription
     const stripe = getStripe();
-    const subscription = await stripe.subscriptions.cancel(user.stripeSubscriptionId);
+    await stripe.subscriptions.cancel(user.stripeSubscriptionId);
 
     // Update user in database
     await prisma.user.update({
@@ -50,15 +50,9 @@ export async function POST(req: NextRequest) {
 
     console.log(`Subscription cancelled for user ${user.id}`);
 
-    // Calculate end date safely
-    const endDate = subscription.current_period_end 
-      ? new Date(subscription.current_period_end * 1000).toISOString()
-      : new Date().toISOString();
-
     return NextResponse.json({
       success: true,
       message: 'Subscription cancelled successfully',
-      endDate,
     });
 
   } catch (error) {
