@@ -141,7 +141,7 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="bg-white rounded-lg shadow-md p-8 mb-12"
+              className="bg-white rounded-lg shadow-md p-8"
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">
                 ⏱️ Response Times
@@ -167,76 +167,6 @@ export default function Contact() {
                   </div>
                   <p className="text-gray-600">General Inquiries</p>
                   <p className="text-sm text-gray-500">All inquiries</p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Office Information */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="bg-gradient-to-r from-blue-50 to-orange-50 rounded-lg p-8"
-            >
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    📍 Headquarters
-                  </h3>
-                  <p className="text-gray-700 mb-2">Seasoners</p>
-                  <p className="text-gray-600">Vienna, Austria</p>
-                  <p className="text-gray-600">European Union</p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    🌐 Other Channels
-                  </h3>
-                  <div className="space-y-2">
-                    <a 
-                      href="/help" 
-                      className="block text-blue-600 hover:text-blue-700 transition"
-                    >
-                      → Help Center & FAQs
-                    </a>
-                    <a 
-                      href="/help/safety" 
-                      className="block text-blue-600 hover:text-blue-700 transition"
-                    >
-                      → Safety Resources
-                    </a>
-                    <a 
-                      href="/about" 
-                      className="block text-blue-600 hover:text-blue-700 transition"
-                    >
-                      → About Seasoners
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Emergency Notice */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
-              className="mt-8 bg-red-50 border-l-4 border-red-600 rounded-lg p-6"
-            >
-              <div className="flex items-start">
-                <span className="text-3xl mr-4">🚨</span>
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Emergency Situations
-                  </h3>
-                  <p className="text-gray-700 mb-2">
-                    If you are in immediate danger, contact local emergency services first:
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Austria:</strong> Police 133 | Ambulance 144 | EU Emergency 112
-                  </p>
-                  <p className="text-gray-600 text-sm mt-2">
-                    Then contact <a href="mailto:safety@seasoners.eu" className="text-red-600 hover:underline font-semibold">safety@seasoners.eu</a> to report the incident
-                  </p>
                 </div>
               </div>
             </motion.div>
