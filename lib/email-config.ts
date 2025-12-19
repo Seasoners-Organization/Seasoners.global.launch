@@ -33,7 +33,15 @@ export const EMAIL_CONFIG = {
       from: 'default',
       replyTo: 'support',
     },
+    billing: {
+      from: 'default',
+      replyTo: 'support',
+    },
     subscription: {
+      from: 'default',
+      replyTo: 'support',
+    },
+    account: {
       from: 'default',
       replyTo: 'support',
     },
