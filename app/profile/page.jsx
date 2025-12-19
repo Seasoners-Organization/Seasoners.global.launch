@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -38,6 +38,12 @@ export default function ProfilePage() {
   const [cancellingSubscription, setCancellingSubscription] = useState(false);
   const [verificationToast, setVerificationToast] = useState("");
   const [toast, setToast] = useState(null);
+  
+  // Refs for section navigation
+  const phoneVerificationRef = useRef(null);
+  const emailVerificationRef = useRef(null);
+  const bioSectionRef = useRef(null);
+  const languageSectionRef = useRef(null);
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
     if (sp.get('success') === 'email_verified') {
@@ -436,10 +442,29 @@ export default function ProfilePage() {
                 <ProfileCompletenessRoadmap 
                   user={user} 
                   onNavigate={(action) => {
-                    if (action === 'edit') {
+                    if (action === 'verify') {
                       setActiveTab('edit');
-                    } else if (action === 'verify') {
-                      setActiveTab('verification');
+                      // Scroll to phone verification section
+                      setTimeout(() => {
+                        if (phoneVerificationRef.current) {
+                          phoneVerificationRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          phoneVerificationRef.current.focus();
+                        }
+                      }, 100);
+                    } else if (action === 'edit') {
+                      setActiveTab('edit');
+                      // Scroll to bio section
+                      setTimeout(() => {
+                        if (bioSectionRef.current) {
+                          bioSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                      }, 100);
+                    } else if (action === 'upload') {
+                      setActiveTab('edit');
+                      // Scroll to top of profile editor
+                      setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }, 100);
                     }
                   }}
                 />
@@ -592,7 +617,14 @@ export default function ProfilePage() {
             )}
 
             {activeTab === "profile" && (
-              <ProfileEditor user={user} onSave={(updatedUser) => setUser(updatedUser)} />
+              <ProfileEditor 
+                user={user} 
+                onSave={(updatedUser) => setUser(updatedUser)}
+                phoneVerificationRef={phoneVerificationRef}
+                bioSectionRef={bioSectionRef}
+                emailVerificationRef={emailVerificationRef}
+                languageSectionRef={languageSectionRef}
+              />
             )}
 
             {activeTab === "listings" && (

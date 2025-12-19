@@ -4,7 +4,7 @@ import { REGIONS } from "../utils/regions";
 import PhoneVerification from "./PhoneVerification";
 import Toast from "./Toast";
 
-export default function ProfileEditor({ user, onSave }) {
+export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioSectionRef, emailVerificationRef, languageSectionRef }) {
   const [formData, setFormData] = useState({
     email: user?.email || '',
     phoneNumber: user?.phoneNumber || '',
@@ -193,7 +193,7 @@ export default function ProfileEditor({ user, onSave }) {
         <h3 className="text-lg font-semibold mb-4">Contact & Basic Information</h3>
         <div className="grid gap-4">
           {/* Email */}
-          <div>
+          <div ref={emailVerificationRef}>
             <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
             <input
               type="email"
@@ -213,7 +213,7 @@ export default function ProfileEditor({ user, onSave }) {
             )}
           </div>
           {/* Phone */}
-          <div>
+          <div ref={phoneVerificationRef} tabIndex={-1}>
             <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
             <PhoneVerification
               userId={user?.id}
@@ -289,7 +289,7 @@ export default function ProfileEditor({ user, onSave }) {
       </div>
 
       {/* About Me */}
-      <div className="bg-white rounded-xl shadow-sm border p-6">
+      <div ref={bioSectionRef} className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-4">About Me</h3>
         <textarea
           value={formData.aboutMe}
@@ -309,7 +309,7 @@ export default function ProfileEditor({ user, onSave }) {
       </div>
 
       {/* Languages */}
-      <div className="bg-white rounded-xl shadow-sm border p-6">
+      <div ref={languageSectionRef} className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-4">Languages</h3>
         <div className="flex flex-wrap gap-2 mb-3">
           {formData.spokenLanguages.map((lang, idx) => (
