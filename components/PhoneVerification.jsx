@@ -107,6 +107,10 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
   };
 
   const sendCode = async () => {
+    if (!userId) {
+      setError('User ID not found. Please reload and try again.');
+      return;
+    }
     setError('');
     setStatus('sending');
     const e164 = formattedE164();
@@ -115,24 +119,38 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
       setStatus('idle');
       return;
     }
-    const res = await fetch('/api/auth/verify-phone', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'send', userId, phoneNumber: e164 })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setSent(true);
-      setStatus('code-sent');
-      setCooldown(60);
-      setPhone(e164);
-    } else {
-      setError(data.error || 'Failed to send code');
+    try {
+      const res = await fetch('/api/auth/verify-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'send', userId, phoneNumber: e164 })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSent(true);
+        setStatus('code-sent');
+        setCooldown(60);
+        setPhone(e164);
+        setCode('');
+      } else {
+        setError(data.error || 'Failed to send code. Please try again.');
+        setStatus('idle');
+      }
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
       setStatus('idle');
     }
   };
 
   const verifyCode = async () => {
+    if (!code.trim()) {
+      setError('Please enter the verification code.');
+      return;
+    }
+    if (!userId) {
+      setError('User ID not found. Please reload and try again.');
+      return;
+    }
     setError('');
     setStatus('verifying');
     const e164 = phone || formattedE164();
@@ -141,24 +159,55 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
       setStatus('code-sent');
       return;
     }
-    const res = await fetch('/api/auth/verify-phone', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'verify', userId, phoneNumber: e164, code })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setStatus('verified');
-      setSent(false);
-      if (onVerified) onVerified();
-    } else {
-      setError(data.error || 'Verification failed');
+    try {
+      const res = await fetch('/api/auth/verify-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'verify', userId, phoneNumber: e164, code })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus('verified');
+        setSent(false);
+        setCode('');
+        if (onVerified) onVerified();
+      } else {
+        setError(data.error || 'Invalid or expired code. Please try again.');
+        setStatus('code-sent');
+        setCode('');
+      }
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
       setStatus('code-sent');
     }
   };
 
   if (status === 'verified') {
-    return <div className="rounded bg-green-50 border border-green-200 p-4 text-green-700">Phone number verified!</div>;
+    return (
+      <div className="space-y-3">
+        <div className="rounded bg-green-50 border border-green-200 p-4 text-green-700 flex items-center gap-2">
+          <span className="text-xl">✓</span>
+          <div>
+            <p className="font-semibold">Phone number verified!</p>
+            <p className="text-sm text-green-600">{phone}</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setStatus('idle');
+            setPhone('');
+            setCode('');
+            setLocalNumber('');
+            setSent(false);
+            setError('');
+          }}
+          className="text-sm text-slate-600 hover:text-slate-800 underline"
+        >
+          Change phone number
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -204,7 +253,9 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
         </div>
         <input
           type="tel"
-          className="flex-1 border rounded px-3 py-2"
+          className={`flex-1 border rounded px-3 py-2 ${
+            localNumber && !isValid ? 'border-red-400 bg-red-50' : ''
+          }`}
           value={localNumber}
           onChange={e => {
             const raw = e.target.value.replace(/\D/g, '');
@@ -217,47 +268,68 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
             }
           }}
           placeholder={'Enter local number'}
-          disabled={status === 'sending' || status === 'verifying'}
+          disabled={status === 'sending' || status === 'verifying' || sent}
         />
         {localNumber && !isValid && (
           <p className="text-xs text-red-600 mt-1">Invalid phone format for selected country.</p>
         )}
       </div>
-      {selectedEntry && (
+      {selectedEntry && !sent && (
         <p className="text-xs text-slate-500">Example: {exampleFormatted}</p>
       )}
-      {phone && (
-        <p className="text-xs text-slate-500">Sending to: {phone}</p>
+      {phone && sent && (
+        <p className="text-xs text-slate-600 bg-blue-50 px-3 py-2 rounded border border-blue-200">
+          <span className="font-semibold">Code sent to:</span> {phone}
+        </p>
       )}
       {sent && (
         <div>
           <label className="block text-sm font-medium text-slate-700">Verification Code</label>
           <input
             type="text"
-            className="w-full border rounded px-3 py-2"
+            className={`w-full border rounded px-3 py-2 ${
+              error ? 'border-red-400 bg-red-50' : ''
+            }`}
             value={code}
-            onChange={e => setCode(e.target.value)}
-            placeholder="Enter code"
+            onChange={e => {
+              setCode(e.target.value.toUpperCase());
+              setError('');
+            }}
+            placeholder="Enter 6-digit code"
+            maxLength="6"
             disabled={status === 'verifying'}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && code.trim() && status !== 'verifying') {
+                verifyCode();
+              }
+            }}
           />
+          <p className="text-xs text-slate-500 mt-1">Check your SMS for the code. It may take a moment to arrive.</p>
         </div>
       )}
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded px-3 py-2 text-red-700 text-sm flex items-start gap-2">
+          <span className="text-red-500 mt-0.5">⚠</span>
+          <span>{error}</span>
+        </div>
+      )}
       <div className="flex gap-2">
         {!sent && (
           <button
-             className="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700"
-             onClick={sendCode}
-             disabled={!localNumber || !isValid || status === 'sending' || cooldown > 0}
-           >
-             {status === 'sending' ? 'Sending...' : cooldown > 0 ? `Resend in ${cooldown}s` : 'Send Code'}
-           </button>
+            type="button"
+            className="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition"
+            onClick={sendCode}
+            disabled={!localNumber || !isValid || status === 'sending' || cooldown > 0}
+          >
+            {status === 'sending' ? 'Sending...' : cooldown > 0 ? `Resend in ${cooldown}s` : 'Send Code'}
+          </button>
         )}
         {sent && (
           <button
-            className="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700"
+            type="button"
+            className="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition"
             onClick={verifyCode}
-            disabled={!code || status === 'verifying'}
+            disabled={!code.trim() || status === 'verifying'}
           >
             {status === 'verifying' ? 'Verifying...' : 'Verify'}
           </button>

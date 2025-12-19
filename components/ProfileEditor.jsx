@@ -63,24 +63,26 @@ export default function ProfileEditor({ user, onSave }) {
     if (!file) return;
 
     setUploadingPicture(true);
-    const formData = new FormData();
-    formData.append('profilePicture', file);
+    const formDataUpload = new FormData();
+    formDataUpload.append('profilePicture', file);
 
     try {
       const response = await fetch('/api/user/upload-profile-picture', {
         method: 'POST',
-        body: formData,
+        body: formDataUpload,
       });
 
       const data = await response.json();
       if (response.ok) {
-        alert('Profile picture uploaded successfully!');
-        window.location.reload();
+        setToast({ type: 'success', message: 'Profile picture updated successfully!' });
+        // Reload after a short delay to allow toast to display
+        setTimeout(() => window.location.reload(), 1500);
       } else {
-        alert(data.error || 'Failed to upload picture');
+        setToast({ type: 'error', message: data.error || 'Failed to upload picture' });
       }
     } catch (error) {
-      alert('Error uploading picture');
+      console.error('Picture upload error:', error);
+      setToast({ type: 'error', message: 'Error uploading picture. Please try again.' });
     } finally {
       setUploadingPicture(false);
     }
@@ -99,15 +101,20 @@ export default function ProfileEditor({ user, onSave }) {
       if (response.ok) {
         // Automatically sync Stripe subscription if email was changed
         if (formData.email !== user?.email) {
-          await fetch('/api/user/sync-stripe-subscription', { method: 'POST' });
+          try {
+            await fetch('/api/user/sync-stripe-subscription', { method: 'POST' });
+          } catch (e) {
+            console.error('Stripe sync failed:', e);
+          }
         }
-        alert('Profile updated successfully!');
+        setToast({ type: 'success', message: 'Profile updated successfully!' });
         if (onSave) onSave(data.user);
       } else {
-        alert(data.error || 'Failed to update profile');
+        setToast({ type: 'error', message: data.error || 'Failed to update profile' });
       }
     } catch (error) {
-      alert('Error updating profile');
+      console.error('Profile save error:', error);
+      setToast({ type: 'error', message: 'Error updating profile. Please try again.' });
     } finally {
       setSaving(false);
     }
@@ -196,9 +203,13 @@ export default function ProfileEditor({ user, onSave }) {
               autoComplete="email"
             />
             {user?.emailVerified ? (
-              <span className="text-green-600 text-xs ml-2">Verified</span>
+              <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-xs text-green-700">
+                <span className="font-semibold">✓ Email verified</span> on {new Date(user.emailVerified).toLocaleDateString()}
+              </div>
             ) : (
-              <span className="text-yellow-600 text-xs ml-2">Not Verified</span>
+              <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-700">
+                <span className="font-semibold">⚠ Email not verified</span>
+              </div>
             )}
           </div>
           {/* Phone */}
@@ -208,8 +219,16 @@ export default function ProfileEditor({ user, onSave }) {
               userId={user?.id}
               initialPhone={formData.phoneNumber}
               verified={user?.phoneVerified}
-              onVerified={() => window.location.reload()}
+              onVerified={() => {
+                // Delay reload to let animations finish
+                setTimeout(() => window.location.reload(), 1500);
+              }}
             />
+            {user?.phoneVerified && (
+              <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-xs text-green-700">
+                <span className="font-semibold">✓ Phone verified</span> on {new Date(user.phoneVerified).toLocaleDateString()}
+              </div>
+            )}
           </div>
           {/* Date of Birth */}
           <div>
