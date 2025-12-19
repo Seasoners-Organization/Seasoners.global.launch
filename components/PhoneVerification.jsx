@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { COUNTRY_CODES } from '@/utils/countryCodes';
 
 export default function PhoneVerification({ userId, initialPhone, verified, onVerified, showSkip = false }) {
   const [countryCode, setCountryCode] = useState('+43');
@@ -86,19 +87,16 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
       <label className="block text-sm font-medium text-slate-700">Phone Number</label>
       <div className="flex gap-2">
         <select
-          className="border rounded px-2 py-2 w-28"
+          className="border rounded px-2 py-2 w-44"
           value={countryCode}
           onChange={(e) => setCountryCode(e.target.value)}
           disabled={status === 'sending' || status === 'verifying'}
         >
-          <option value="+43">🇦🇹 +43</option>
-          <option value="+49">🇩🇪 +49</option>
-          <option value="+41">🇨🇭 +41</option>
-          <option value="+39">🇮🇹 +39</option>
-          <option value="+34">🇪🇸 +34</option>
-          <option value="+33">🇫🇷 +33</option>
-          <option value="+44">🇬🇧 +44</option>
-          <option value="+1">🇺🇸 +1</option>
+          {COUNTRY_CODES.map(({ code, name, flag }) => (
+            <option key={`${code}-${name}`} value={code}>
+              {flag ? `${flag} ` : ''}{name} {code}
+            </option>
+          ))}
         </select>
         <input
           type="tel"
@@ -109,7 +107,7 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
             const val = e.target.value.replace(/[^\d\s]/g, '');
             setLocalNumber(val);
           }}
-          placeholder={countryCode === '+43' ? 'e.g., 664 1234567' : 'Enter local number'}
+          placeholder={'Enter local number'}
           disabled={status === 'sending' || status === 'verifying'}
         />
       </div>
