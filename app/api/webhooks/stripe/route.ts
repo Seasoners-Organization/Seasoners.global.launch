@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getStripe, getStripeWebhookSecret } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
-import { sendSubscriptionConfirmationEmail } from '@/utils/onboarding-emails';
+import { 
+  sendSubscriptionConfirmationEmail,
+  sendSubscriptionCancelledEmail,
+  sendPaymentFailedEmail 
+} from '@/utils/onboarding-emails';
 import { Resend } from 'resend';
 
 export const dynamic = 'force-dynamic';
@@ -283,6 +287,14 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   });
 
   console.log(`Subscription cancelled for user ${user.id}`);
+
+  // Send cancellation confirmation email
+  sendSubscriptionCancelledEmail(user, {
+    tier: user.subscriptionTier || 'FREE',
+    expiresAt: new Date((subscription as any).current_period_end * 1000),
+  }).catch(err => {
+    console.error('❌ Failed to send subscription cancelled email:', err);
+  });
 }
 
 async function handlePaymentSucceeded(invoice: Stripe.Invoice, stripe: Stripe) {
@@ -335,37 +347,11 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
 
   console.log(`Payment failed for user ${user.id}`);
   
-  // Send email notification about failed payment
-  try {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || 'https://www.seasoners.eu';
-    
-    await resend.emails.send({
-      from: 'Seasoners <noreply@seasoners.eu>',
-      to: user.email,
-      subject: 'Payment Failed - Action Required',
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #dc2626;">Payment Failed</h2>
-          <p>Hi ${user.name},</p>
-          <p>We were unable to process your payment for your Seasoners subscription. Your subscription is now marked as <strong>past due</strong>.</p>
-          <p><strong>What happens next:</strong></p>
-          <ul>
-            <li>We'll automatically retry the payment in a few days</li>
-            <li>Your access may be restricted if payment continues to fail</li>
-            <li>Update your payment method to avoid service interruption</li>
-          </ul>
-          <p>
-            <a href="${appUrl}/profile?tab=subscription" style="display: inline-block; padding: 12px 24px; background-color: #0ea5e9; color: white; text-decoration: none; border-radius: 6px; margin: 16px 0;">
-              Update Payment Method
-            </a>
-          </p>
-          <p>If you have any questions, please contact us at <a href="mailto:support@seasoners.eu">support@seasoners.eu</a></p>
-          <p>Best regards,<br>The Seasoners Team</p>
-        </div>
-      `,
-    });
-  } catch (emailError) {
-    console.error('Failed to send payment failure email:', emailError);
-  }
+  // Send payment failed email using new template
+  sendPaymentFailedEmail(user, {
+    tier: user.subscriptionTier || 'FREE',
+    status: 'PAST_DUE',
+  }).catch(err => {
+    console.error('❌ Failed to send payment failed email:', err);
+  });
 }

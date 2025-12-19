@@ -218,16 +218,28 @@ export const authOptions: NextAuthOptions = {
       }
       // Enrich token with early-bird/waitlist and subscription fields from DB
       try {
-        const dbUser = token.email ? await prisma.user.findUnique({ where: { email: token.email as string } }) : null;
-        if (dbUser) {
-          (token as any).isEarlyBird = (dbUser as any).isEarlyBird;
-          (token as any).waitlistStatus = (dbUser as any).waitlistStatus;
-          (token as any).subscriptionTier = (dbUser as any).subscriptionTier;
-          (token as any).subscriptionStatus = (dbUser as any).subscriptionStatus;
-          (token as any).subscriptionExpiresAt = (dbUser as any).subscriptionExpiresAt;
+        if (token.email && process.env.DATABASE_URL) {
+          const dbUser = await prisma.user.findUnique({ 
+            where: { email: token.email as string },
+            select: {
+              isEarlyBird: true,
+              waitlistStatus: true,
+              subscriptionTier: true,
+              subscriptionStatus: true,
+              subscriptionExpiresAt: true,
+            }
+          });
+          if (dbUser) {
+            (token as any).isEarlyBird = dbUser.isEarlyBird;
+            (token as any).waitlistStatus = dbUser.waitlistStatus;
+            (token as any).subscriptionTier = dbUser.subscriptionTier;
+            (token as any).subscriptionStatus = dbUser.subscriptionStatus;
+            (token as any).subscriptionExpiresAt = dbUser.subscriptionExpiresAt;
+          }
         }
       } catch (e) {
         console.error('JWT enrichment failed:', e);
+        // Don't throw - let auth continue even if DB enrichment fails
       }
       if (!token.emailVerified) {
         token.unverified = true;
