@@ -63,8 +63,16 @@ export async function POST(req: Request) {
       
       const captchaJson = await captchaRes.json();
       if (!captchaJson.success) {
+        const hostname = captchaJson.hostname as string | undefined;
+        const errorCodes = captchaJson['error-codes'];
         // Extra diagnostics: log hostname and error codes to help identify domain/key mismatches
-        console.error('[Register] Captcha failed:', captchaJson['error-codes'], 'hostname:', captchaJson.hostname);
+        console.error('[Register] Captcha failed:', errorCodes, 'hostname:', hostname);
+
+        const allowedHostnames = ['seasoners.eu', 'www.seasoners.eu'];
+        if (hostname && !allowedHostnames.includes(hostname)) {
+          return NextResponse.json({ error: 'Captcha verification failed (hostname mismatch)' }, { status: 400 });
+        }
+
         return NextResponse.json({ error: 'Captcha verification failed' }, { status: 400 });
       }
     } catch (captchaError) {

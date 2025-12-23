@@ -171,23 +171,36 @@ function RegisterForm() {
     setError('');
 
     try {
-      // Always get a fresh token just before submit to avoid expiry
-      const freshToken = await getFreshCaptchaToken();
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, captchaToken: freshToken, phoneNumber: formData.phoneNumber, phoneVerified: formData.phoneVerified }),
-      });
+      let lastError = null;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const freshToken = await getFreshCaptchaToken();
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...formData, captchaToken: freshToken, phoneNumber: formData.phoneNumber, phoneVerified: formData.phoneVerified }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || t('registrationFailed'));
+        if (response.ok) {
+          // Redirect to verification page. Email verification is sent by the server.
+          window.location.href = '/auth/verify';
+          return;
+        }
+
+        const message = data.error || t('registrationFailed');
+        const isCaptchaError = message.toLowerCase().includes('captcha');
+
+        if (isCaptchaError && attempt === 0) {
+          lastError = new Error(message);
+          // Retry once with a fresh token
+          continue;
+        }
+
+        throw new Error(message);
       }
 
-      // Redirect to verification page. Email verification is sent by the server.
-      window.location.href = '/auth/verify';
-
+      if (lastError) throw lastError;
     } catch (error) {
       setError(error.message);
     } finally {
