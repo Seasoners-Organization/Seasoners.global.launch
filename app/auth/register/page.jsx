@@ -429,15 +429,6 @@ function RegisterForm() {
                 }}
                 showSkip={true}
               />
-              {!formData.phoneVerified && (
-                <button
-                  type="button"
-                  className="mt-2 px-4 py-2 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
-                  onClick={handleSkipPhone}
-                >
-                  {t('skipForNow')}
-                </button>
-              )}
             </div>
           )}
 

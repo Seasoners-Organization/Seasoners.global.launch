@@ -272,12 +272,12 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
             }`}
             value={code}
             onChange={e => {
-              const digits = e.target.value.replace(/\D/g, '').slice(0, 6);
+              const digits = e.target.value.replace(/\D/g, '').slice(0, 7);
               setCode(digits);
               setError('');
             }}
-            placeholder="000000"
-            maxLength="6"
+            placeholder="0000000"
+            maxLength="7"
             disabled={status === 'verifying'}
             onKeyPress={(e) => {
               if (e.key === 'Enter' && code.trim() && status !== 'verifying') {

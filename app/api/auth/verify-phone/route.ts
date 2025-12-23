@@ -30,9 +30,14 @@ export async function POST(req: Request) {
     if (action === 'send') {
       // Use Twilio Verify API to send code
       try {
+        // Add locale to prevent caching, and use create() with explicit parameters
         await twilioClient.verify.v2.services(TWILIO_VERIFY_SERVICE_SID)
           .verifications
-          .create({ to: phoneNumber, channel: 'sms' });
+          .create({
+            to: phoneNumber,
+            channel: 'sms',
+            locale: 'en'
+          });
 
         return NextResponse.json({ message: 'Verification code sent successfully' });
       } catch (e: any) {
