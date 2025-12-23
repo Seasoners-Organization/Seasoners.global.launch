@@ -51,19 +51,32 @@ export async function POST(req: Request) {
         );
       }
 
-      // Update user's phone verification status
-      await prisma.user.update({
-        where: { id: userId },
-        data: { 
-          phoneVerified: new Date(),
-          verificationAttempts: {
-            updateMany: {
-              where: { type: 'PHONE' },
-              data: { status: 'VERIFIED' }
+      // If a userId is provided, persist verification on the user record; otherwise, just return success
+      if (userId) {
+        await prisma.user.update({
+          where: { id: userId },
+          data: {
+            phoneNumber,
+            phoneVerified: new Date(),
+            verificationAttempts: {
+              updateMany: {
+                where: { type: 'PHONE' },
+                data: { status: 'VERIFIED' }
+              }
             }
           }
+        });
+
+        // Send non-blocking verification completed email
+        try {
+          const user = await prisma.user.findUnique({ where: { id: userId } });
+          if (user && user.email) {
+            sendVerificationCompletedEmail(user as any, 'phone').catch(() => {});
+          }
+        } catch (e) {
+          console.warn('sendVerificationCompletedEmail failed:', e);
         }
-      });
+      }
 
       // Send non-blocking verification completed email
       try {
@@ -76,9 +89,7 @@ export async function POST(req: Request) {
         console.warn('sendVerificationCompletedEmail failed:', e);
       }
 
-      return NextResponse.json({
-        message: 'Phone number verified successfully'
-      });
+      return NextResponse.json({ message: 'Phone number verified successfully' });
     }
 
     return NextResponse.json(

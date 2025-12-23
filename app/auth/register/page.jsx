@@ -115,6 +115,7 @@ function RegisterForm() {
   };
   // Handler for phone verification success
   const handlePhoneVerified = (phone) => {
+    // Persist verified phone into form data for submission
     setFormData(prev => ({ ...prev, phoneNumber: phone, phoneVerified: true }));
     setPhoneStepSkipped(false);
   };
@@ -408,9 +409,9 @@ function RegisterForm() {
               <PhoneVerification
                 userId={null}
                 initialPhone={formData.phoneNumber}
-                verified={formData.phoneVerified}
-                onVerified={() => {
-                  handlePhoneVerified(formData.phoneNumber);
+                verified={!!formData.phoneVerified}
+                onVerified={(e164) => {
+                  handlePhoneVerified(e164);
                   setCurrentStep(prev => prev + 1);
                 }}
                 showSkip={true}

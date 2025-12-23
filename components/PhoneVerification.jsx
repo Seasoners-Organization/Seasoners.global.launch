@@ -107,10 +107,6 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
   };
 
   const sendCode = async () => {
-    if (!userId) {
-      setError('User ID not found. Please reload and try again.');
-      return;
-    }
     setError('');
     setStatus('sending');
     const e164 = formattedE164();
@@ -123,7 +119,7 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
       const res = await fetch('/api/auth/verify-phone', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'send', userId, phoneNumber: e164 })
+        body: JSON.stringify({ action: 'send', userId: userId || undefined, phoneNumber: e164 })
       });
       const data = await res.json();
       if (res.ok) {
@@ -147,10 +143,6 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
       setError('Please enter the verification code.');
       return;
     }
-    if (!userId) {
-      setError('User ID not found. Please reload and try again.');
-      return;
-    }
     setError('');
     setStatus('verifying');
     const e164 = phone || formattedE164();
@@ -163,14 +155,14 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
       const res = await fetch('/api/auth/verify-phone', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'verify', userId, phoneNumber: e164, code })
+        body: JSON.stringify({ action: 'verify', userId: userId || undefined, phoneNumber: e164, code })
       });
       const data = await res.json();
       if (res.ok) {
         setStatus('verified');
         setSent(false);
         setCode('');
-        if (onVerified) onVerified();
+        if (onVerified) onVerified(e164);
       } else {
         setError(data.error || 'Invalid or expired code. Please try again.');
         setStatus('code-sent');
