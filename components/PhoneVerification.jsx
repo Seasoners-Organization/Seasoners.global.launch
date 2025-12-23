@@ -204,54 +204,59 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
   return (
     <div className="space-y-3">
       <label className="block text-sm font-medium text-slate-700">Phone Number</label>
-      <div className="flex gap-2 flex-col sm:flex-row">
-        <select
-          className="border rounded px-3 py-2 w-full sm:w-64"
-          value={countryIso}
-          onChange={(e) => {
-            const iso = e.target.value;
-            setCountryIso(iso);
-            try {
-              const ayt = new AsYouType(iso);
-              const formatted = ayt.input((localNumber || '').replace(/\D/g, ''));
-              const national = formatted.replace(/^\+?\d+\s*/, '');
-              setLocalNumber(national);
-            } catch {
-              // noop
-            }
-          }}
-          disabled={status === 'sending' || status === 'verifying'}
-        >
-          {COUNTRY_CODES.map(({ code, name, flag, iso }) => (
-            <option key={`${iso || code}-${name}`} value={iso || code}>
-              {flag ? `${flag} ` : ''}{name} {code}
-            </option>
-          ))}
-        </select>
+      
+      <select
+        className="border rounded px-3 py-2 w-full"
+        value={countryIso}
+        onChange={(e) => {
+          const iso = e.target.value;
+          setCountryIso(iso);
+          try {
+            const ayt = new AsYouType(iso);
+            const formatted = ayt.input((localNumber || '').replace(/\D/g, ''));
+            const national = formatted.replace(/^\+?\d+\s*/, '');
+            setLocalNumber(national);
+          } catch {
+            // noop
+          }
+        }}
+        disabled={status === 'sending' || status === 'verifying'}
+      >
+        {COUNTRY_CODES.map(({ code, name, flag, iso }) => (
+          <option key={`${iso || code}-${name}`} value={iso || code}>
+            {flag ? `${flag} ` : ''}{name} {code}
+          </option>
+        ))}
+      </select>
 
-        <input
-          type="tel"
-          className={`flex-1 border rounded px-3 py-2 ${
-            localNumber && !isValid ? 'border-red-400 bg-red-50' : ''
-          }`}
-          value={localNumber}
-          onChange={e => {
-            const raw = e.target.value.replace(/\D/g, '');
-            if (countryIso) {
-              const ayt = new AsYouType(countryIso);
-              const formatted = ayt.input(raw);
-              setLocalNumber(formatted.replace(/^\+?\d+\s*/, '') || raw);
-            } else {
-              setLocalNumber(raw);
-            }
-          }}
-          placeholder={'Enter phone number'}
-          disabled={status === 'sending' || status === 'verifying' || sent}
-        />
+      <input
+        type="tel"
+        className={`w-full border rounded px-3 py-2 ${
+          localNumber && !isValid ? 'border-red-400 bg-red-50' : ''
+        }`}
+        value={localNumber}
+        onChange={e => {
+          const raw = e.target.value.replace(/\D/g, '');
+          if (countryIso) {
+            const ayt = new AsYouType(countryIso);
+            const formatted = ayt.input(raw);
+            setLocalNumber(formatted.replace(/^\+?\d+\s*/, '') || raw);
+          } else {
+            setLocalNumber(raw);
+          }
+        }}
+        placeholder={'Enter phone number'}
+        disabled={status === 'sending' || status === 'verifying' || sent}
+      />
+
+      <div className="space-y-1">
+        {selectedEntry && !sent && (
+          <p className="text-xs text-slate-500">Example: {exampleFormatted}</p>
+        )}
+        {localNumber && !isValid && (
+          <p className="text-xs text-red-600">Invalid phone format for selected country.</p>
+        )}
       </div>
-      {selectedEntry && !sent && (
-        <p className="text-xs text-slate-500">Example: {exampleFormatted}</p>
-      )}
       {phone && sent && (
         <p className="text-xs text-slate-600 bg-blue-50 px-3 py-2 rounded border border-blue-200">
           <span className="font-semibold">Code sent to:</span> {phone}
@@ -267,10 +272,11 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
             }`}
             value={code}
             onChange={e => {
-              setCode(e.target.value.toUpperCase());
+              const digits = e.target.value.replace(/\D/g, '').slice(0, 6);
+              setCode(digits);
               setError('');
             }}
-            placeholder="Enter 6-digit code"
+            placeholder="000000"
             maxLength="6"
             disabled={status === 'verifying'}
             onKeyPress={(e) => {
@@ -309,7 +315,7 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
             {status === 'verifying' ? 'Verifying...' : 'Verify'}
           </button>
         )}
-        {showSkip && (
+        {showSkip && !sent && (
           <button
             className="px-4 py-2 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
             type="button"
@@ -319,7 +325,10 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
           </button>
         )}
       </div>
-      {status === 'skipped' && <div className="text-slate-500 text-sm">You can verify your phone later in your profile.</div>}
+      
+      {status === 'skipped' && (
+        <div className="text-slate-500 text-sm">You can verify your phone later in your profile.</div>
+      )}
     </div>
   );
 }
