@@ -8,7 +8,6 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
   const [localNumber, setLocalNumber] = useState('');
   const [phone, setPhone] = useState(initialPhone || '');
   const [code, setCode] = useState('');
-  const [countryQuery, setCountryQuery] = useState('');
   const [status, setStatus] = useState(verified ? 'verified' : 'idle');
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
@@ -205,23 +204,13 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
   return (
     <div className="space-y-3">
       <label className="block text-sm font-medium text-slate-700">Phone Number</label>
-      <div className="flex gap-2">
-        <div className="flex flex-col w-64">
-        <input
-          type="text"
-          className="border rounded px-2 py-2 mb-2"
-          value={countryQuery}
-          onChange={(e) => setCountryQuery(e.target.value)}
-          placeholder="Search country"
-          disabled={status === 'sending' || status === 'verifying'}
-        />
+      <div className="flex gap-2 flex-col sm:flex-row">
         <select
-          className="border rounded px-2 py-2 w-64"
+          className="border rounded px-3 py-2 w-full sm:w-64"
           value={countryIso}
           onChange={(e) => {
             const iso = e.target.value;
             setCountryIso(iso);
-            // Reformat current local number to new country's national pattern
             try {
               const ayt = new AsYouType(iso);
               const formatted = ayt.input((localNumber || '').replace(/\D/g, ''));
@@ -233,16 +222,13 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
           }}
           disabled={status === 'sending' || status === 'verifying'}
         >
-          {COUNTRY_CODES.filter(({ name, code }) => {
-            const q = countryQuery.toLowerCase();
-            return !q || name.toLowerCase().includes(q) || code.includes(q);
-          }).map(({ code, name, flag, iso }) => (
+          {COUNTRY_CODES.map(({ code, name, flag, iso }) => (
             <option key={`${iso || code}-${name}`} value={iso || code}>
               {flag ? `${flag} ` : ''}{name} {code}
             </option>
           ))}
         </select>
-        </div>
+
         <input
           type="tel"
           className={`flex-1 border rounded px-3 py-2 ${
@@ -259,12 +245,9 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
               setLocalNumber(raw);
             }
           }}
-          placeholder={'Enter local number'}
+          placeholder={'Enter phone number'}
           disabled={status === 'sending' || status === 'verifying' || sent}
         />
-        {localNumber && !isValid && (
-          <p className="text-xs text-red-600 mt-1">Invalid phone format for selected country.</p>
-        )}
       </div>
       {selectedEntry && !sent && (
         <p className="text-xs text-slate-500">Example: {exampleFormatted}</p>
