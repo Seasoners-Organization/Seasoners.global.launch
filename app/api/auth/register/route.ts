@@ -63,7 +63,8 @@ export async function POST(req: Request) {
       
       const captchaJson = await captchaRes.json();
       if (!captchaJson.success) {
-        console.error('[Register] Captcha failed:', captchaJson['error-codes']);
+        // Extra diagnostics: log hostname and error codes to help identify domain/key mismatches
+        console.error('[Register] Captcha failed:', captchaJson['error-codes'], 'hostname:', captchaJson.hostname);
         return NextResponse.json({ error: 'Captcha verification failed' }, { status: 400 });
       }
     } catch (captchaError) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import dynamic from 'next/dynamic';
 import { signIn } from 'next-auth/react';
@@ -30,7 +30,7 @@ const PhoneVerification = dynamic(() => import('../../../components/PhoneVerific
 function RegisterForm() {
   const { t } = useLanguage();
   const [captchaToken, setCaptchaToken] = useState('');
-  const [captchaRef, setCaptchaRef] = useState(null);
+  const captchaRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     email: '',
@@ -133,18 +133,18 @@ function RegisterForm() {
 
   // Always fetch a fresh reCAPTCHA token (invisible v2)
   const getFreshCaptchaToken = async () => {
-    if (!captchaRef) {
+    if (!captchaRef.current) {
       throw new Error(t('recaptchaNotLoaded'));
     }
     // Prefer executeAsync if available
-    if (typeof captchaRef.executeAsync === 'function') {
-      const token = await captchaRef.executeAsync();
+    if (typeof captchaRef.current.executeAsync === 'function') {
+      const token = await captchaRef.current.executeAsync();
       setCaptchaToken(token);
       return token;
     }
     // Fallback: execute and wait until onChange sets state
     try {
-      captchaRef.execute();
+      captchaRef.current.execute();
     } catch (e) {
       throw new Error(t('recaptchaNotLoaded'));
     }
@@ -192,8 +192,8 @@ function RegisterForm() {
     } finally {
       setIsLoading(false);
       // Reset reCAPTCHA for subsequent attempts
-      if (captchaRef && typeof captchaRef.reset === 'function') {
-        try { captchaRef.reset(); } catch {}
+      if (captchaRef.current && typeof captchaRef.current.reset === 'function') {
+        try { captchaRef.current.reset(); } catch {}
       }
     }
   };
@@ -243,7 +243,7 @@ function RegisterForm() {
         <ReCAPTCHA
           sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
           size="invisible"
-          ref={el => setCaptchaRef(el)}
+          ref={captchaRef}
           onChange={token => setCaptchaToken(token)}
           onErrored={() => setError(t('recaptchaNotLoaded'))}
         />
