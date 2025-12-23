@@ -131,6 +131,37 @@ function RegisterForm() {
     setCurrentStep(prev => prev - 1);
   };
 
+  // Always fetch a fresh reCAPTCHA token (invisible v2)
+  const getFreshCaptchaToken = async () => {
+    if (!captchaRef) {
+      throw new Error(t('recaptchaNotLoaded'));
+    }
+    // Prefer executeAsync if available
+    if (typeof captchaRef.executeAsync === 'function') {
+      const token = await captchaRef.executeAsync();
+      setCaptchaToken(token);
+      return token;
+    }
+    // Fallback: execute and wait until onChange sets state
+    try {
+      captchaRef.execute();
+    } catch (e) {
+      throw new Error(t('recaptchaNotLoaded'));
+    }
+    const start = Date.now();
+    return await new Promise((resolve, reject) => {
+      const interval = setInterval(() => {
+        if (captchaToken) {
+          clearInterval(interval);
+          resolve(captchaToken);
+        } else if (Date.now() - start > 8000) {
+          clearInterval(interval);
+          reject(new Error(t('recaptchaNotLoaded')));
+        }
+      }, 100);
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep()) return;
@@ -139,17 +170,12 @@ function RegisterForm() {
     setError('');
 
     try {
-      if (!captchaToken) {
-        // Trigger reCAPTCHA if not already triggered
-        if (captchaRef) captchaRef.execute();
-        setIsLoading(false);
-        setError(t('recaptchaNotLoaded'));
-        return;
-      }
+      // Always get a fresh token just before submit to avoid expiry
+      const freshToken = await getFreshCaptchaToken();
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, captchaToken, phoneNumber: formData.phoneNumber, phoneVerified: formData.phoneVerified }),
+        body: JSON.stringify({ ...formData, captchaToken: freshToken, phoneNumber: formData.phoneNumber, phoneVerified: formData.phoneVerified }),
       });
 
       const data = await response.json();
@@ -165,6 +191,10 @@ function RegisterForm() {
       setError(error.message);
     } finally {
       setIsLoading(false);
+      // Reset reCAPTCHA for subsequent attempts
+      if (captchaRef && typeof captchaRef.reset === 'function') {
+        try { captchaRef.reset(); } catch {}
+      }
     }
   };
 
@@ -215,6 +245,7 @@ function RegisterForm() {
           size="invisible"
           ref={el => setCaptchaRef(el)}
           onChange={token => setCaptchaToken(token)}
+          onErrored={() => setError(t('recaptchaNotLoaded'))}
         />
 
   <form className="mt-8 space-y-6" onSubmit={currentStep === stepKeys.length - 1 ? handleSubmit : e => e.preventDefault()}>
