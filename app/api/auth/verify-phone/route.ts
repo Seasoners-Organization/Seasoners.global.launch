@@ -29,24 +29,38 @@ export async function POST(req: Request) {
 
     if (action === 'send') {
       // Use Twilio Verify API to send code
-      await twilioClient.verify.v2.services(TWILIO_VERIFY_SERVICE_SID)
-        .verifications
-        .create({ to: phoneNumber, channel: 'sms' });
+      try {
+        await twilioClient.verify.v2.services(TWILIO_VERIFY_SERVICE_SID)
+          .verifications
+          .create({ to: phoneNumber, channel: 'sms' });
 
-      return NextResponse.json({
-        message: 'Verification code sent successfully'
-      });
+        return NextResponse.json({ message: 'Verification code sent successfully' });
+      } catch (e: any) {
+        console.error('Twilio send error:', e?.code, e?.message || e);
+        return NextResponse.json(
+          { error: `Twilio send failed${e?.code ? ` (${e.code})` : ''}` },
+          { status: 400 }
+        );
+      }
 
 
     } else if (action === 'verify') {
       // Use Twilio Verify API to check code
-      const verificationCheck = await twilioClient.verify.v2.services(TWILIO_VERIFY_SERVICE_SID)
-        .verificationChecks
-        .create({ to: phoneNumber, code });
+      try {
+        const verificationCheck = await twilioClient.verify.v2.services(TWILIO_VERIFY_SERVICE_SID)
+          .verificationChecks
+          .create({ to: phoneNumber, code });
 
-      if (verificationCheck.status !== 'approved') {
+        if (verificationCheck.status !== 'approved') {
+          return NextResponse.json(
+            { error: 'Invalid or expired verification code' },
+            { status: 400 }
+          );
+        }
+      } catch (e: any) {
+        console.error('Twilio verify error:', e?.code, e?.message || e);
         return NextResponse.json(
-          { error: 'Invalid or expired verification code' },
+          { error: `Twilio verify failed${e?.code ? ` (${e.code})` : ''}` },
           { status: 400 }
         );
       }
