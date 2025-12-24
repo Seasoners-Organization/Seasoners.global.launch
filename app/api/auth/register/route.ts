@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { sendWelcomeEmail } from '@/utils/onboarding-emails';
+import { getResend } from '@/lib/resend';
+import { getEmailConfig } from '@/lib/email-config';
+import crypto from 'crypto';
 
 // Simple in-memory rate limiter per IP (dev-friendly; replace with Redis in prod)
 const registerAttempts = new Map<string, number[]>();
@@ -131,35 +134,58 @@ export async function POST(req: Request) {
       
       console.log('[Register] User created successfully:', user.id);
 
-      // Send welcome email (non-blocking)
-      sendWelcomeEmail(user).catch(err => {
-        if (err?.response) {
-          err.response.text().then((text) => {
-            console.error('❌ Failed to send welcome email (response):', text);
+      // Send verification email immediately (inline, no HTTP roundtrip)
+      const sendVerificationEmail = async () => {
+        try {
+          const resend = getResend();
+          if (!resend) {
+            console.warn('RESEND_API_KEY not set; skipping verification email');
+            return;
+          }
+
+          const token = crypto.randomBytes(32).toString('hex');
+          const expires = new Date(Date.now() + 30 * 60 * 1000);
+          await prisma.verificationToken.create({
+            data: { identifier: user.email!, token, expires },
           });
-        } else {
-          console.error('❌ Failed to send welcome email:', err);
-        }
-      });
 
-      // Trigger email verification flow (server-side call to existing verify-email route)
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXTAUTH_URL ?? 'http://localhost:3000';
-        const verifyRes = await fetch(`${baseUrl}/api/auth/verify-email`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: user.id, email: user.email })
-        });
+          const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXTAUTH_URL ?? 'http://localhost:3000';
+          const verificationUrl = `${baseUrl}/auth/verify/email?token=${encodeURIComponent(token)}`;
+          const emailConfig = getEmailConfig('verification');
 
-        if (!verifyRes.ok) {
-          const errorText = await verifyRes.text();
-          console.error('❌ Failed to send verification email:', errorText);
-        } else {
-          console.log('✅ Verification email sent successfully to:', user.email);
+          const sendResult = await resend.emails.send({
+            from: emailConfig.from,
+            replyTo: emailConfig.replyTo,
+            to: user.email!,
+            subject: 'Verify your email',
+            html: `
+              <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; padding: 24px; color: #334155;">
+                <h1 style="color: #0ea5e9; font-size: 22px; margin: 0 0 12px;">Verify your email</h1>
+                <p style="font-size: 14px; line-height: 1.6; margin: 0 0 16px;">Click below to confirm your email and activate your account.</p>
+                <p style="text-align: center; margin: 16px 0;">
+                  <a href="${verificationUrl}" style="display: inline-block; background: #0ea5e9; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px;">Verify Email</a>
+                </p>
+                <p style="font-size: 12px; color: #64748b; margin: 16px 0 0;">This link expires in 30 minutes.</p>
+              </div>
+            `,
+            text: `Verify your email\n\nUse this link:\n${verificationUrl}\n\nExpires in 30 minutes.`,
+          });
+
+          if ((sendResult as any)?.error) {
+            console.error('❌ Verification email error:', (sendResult as any).error);
+          } else {
+            console.log('✅ Verification email sent:', (sendResult as any)?.data?.id);
+          }
+        } catch (err) {
+          console.error('❌ Verification email failed:', err);
         }
-      } catch (err) {
-        console.error('❌ Error calling verify-email route:', err);
-      }
+      };
+
+      // Fire both emails in parallel (non-blocking)
+      Promise.all([
+        sendWelcomeEmail(user).catch(err => console.error('❌ Welcome email failed:', err)),
+        sendVerificationEmail().catch(err => console.error('❌ Verification email failed:', err))
+      ]);
 
       return NextResponse.json({
         message: 'Registration successful. Please verify your email.',
