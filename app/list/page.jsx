@@ -124,13 +124,16 @@ export default function List() {
       title: formData.get("title"),
       description: formData.get("details"),
       listingType: formData.get("listingType"),
-      // Only include region if Austria selected and region chosen
-      region: country === 'AT' && region !== 'all' ? region : undefined,
       // Use selected location name as city to aid filtering/display
       city: locationName !== 'all' ? locationName : formData.get("city"),
       price: formData.get("price"),
       photos: photos, // Add photos array
     };
+
+    // Only include region if Austria selected and region chosen
+    if (country === 'AT' && region !== 'all') {
+      data.region = region;
+    }
 
     // Add flatshare-specific data
     if (listingType === "Flatshare") {

@@ -57,17 +57,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Map display region name to enum value if provided
+    // Map display region name to enum value if provided (only for Austrian regions)
     let regionEnum = undefined as undefined | string;
-    if (region && region !== 'all') {
-      regionEnum = REGION_DISPLAY_TO_ENUM[region];
-      if (!regionEnum) {
-        console.error('[Listings] Invalid region provided:', region, 'Available:', Object.keys(REGION_DISPLAY_TO_ENUM));
-        return NextResponse.json(
-          { error: `Invalid region '${region}'. Please select a valid Austrian region or leave it empty.` },
-          { status: 400 }
-        );
+    if (region && region !== 'all' && region !== '') {
+      // Only validate if it's supposed to be an Austrian region
+      const mappedEnum = REGION_DISPLAY_TO_ENUM[region];
+      if (mappedEnum) {
+        regionEnum = mappedEnum;
       }
+      // If not in map, just ignore it (could be a different location format)
     }
 
     // Map listing type to standardized values
