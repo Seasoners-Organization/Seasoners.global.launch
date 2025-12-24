@@ -8,6 +8,7 @@ import { getResend } from './resend';
 import { getEmailConfig } from './email-config';
 import type { NextAuthOptions } from 'next-auth';
 import { sendWelcomeEmail } from '@/utils/onboarding-emails';
+import bcrypt from 'bcrypt';
 
 // Build providers array conditionally based on available env vars
 const providers: any[] = [];
@@ -131,8 +132,9 @@ providers.push(
           throw new Error('Incorrect email or password');
         }
 
-        // Simple password comparison (in production, use bcrypt)
-        if (user.password !== credentials.password) {
+        // Use bcrypt to compare hashed password
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+        if (!isPasswordValid) {
           throw new Error('Incorrect email or password');
         }
 
