@@ -27,6 +27,10 @@ export default function ListingDetailPage() {
 
   const userCanContact = user ? canContactSellers(user) : false;
 
+  const isOwnListing = () => {
+    return session?.user?.email && user?.id && listing?.userId === user.id;
+  };
+
   useEffect(() => {
     if (params.id) {
       fetchListing();
@@ -42,7 +46,7 @@ export default function ListingDetailPage() {
         throw new Error(data.error || 'Failed to fetch listing');
       }
       
-      setListing(data.listing);
+      setListing(data);
     } catch (err) {
       setError(err.message || 'Failed to load listing');
     } finally {
@@ -360,12 +364,21 @@ export default function ListingDetailPage() {
                     </div>
                   </div>
 
-                  <button
-                    onClick={handleContact}
-                    className="w-full py-3 px-6 bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold rounded-xl transition-all"
-                  >
-                    Contact {listing.type === 'JOB' ? 'Employer' : 'Host'}
-                  </button>
+                  {isOwnListing() ? (
+                    <button
+                      onClick={() => router.push(`/listings/${listing.id}/edit`)}
+                      className="w-full py-3 px-6 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold rounded-xl transition-all"
+                    >
+                      Edit Listing
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleContact}
+                      className="w-full py-3 px-6 bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold rounded-xl transition-all"
+                    >
+                      Contact {listing.type === 'JOB' ? 'Employer' : 'Host'}
+                    </button>
+                  )}
 
                   {!session && (
                     <p className="text-xs text-center text-slate-500 mt-3">

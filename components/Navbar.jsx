@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import LanguageToggle from './LanguageToggle';
@@ -233,7 +233,7 @@ export default function Navbar() {
 
         {/* Main navigation - Centered */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700 mx-auto">
-          {session && (
+          {isHydrated && session && (
             <a href="/list" className="hover:text-sky-700 relative group">
               {t('list')}
               {(!session.user.emailVerified || !session.user.phoneVerified) && (
@@ -307,6 +307,12 @@ export default function Navbar() {
               >
                 {t('register')}
               </a>
+            </>
+          )}
+          {!isHydrated && (
+            <>
+              <div className="px-3 py-1.5 rounded-md text-sm font-medium bg-slate-100 text-slate-700 w-16 h-6 animate-pulse" />
+              <div className="px-3 py-1.5 rounded-md text-sm font-medium bg-sky-600 text-white w-20 h-6 animate-pulse" />
             </>
           )}
           <LanguageToggle />
