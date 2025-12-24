@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
 
     // Create Stripe checkout session
     const trialDays = 7; // 7-day free trial
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || 'https://www.seasoners.eu';
     const checkoutSession = await stripe.checkout.sessions.create({
       customer_email: isOneTime ? email : user.email,
       client_reference_id: isOneTime ? undefined : user.id,

@@ -2,12 +2,15 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export default function SubscriptionSuccess() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { data: session, update } = useSession();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [redirectCountdown, setRedirectCountdown] = useState(5);
   const sessionId = searchParams.get('session_id');
 
   useEffect(() => {
@@ -19,7 +22,7 @@ export default function SubscriptionSuccess() {
           return;
         }
 
-        // Verify the session with backend (optional, mainly for security)
+        // Verify the session with backend
         const res = await fetch('/api/subscription/verify-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -28,6 +31,8 @@ export default function SubscriptionSuccess() {
 
         if (res.ok) {
           setMessage('Your subscription is active! Check your email for confirmation and invoice.');
+          // Refresh the session to pick up new subscription status
+          await update();
         } else {
           setMessage('Subscription confirmed. Check your email for details.');
         }
@@ -40,7 +45,19 @@ export default function SubscriptionSuccess() {
     };
 
     verifySession();
-  }, [sessionId]);
+  }, [sessionId, update]);
+
+  // Auto-redirect countdown
+  useEffect(() => {
+    if (!loading && redirectCountdown > 0) {
+      const timer = setTimeout(() => {
+        setRedirectCountdown(redirectCountdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (!loading && redirectCountdown === 0) {
+      router.push('/profile');
+    }
+  }, [loading, redirectCountdown, router]);
 
   if (loading) {
     return (
@@ -70,6 +87,9 @@ export default function SubscriptionSuccess() {
           <p className="text-green-800 font-semibold mb-2">✓ Subscription Confirmed</p>
           <p className="text-sm text-green-700">
             {message || 'Check your email for your invoice and confirmation.'}
+          </p>
+          <p className="text-xs text-green-600 mt-2">
+            Redirecting to your profile in {redirectCountdown} seconds...
           </p>
         </div>
 
