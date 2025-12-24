@@ -124,8 +124,8 @@ export default function List() {
       title: formData.get("title"),
       description: formData.get("details"),
       listingType: formData.get("listingType"),
-      // For Austria (AT), region select below populates an Austrian region display name; otherwise leave empty
-      region: country === 'AT' && region !== 'all' ? region : '',
+      // Only include region if Austria selected and region chosen
+      region: country === 'AT' && region !== 'all' ? region : undefined,
       // Use selected location name as city to aid filtering/display
       city: locationName !== 'all' ? locationName : formData.get("city"),
       price: formData.get("price"),
@@ -349,19 +349,22 @@ export default function List() {
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Region</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Region / State {country === 'AT' && <span className="text-xs text-gray-500">(Austrian federal states)</span>}
+                  </label>
                   <select aria-label="Region" className="w-full border p-3 rounded-lg" value={region} onChange={e=>setRegion(e.target.value)} disabled={status === "unauthenticated" || loading || country==='all'}>
-                    <option value="all">{country === 'all' ? 'Select country first' : 'Select region'}</option>
+                    <option value="all">{country === 'all' ? 'Select country first' : country === 'AT' ? 'Select Austrian state (optional)' : 'Not applicable'}</option>
                     {regions.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
-                  <p className="text-xs text-gray-500 mt-1">Select a popular region or ski resort for your country.</p>
+                  <p className="text-xs text-gray-500 mt-1">For Austria: select your federal state. For other countries: skip this.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Town / Resort</label>
                   <select aria-label="Location" className="w-full border p-3 rounded-lg" value={locationName} onChange={e=>setLocationName(e.target.value)} disabled={status === "unauthenticated" || loading || season==='all'}>
-                    <option value="all">Select location</option>
+                    <option value="all">Select town/resort (optional)</option>
                     {locations.map(l => <option key={l} value={l}>{l}</option>)}
                   </select>
+                  <p className="text-xs text-gray-500 mt-1">Select a popular town or ski resort.</p>
                 </div>
               </div>
               <div>

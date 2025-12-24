@@ -59,11 +59,12 @@ export async function POST(req: NextRequest) {
 
     // Map display region name to enum value if provided
     let regionEnum = undefined as undefined | string;
-    if (region) {
+    if (region && region !== 'all') {
       regionEnum = REGION_DISPLAY_TO_ENUM[region];
       if (!regionEnum) {
+        console.error('[Listings] Invalid region provided:', region, 'Available:', Object.keys(REGION_DISPLAY_TO_ENUM));
         return NextResponse.json(
-          { error: 'Invalid region provided' },
+          { error: `Invalid region '${region}'. Please select a valid Austrian region or leave it empty.` },
           { status: 400 }
         );
       }
