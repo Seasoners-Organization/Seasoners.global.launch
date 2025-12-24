@@ -123,12 +123,85 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ listing }, { status: 200 });
+    return NextResponse.json(listing, { status: 200 });
 
   } catch (error) {
     console.error('Error fetching listing:', error);
     return NextResponse.json(
       { error: 'Failed to fetch listing' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: listingId } = await params;
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Check if listing exists and belongs to user
+    const listing = await prisma.listing.findUnique({
+      where: { id: listingId },
+    });
+
+    if (!listing) {
+      return NextResponse.json(
+        { error: 'Listing not found' },
+        { status: 404 }
+      );
+    }
+
+    if (listing.userId !== user.id) {
+      return NextResponse.json(
+        { error: 'You do not have permission to edit this listing' },
+        { status: 403 }
+      );
+    }
+
+    const body = await req.json();
+    const { title, description, price, city } = body;
+
+    // Update the listing
+    const updatedListing = await prisma.listing.update({
+      where: { id: listingId },
+      data: {
+        ...(title && { title }),
+        ...(description && { description }),
+        ...(price !== undefined && { price: parseFloat(price) }),
+        ...(city !== undefined && { city }),
+      },
+    });
+
+    return NextResponse.json(
+      { message: 'Listing updated successfully', listing: updatedListing },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('Error updating listing:', error);
+    return NextResponse.json(
+      { error: 'Failed to update listing' },
       { status: 500 }
     );
   }

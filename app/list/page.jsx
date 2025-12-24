@@ -27,7 +27,6 @@ export default function List() {
   const [season, setSeason] = useState('all');
   const [country, setCountry] = useState('all');
   const [region, setRegion] = useState('all');
-  const [locationName, setLocationName] = useState('all');
 
   useEffect(() => {
     if (session?.user) {
@@ -101,11 +100,9 @@ export default function List() {
 
   const countries = getCountriesBySeason(season);
   const regions = country === 'all' ? [] : getRegionsByCountry(country);
-  const locations = getLocations(season, country);
 
-  useEffect(() => { setCountry('all'); setRegion('all'); setLocationName('all'); }, [season]);
-  useEffect(() => { setRegion('all'); setLocationName('all'); }, [country]);
-  useEffect(() => { setLocationName('all'); }, [region]);
+  useEffect(() => { setCountry('all'); setRegion('all'); }, [season]);
+  useEffect(() => { setRegion('all'); }, [country]);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -124,11 +121,20 @@ export default function List() {
       title: formData.get("title"),
       description: formData.get("details"),
       listingType: formData.get("listingType"),
-      // Use selected location name as city to aid filtering/display
-      city: locationName !== 'all' ? locationName : formData.get("city"),
-      price: formData.get("price"),
-      photos: photos, // Add photos array
+      city: formData.get("city"),
+      photos: photos, // Add photos array (empty for jobs)
     };
+
+    // Price for accommodations, wage for jobs
+    if (listingType === "Seasonal Job") {
+      const wage = formData.get("wage");
+      if (wage) data.price = wage; // Store wage as price for now
+      data.jobType = formData.get("jobType");
+      data.industry = formData.get("industry");
+      data.benefits = formData.get("benefits");
+    } else {
+      data.price = formData.get("price");
+    }
 
     // Only include region if Austria selected and region chosen
     if (country === 'AT' && region !== 'all') {
@@ -351,117 +357,157 @@ export default function List() {
                 </div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
-                <div>
+              <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Region / State {country === 'AT' && <span className="text-xs text-gray-500">(Austrian federal states)</span>}
+                    Region / City {country === 'AT' && <span className="text-xs text-gray-500">(Austrian federal states)</span>}
                   </label>
                   <select aria-label="Region" className="w-full border p-3 rounded-lg" value={region} onChange={e=>setRegion(e.target.value)} disabled={status === "unauthenticated" || loading || country==='all'}>
-                    <option value="all">{country === 'all' ? 'Select country first' : country === 'AT' ? 'Select Austrian state (optional)' : 'Not applicable'}</option>
+                    <option value="all">{country === 'all' ? 'Select country first' : 'Select a city or town'}</option>
                     {regions.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
-                  <p className="text-xs text-gray-500 mt-1">For Austria: select your federal state. For other countries: skip this.</p>
+                  <p className="text-xs text-gray-500 mt-1">Select your city or resort location.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Town / Resort</label>
-                  <select aria-label="Location" className="w-full border p-3 rounded-lg" value={locationName} onChange={e=>setLocationName(e.target.value)} disabled={status === "unauthenticated" || loading || season==='all'}>
-                    <option value="all">Select town/resort (optional)</option>
-                    {locations.map(l => <option key={l} value={l}>{l}</option>)}
-                  </select>
-                  <p className="text-xs text-gray-500 mt-1">Select a popular town or ski resort.</p>
+                  <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">Or enter custom city</label>
+                  <input id="city" name="city" className="w-full border p-3 rounded-lg" placeholder="e.g., Innsbruck, Sydney" disabled={status === "unauthenticated" || loading} />
+                  <p className="text-xs text-gray-500 mt-1">Enter if your location isn't in the list above.</p>
                 </div>
-              </div>
-              <div>
-                <label htmlFor="city" className="sr-only">{t('city')}</label>
-                <input id="city" name="city" className="w-full border p-3 rounded-lg" placeholder={t('cityPlaceholderShort')} disabled={status === "unauthenticated" || loading} />
-                <p className="text-xs text-gray-500 mt-1">If no location selected above, you can type a city here.</p>
               </div>
             </div>
 
-            <div>
-              <label htmlFor="price" className="sr-only">{t('priceLabel')}</label>
-              <input id="price" name="price" type="number" step="0.01" className="w-full border p-3 rounded-lg" placeholder={t('pricePlaceholderShort')} disabled={status === "unauthenticated" || loading} />
-            </div>
+            {listingType === "Seasonal Job" ? (
+              <>
+                {/* Job-specific fields */}
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-4">
+                  <h3 className="font-semibold text-amber-800">Job Details</h3>
+                  
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="jobType" className="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
+                      <select id="jobType" name="jobType" className="w-full border p-2 rounded-lg" disabled={loading}>
+                        <option value="">Select type</option>
+                        <option value="FULL_TIME">Full Time</option>
+                        <option value="PART_TIME">Part Time</option>
+                        <option value="SEASONAL">Seasonal</option>
+                        <option value="TEMPORARY">Temporary</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="industry" className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+                      <select id="industry" name="industry" className="w-full border p-2 rounded-lg" disabled={loading}>
+                        <option value="">Select industry</option>
+                        <option value="HOSPITALITY">Hospitality</option>
+                        <option value="FOOD_SERVICE">Food Service</option>
+                        <option value="RETAIL">Retail</option>
+                        <option value="OUTDOOR">Outdoor / Ski Ops</option>
+                        <option value="TRAVEL">Travel</option>
+                        <option value="MAINTENANCE">Maintenance</option>
+                        <option value="OTHER">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="wage" className="block text-sm font-medium text-gray-700 mb-1">Wage / Salary (optional)</label>
+                    <input id="wage" name="wage" type="text" className="w-full border p-2 rounded-lg" placeholder="e.g., €1,500/month or $20/hour" disabled={loading} />
+                    <p className="text-xs text-gray-500 mt-1">Leave blank if not disclosing wage</p>
+                  </div>
+
+                  <div>
+                    <label htmlFor="benefits" className="block text-sm font-medium text-gray-700 mb-1">Benefits / Perks</label>
+                    <textarea id="benefits" name="benefits" className="w-full border p-2 rounded-lg" rows="2" placeholder="e.g., Free accommodation, Meals included, Ski pass, Travel allowance" disabled={loading} />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div>
+                <label htmlFor="price" className="sr-only">{t('priceLabel')}</label>
+                <input id="price" name="price" type="number" step="0.01" className="w-full border p-3 rounded-lg" placeholder={t('pricePlaceholderShort')} disabled={status === "unauthenticated" || loading} />
+              </div>
+            )}
 
             <div>
               <label htmlFor="details" className="sr-only">{t('descriptionLabel')}</label>
-              <textarea id="details" name="details" className="w-full border p-3 rounded-lg" rows="4" placeholder={t('detailsPlaceholderShort')} required disabled={status === "unauthenticated" || loading} />
+              <textarea id="details" name="details" className="w-full border p-3 rounded-lg" rows="4" placeholder={listingType === "Seasonal Job" ? "Job description, responsibilities, required skills, schedule, etc." : t('detailsPlaceholderShort')} required disabled={status === "unauthenticated" || loading} />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                📷 Photos (max 10)
-              </label>
-              
-              {/* Photo Grid */}
-              {photos.length > 0 && (
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-3">
-                  {photos.map((photo, idx) => (
-                    <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border-2 border-gray-200 group">
-                      <img 
-                        src={photo} 
-                        alt={`Photo ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removePhoto(idx)}
-                        className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity"
-                        disabled={loading || uploadingPhoto}
-                      >
-                        ×
-                      </button>
-                      {idx === 0 && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent py-1">
-                          <p className="text-white text-xs text-center font-semibold">Cover</p>
-                        </div>
+{listingType !== "Seasonal Job" && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  📷 Photos (max 10)
+                </label>
+                
+                {/* Photo Grid */}
+                {photos.length > 0 && (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-3">
+                    {photos.map((photo, idx) => (
+                      <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border-2 border-gray-200 group">
+                        <img 
+                          src={photo} 
+                          alt={`Photo ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removePhoto(idx)}
+                          className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                          disabled={loading || uploadingPhoto}
+                        >
+                          ×
+                        </button>
+                        {idx === 0 && (
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent py-1">
+                            <p className="text-white text-xs text-center font-semibold">Cover</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Upload Button */}
+                {photos.length < 10 && (
+                  <div className="relative">
+                    <input
+                      type="file"
+                      id="photoUpload"
+                      accept="image/jpeg,image/png,image/webp"
+                      multiple
+                      onChange={handlePhotoUpload}
+                      className="hidden"
+                      disabled={status === "unauthenticated" || loading || uploadingPhoto}
+                    />
+                    <label
+                      htmlFor="photoUpload"
+                      className={`flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors ${
+                        uploadingPhoto 
+                          ? 'border-gray-300 bg-gray-50 cursor-wait' 
+                          : 'border-sky-300 bg-sky-50 hover:bg-sky-100 hover:border-sky-400'
+                      }`}
+                    >
+                      {uploadingPhoto ? (
+                        <>
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-600 mb-2"></div>
+                          <p className="text-sm text-sky-700">Uploading...</p>
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-10 h-10 text-sky-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                          </svg>
+                          <p className="text-sm text-sky-700 font-medium">Click to upload photos</p>
+                          <p className="text-xs text-gray-500 mt-1">JPEG, PNG or WebP (max 5MB each)</p>
+                        </>
                       )}
-                    </div>
-                  ))}
-                </div>
-              )}
+                    </label>
+                  </div>
+                )}
 
-              {/* Upload Button */}
-              {photos.length < 10 && (
-                <div className="relative">
-                  <input
-                    type="file"
-                    id="photoUpload"
-                    accept="image/jpeg,image/png,image/webp"
-                    multiple
-                    onChange={handlePhotoUpload}
-                    className="hidden"
-                    disabled={status === "unauthenticated" || loading || uploadingPhoto}
-                  />
-                  <label
-                    htmlFor="photoUpload"
-                    className={`flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors ${
-                      uploadingPhoto 
-                        ? 'border-gray-300 bg-gray-50 cursor-wait' 
-                        : 'border-sky-300 bg-sky-50 hover:bg-sky-100 hover:border-sky-400'
-                    }`}
-                  >
-                    {uploadingPhoto ? (
-                      <>
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-600 mb-2"></div>
-                        <p className="text-sm text-sky-700">Uploading...</p>
-                      </>
-                    ) : (
-                      <>
-                        <svg className="w-10 h-10 text-sky-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        <p className="text-sm text-sky-700 font-medium">Click to upload photos</p>
-                        <p className="text-xs text-gray-500 mt-1">JPEG, PNG or WebP (max 5MB each)</p>
-                      </>
-                    )}
-                  </label>
-                </div>
-              )}
-
-              <p className="text-xs text-gray-500 mt-2">
-                💡 First photo will be the cover image. Add up to 10 photos to showcase your listing.
-              </p>
-            </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  💡 First photo will be the cover image. Add up to 10 photos to showcase your listing.
+                </p>
+              </div>
+            )}
 
             <button 
               type="submit"

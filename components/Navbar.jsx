@@ -17,9 +17,15 @@ export default function Navbar() {
   const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isHydrated, setIsHydrated] = useState(false);
   const dropdownRef = useRef(null);
   const destinationsRef = useRef(null);
   const supportRef = useRef(null);
+
+  // Hydration check - only render authenticated UI after client hydration
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   // Listen for message events to refresh unread count
   useEffect(() => {
@@ -105,7 +111,7 @@ export default function Navbar() {
         </a>
 
         {/* Profile Dropdown - Next to logo */}
-        {session && (
+        {isHydrated && session && (
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -287,7 +293,7 @@ export default function Navbar() {
 
         {/* Right side - Auth or Language (desktop) */}
         <div className="hidden md:flex items-center gap-3 ml-auto">
-          {!session && (
+          {isHydrated && !session && (
             <>
               <button
                 onClick={() => signIn()}
@@ -327,7 +333,7 @@ export default function Navbar() {
       {isMobileOpen && (
         <div className="md:hidden border-t border-slate-200 bg-white">
           <div className="max-w-6xl mx-auto px-4 py-3 grid gap-2 text-slate-800">
-            {session && (
+            {isHydrated && session && (
               <a href="/list" className="py-2" onClick={() => setIsMobileOpen(false)}>
                 {t('list')}
               </a>
@@ -364,7 +370,7 @@ export default function Navbar() {
             </details>
             <a href="/about" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('about')}</a>
             <div className="h-px bg-slate-200 my-1" />
-            {!session ? (
+            {isHydrated && !session ? (
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => { setIsMobileOpen(false); signIn(); }}
@@ -380,14 +386,14 @@ export default function Navbar() {
                   {t('register')}
                 </a>
               </div>
-            ) : (
+            ) : isHydrated && session ? (
               <button
                 onClick={() => { setIsMobileOpen(false); clearUserCache(); signOut(); }}
                 className="px-3 py-2 rounded-md text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition w-full text-left"
               >
                 {t('signOut')}
               </button>
-            )}
+            ) : null}
             <div className="flex items-center justify-between pt-2">
               <span className="text-sm text-slate-600">{t('languageLabel')}</span>
               <LanguageToggle />

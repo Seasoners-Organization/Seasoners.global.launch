@@ -22,88 +22,90 @@ export const COUNTRY_NAMES = {
   VN: 'Vietnam',
 };
 
-// Country -> Regions mapping (minimal starter sets; extend later)
+// Country -> Cities/Towns mapping (replacing state-based regions with actual cities)
 export const COUNTRY_REGIONS = {
   AT: [
-    'BURGENLAND','CARINTHIA','LOWER_AUSTRIA','SALZBURG','STYRIA','TIROL','UPPER_AUSTRIA','VIENNA','VORARLBERG',
-    'Innsbruck', 'St. Anton am Arlberg', 'Ischgl', 'Kitzbühel', 'Sölden',
-    'Zell am See', 'Saalbach', 'Mayrhofen', 'Schladming', 'Obertauern'
+    'Innsbruck', 'St. Anton', 'Sölden', 'Ischgl', 'Kitzbühel',
+    'Mayrhofen', 'Zillertal', 'Obertauern', 'Zell am See', 'Saalbach',
+    'Schladming', 'Bad Hofgastein', 'Lienz', 'Salzburg', 'Vienna',
+    'Linz', 'Graz', 'Innsbruck', 'Wörgl', 'Telfs'
   ],
   CH: [
-    'Valais','Graubünden','Bernese Oberland','Uri','Ticino','Vaud',
     'Zermatt', 'Verbier', 'St. Moritz', 'Davos', 'Interlaken',
     'Saas-Fee', 'Crans-Montana', 'Gstaad', 'Andermatt', 'Engelberg',
-    'Lausanne', 'Geneva', 'Zurich', 'Lucerne', 'Lugano'
+    'Grindelwald', 'Wengen', 'Mürren', 'Valais', 'Lucerne',
+    'Zurich', 'Geneva', 'Bern', 'Lugano', 'Zug'
   ],
   FR: [
-    'Savoie','Haute-Savoie','Isère','Hautes-Alpes','Alpes-Maritimes',
-    'Provence-Alpes-Côte d\'Azur', 'Occitanie', 'Nouvelle-Aquitaine',
     'Chamonix', 'Val d\'Isère', 'Courchevel', 'Les Deux Alpes', 'Tignes',
     'Méribel', 'Val Thorens', 'La Plagne', 'Alpe d\'Huez', 'Megève',
-    'Nice', 'Cannes', 'Saint-Tropez', 'Marseille', 'Biarritz', 'Bordeaux'
+    'Morzine', 'Annecy', 'Grenoble', 'Nice', 'Cannes',
+    'Saint-Tropez', 'Marseille', 'Biarritz', 'Bordeaux', 'Lyon'
   ],
   JP: [
-    'Hokkaido','Nagano','Niigata','Yamagata','Gunma',
-    'Niseko', 'Hakuba', 'Nozawa Onsen', 'Myoko Kogen', 'Furano',
-    'Rusutsu', 'Shiga Kogen', 'Appi Kogen', 'Zao Onsen', 'Tokyo'
+    'Niseko', 'Hakuba', 'Nozawa', 'Myoko', 'Furano',
+    'Rusutsu', 'Shiga Kogen', 'Appi Kogen', 'Zao', 'Banff',
+    'Tokyo', 'Yokohama', 'Osaka', 'Kyoto', 'Hiroshima',
+    'Sapporo', 'Nagano', 'Sendai', 'Fukuoka', 'Kobe'
   ],
   NO: [
-    'Troms','Svalbard','Trøndelag','Vestland','Viken',
     'Tromsø', 'Hemsedal', 'Trysil', 'Geilo', 'Lillehammer',
-    'Lofoten', 'Bergen', 'Oslo', 'Stavanger'
+    'Lofoten', 'Svalbard', 'Longyearbyen', 'Narvik', 'Bodø',
+    'Bergen', 'Oslo', 'Stavanger', 'Ålesund', 'Trondheim'
   ],
   ES: [
-    'Canary Islands','Balearic Islands','Andalusia','Catalonia','Aragon','Asturias','Cantabria','Valencia',
-    'Sierra Nevada', 'Baqueira-Beret', 'Formigal', 'Candanchú',
-    'Barcelona', 'Madrid', 'Seville', 'Valencia', 'Málaga',
-    'Ibiza', 'Mallorca', 'Tenerife', 'Gran Canaria', 'Marbella'
+    'Madrid', 'Barcelona', 'Seville', 'Valencia', 'Málaga',
+    'Bilbao', 'Zaragoza', 'Granada', 'Córdoba', 'Almería',
+    'Ibiza', 'Mallorca', 'Menorca', 'Formentera', 'Tenerife',
+    'Gran Canaria', 'Lanzarote', 'Fuerteventura', 'Andorra', 'San Sebastián'
   ],
   PT: [
-    'Madeira','Lisbon District','Algarve','Porto District','Azores',
-    'Faro', 'Albufeira', 'Lagos', 'Cascais', 'Sintra',
-    'Funchal', 'Ponta Delgada', 'Évora', 'Coimbra', 'Braga'
+    'Lisbon', 'Porto', 'Faro', 'Albufeira', 'Lagos',
+    'Cascais', 'Sintra', 'Covilhã', 'Funchal', 'Ponta Delgada',
+    'Évora', 'Coimbra', 'Braga', 'Aveiro', 'Vilamoura',
+    'Tavira', 'Guarda', 'Viseu', 'Guarda', 'Madeira'
   ],
   NZ: [
-    'Otago','Canterbury','Southland','West Coast','Manawatu-Wanganui',
     'Queenstown', 'Wanaka', 'Cardrona', 'Treble Cone', 'Mount Hutt',
-    'Ruapehu', 'Auckland', 'Wellington', 'Christchurch', 'Dunedin'
+    'Ruapehu', 'Taupo', 'Rotorua', 'Arrowtown', 'Glenorchy',
+    'Auckland', 'Wellington', 'Christchurch', 'Dunedin', 'Napier',
+    'Tauranga', 'Hamilton', 'New Plymouth', 'Palmerston North', 'Invercargill'
   ],
   AU: [
-    'New South Wales','Queensland','Victoria','Tasmania','South Australia',
-    'Thredbo', 'Perisher', 'Falls Creek', 'Mount Buller', 'Mount Hotham',
     'Sydney', 'Melbourne', 'Brisbane', 'Gold Coast', 'Byron Bay',
-    'Cairns', 'Noosa', 'Bondi', 'Surfers Paradise', 'Port Douglas'
+    'Cairns', 'Noosa', 'Bondi', 'Surfers Paradise', 'Port Douglas',
+    'Thredbo', 'Perisher', 'Falls Creek', 'Mount Buller', 'Mount Hotham',
+    'Hobart', 'Darwin', 'Perth', 'Adelaide', 'Canberra'
   ],
   GR: [
-    'Cyclades','Dodecanese','Ionian Islands','Crete','Attica','Central Macedonia',
     'Santorini', 'Mykonos', 'Rhodes', 'Corfu', 'Zakynthos',
     'Paros', 'Naxos', 'Chania', 'Heraklion', 'Athens',
-    'Thessaloniki', 'Ios', 'Milos', 'Skiathos', 'Halkidiki'
+    'Thessaloniki', 'Ios', 'Milos', 'Skiathos', 'Halkidiki',
+    'Crete', 'Delphi', 'Meteora', 'Hydra', 'Spetses'
   ],
   IT: [
-    'Sicily','Sardinia','Trentino-Alto Adige','Veneto','Lombardy','Piedmont','Aosta Valley',
-    'Tuscany','Lazio','Campania',
+    'Rome', 'Florence', 'Venice', 'Milan', 'Naples',
     'Cortina d\'Ampezzo', 'Val Gardena', 'Livigno', 'Cervinia', 'Courmayeur',
-    'Madonna di Campiglio', 'Rome', 'Florence', 'Venice', 'Milan',
-    'Naples', 'Amalfi Coast', 'Positano', 'Capri', 'Taormina'
+    'Madonna di Campiglio', 'Amalfi', 'Positano', 'Capri', 'Taormina',
+    'Palermo', 'Bologna', 'Turin', 'Genoa', 'Verona'
   ],
   ID: [
-    'Bali','Jakarta','Lombok','Sumatra','Java',
+    'Bali', 'Jakarta', 'Lombok', 'Yogyakarta', 'Bandung',
     'Seminyak', 'Canggu', 'Ubud', 'Uluwatu', 'Nusa Dua',
-    'Sanur', 'Gili Islands', 'Kuta', 'Jimbaran', 'Yogyakarta',
-    'Bandung', 'Surabaya', 'Medan', 'Denpasar', 'Bogor'
+    'Sanur', 'Gili Islands', 'Kuta', 'Jimbaran', 'Bogor',
+    'Surabaya', 'Medan', 'Denpasar', 'Palembang', 'Makassar'
   ],
   TH: [
-    'Phuket','Bangkok','Krabi','Chiang Mai','Koh Samui',
+    'Bangkok', 'Phuket', 'Krabi', 'Chiang Mai', 'Koh Samui',
     'Pattaya', 'Hua Hin', 'Koh Phi Phi', 'Koh Phangan', 'Koh Tao',
     'Patong', 'Kata Beach', 'Ao Nang', 'Railay Beach', 'Chaweng',
     'Lamai', 'Sukhumvit', 'Silom', 'Khao San Road', 'Nana'
   ],
   VN: [
-    'Da Nang','Hanoi','Ho Chi Minh City','Nha Trang','Hoi An',
+    'Ho Chi Minh City', 'Hanoi', 'Da Nang', 'Hoi An', 'Nha Trang',
     'Phu Quoc', 'Halong Bay', 'Dalat', 'Mui Ne', 'Vung Tau',
     'Hue', 'Quy Nhon', 'Con Dao', 'Sapa', 'Cat Ba',
-    'My Khe Beach', 'An Bang Beach', 'Long Beach', 'Bai Sao', 'Can Tho'
+    'My Khe Beach', 'Can Tho', 'Ha Giang', 'Ninh Binh', 'Sa Pa'
   ]
 };
 
@@ -187,7 +189,6 @@ export function applyFilters(listings, filters) {
     season = 'all',
     country = 'all',
     region = 'all',
-    location = 'all',
     priceMin,
     priceMax,
     bedrooms,
@@ -197,7 +198,6 @@ export function applyFilters(listings, filters) {
   } = filters;
 
   const countriesForSeason = getCountriesBySeason(season);
-  const locationsForContext = getLocations(season, country);
 
   return listings.filter(l => {
     // Structured location fields (future-proof: countryCode may be absent)
@@ -212,12 +212,6 @@ export function applyFilters(listings, filters) {
 
     // Region filter (only applies if structured region present)
     if (region !== 'all' && l.region && l.region !== region) return false;
-
-    // Location filter
-    if (location !== 'all' && locName !== location) return false;
-
-    // Location must be in derived list if season narrowed
-    if (season !== 'all' && !locationsForContext.includes(locName)) return false;
 
     // Price filters
     if (priceMin != null && l.price < Number(priceMin)) return false;

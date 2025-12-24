@@ -21,7 +21,6 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
   const [season, setSeason] = useState('all');
   const [country, setCountry] = useState('all');
   const [region, setRegion] = useState('all');
-  const [location, setLocation] = useState('all');
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
   const [bedrooms, setBedrooms] = useState('');
@@ -37,7 +36,6 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
     init('season', setSeason, 'all');
     init('country', setCountry, 'all');
     init('region', setRegion, 'all');
-    init('location', setLocation, 'all');
     init('priceMin', setPriceMin);
     init('priceMax', setPriceMax);
     init('bedrooms', setBedrooms);
@@ -51,25 +49,23 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
   // Derived options
   const countries = useMemo(() => getCountriesBySeason(season), [season]);
   const regions = useMemo(() => country === 'all' ? [] : getRegionsByCountry(country), [country]);
-  const locations = useMemo(() => getLocations(season, country), [season, country]);
 
   const showProperty = context === 'stays' || context === 'flatshares';
   const showJobs = context === 'jobs';
 
   // Reset dependent fields when upstream changes
-  useEffect(() => { setCountry('all'); setRegion('all'); setLocation('all'); }, [season]);
-  useEffect(() => { setRegion('all'); setLocation('all'); }, [country]);
-  useEffect(() => { setLocation('all'); }, [region]);
+  useEffect(() => { setCountry('all'); setRegion('all'); }, [season]);
+  useEffect(() => { setRegion('all'); }, [country]);
 
   // Apply filters
   const filtered = useMemo(() => applyFilters(listings, {
-    season, country, region, location,
+    season, country, region,
     priceMin: priceMin || null,
     priceMax: priceMax || null,
     bedrooms: bedrooms || null,
     roommates: roommates || null,
     jobType, industry
-  }), [listings, season, country, region, location, priceMin, priceMax, bedrooms, roommates, jobType, industry]);
+  }), [listings, season, country, region, priceMin, priceMax, bedrooms, roommates, jobType, industry]);
 
   useEffect(() => { onFiltered(filtered); }, [filtered, onFiltered]);
 
@@ -80,7 +76,6 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
     if (season !== 'all') params.set('season', season);
     if (country !== 'all') params.set('country', country);
     if (region !== 'all') params.set('region', region);
-    if (location !== 'all') params.set('location', location);
     if (priceMin) params.set('priceMin', priceMin);
     if (priceMax) params.set('priceMax', priceMax);
     if (showProperty) {
@@ -93,13 +88,12 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
     }
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname);
-  }, [season, country, region, location, priceMin, priceMax, bedrooms, roommates, jobType, industry, hydrated, showProperty, showJobs], 250);
+  }, [season, country, region, priceMin, priceMax, bedrooms, roommates, jobType, industry, hydrated, showProperty, showJobs], 250);
 
   function resetAll() {
     setSeason('all');
     setCountry('all');
     setRegion('all');
-    setLocation('all');
     setPriceMin('');
     setPriceMax('');
     setBedrooms('');
@@ -109,7 +103,7 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
   }
 
   const hasAny = (
-    season !== 'all' || country !== 'all' || region !== 'all' || location !== 'all' ||
+    season !== 'all' || country !== 'all' || region !== 'all' ||
     priceMin || priceMax || bedrooms || roommates || (showJobs && (jobType !== 'all' || industry !== 'all'))
   );
 
@@ -125,9 +119,6 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
         )}
         {region !== 'all' && (
           <button onClick={() => setRegion('all')} className="px-2 py-1 text-xs rounded-full bg-sky-100 text-sky-700">Region: {prettyRegionName(region)} ×</button>
-        )}
-        {location !== 'all' && (
-          <button onClick={() => setLocation('all')} className="px-2 py-1 text-xs rounded-full bg-sky-100 text-sky-700">Location: {location} ×</button>
         )}
         {priceMin && (
           <button onClick={() => setPriceMin('')} className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-700">Min: €{priceMin} ×</button>
@@ -157,7 +148,6 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
           season!=='all'&&`season:${season}`,
           country!=='all'&&`country:${getCountryName(country)}`,
           region!=='all'&&`region:${prettyRegionName(region)}`,
-          location!=='all'&&`location:${location}`,
           priceMin&&`min:€${priceMin}`,
           priceMax&&`max:€${priceMax}`,
           bedrooms&&`beds:${bedrooms}`,
@@ -191,12 +181,6 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
             <select aria-label="Region" value={region} onChange={e => setRegion(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" disabled={country==='all' || regions.length===0}>
               <option value="all">{country==='all' ? 'All' : 'Select region'}</option>
               {regions.map(r => <option key={r} value={r}>{prettyRegionName(r)}</option>)}
-            </select>
-          </label>
-          <label className="text-xs font-medium text-slate-600">Location
-            <select aria-label="Location" value={location} onChange={e => setLocation(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" disabled={season==='all'}>
-              <option value="all">All</option>
-              {locations.map(l => <option key={l} value={l}>{l}</option>)}
             </select>
           </label>
         </div>

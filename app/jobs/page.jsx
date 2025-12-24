@@ -55,7 +55,7 @@ export default function JobsPage() {
 
   const handleManageListing = (e, listing) => {
     e.preventDefault();
-    router.push(`/listings/${listing.id}`);
+    router.push(`/listings/${listing.id}/edit`);
   };
 
   const isOwnListing = (listing) => {

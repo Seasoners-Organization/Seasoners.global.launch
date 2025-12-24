@@ -35,13 +35,6 @@ export default function Contact() {
       color: "purple"
     },
     {
-      title: "Founder",
-      email: "tremayne@seasoners.eu",
-      icon: "🚀",
-      description: "Direct line to the founder for feedback, suggestions, or important matters",
-      color: "orange"
-    },
-    {
       title: "Press & Media",
       email: "press@seasoners.eu",
       icon: "📰",
