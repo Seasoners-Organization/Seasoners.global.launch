@@ -53,6 +53,15 @@ export default function JobsPage() {
     router.push(`/messages/${listing.userId}?listingId=${listing.id}`);
   };
 
+  const handleManageListing = (e, listing) => {
+    e.preventDefault();
+    router.push(`/listings/${listing.id}`);
+  };
+
+  const isOwnListing = (listing) => {
+    return session?.user?.email && user?.id && listing.userId === user.id;
+  };
+
   const handleUpgrade = async (tier) => {
     window.location.href = `/subscribe?tier=${tier}&returnTo=/jobs`;
   };
@@ -189,14 +198,24 @@ export default function JobsPage() {
                       <p className="text-sm text-slate-600 line-clamp-3">{job.description}</p>
                     </a>
                     <div className="px-5 pb-5">
-                      <button
-                        onClick={(e) => handleContactEmployer(e, job)}
-                        disabled={contactingId === job.id}
-                        className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===job.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
-                        aria-label={`Contact employer about ${job.title}`}
-                      >
-                        {contactingId === job.id ? t('loading') : t('contactEmployer')}
-                      </button>
+                      {isOwnListing(job) ? (
+                        <button
+                          onClick={(e) => handleManageListing(e, job)}
+                          className="w-full py-2 text-sm border rounded-lg font-medium transition bg-gradient-to-r from-sky-600 to-amber-600 text-white border-transparent hover:from-sky-700 hover:to-amber-700"
+                          aria-label={`Manage listing ${job.title}`}
+                        >
+                          {t('manageListing') || 'Manage Listing'}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => handleContactEmployer(e, job)}
+                          disabled={contactingId === job.id}
+                          className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===job.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
+                          aria-label={`Contact employer about ${job.title}`}
+                        >
+                          {contactingId === job.id ? t('loading') : t('contactEmployer')}
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -300,14 +319,24 @@ export default function JobsPage() {
                 
                 {/* Contact Button */}
                 <div className="px-5 pb-5">
-                  <button
-                    onClick={(e) => handleContactEmployer(e, job)}
-                    disabled={contactingId === job.id}
-                    className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===job.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
-                    aria-label={`Contact employer about ${job.title}`}
-                  >
-                    {contactingId === job.id ? t('loading') : t('contactEmployer')}
-                  </button>
+                  {isOwnListing(job) ? (
+                    <button
+                      onClick={(e) => handleManageListing(e, job)}
+                      className="w-full py-2 text-sm border rounded-lg font-medium transition bg-gradient-to-r from-sky-600 to-amber-600 text-white border-transparent hover:from-sky-700 hover:to-amber-700"
+                      aria-label={`Manage listing ${job.title}`}
+                    >
+                      {t('manageListing') || 'Manage Listing'}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => handleContactEmployer(e, job)}
+                      disabled={contactingId === job.id}
+                      className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===job.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
+                      aria-label={`Contact employer about ${job.title}`}
+                    >
+                      {contactingId === job.id ? t('loading') : t('contactEmployer')}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

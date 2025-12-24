@@ -55,6 +55,15 @@ export default function StaysPage() {
     router.push(`/messages/${listing.userId}?listingId=${listing.id}`);
   };
 
+  const handleManageListing = (e, listing) => {
+    e.preventDefault();
+    router.push(`/listings/${listing.id}`);
+  };
+
+  const isOwnListing = (listing) => {
+    return session?.user?.email && user?.id && listing.userId === user.id;
+  };
+
   const handleUpgrade = async (tier) => {
     window.location.href = `/subscribe?tier=${tier}&returnTo=/stays`;
   };
@@ -186,14 +195,24 @@ export default function StaysPage() {
                       <p className="text-sm text-slate-600 line-clamp-3">{stay.description}</p>
                     </a>
                     <div className="px-5 pb-5">
-                      <button
-                        onClick={(e) => handleContactSeller(e, stay)}
-                        disabled={contactingId === stay.id}
-                        className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===stay.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
-                        aria-label={`Contact host about ${stay.title}`}
-                      >
-                        {contactingId === stay.id ? t('loading') : t('contactSeller')}
-                      </button>
+                      {isOwnListing(stay) ? (
+                        <button
+                          onClick={(e) => handleManageListing(e, stay)}
+                          className="w-full py-2 text-sm border rounded-lg font-medium transition bg-gradient-to-r from-sky-600 to-amber-600 text-white border-transparent hover:from-sky-700 hover:to-amber-700"
+                          aria-label={`Manage listing ${stay.title}`}
+                        >
+                          {t('manageListing') || 'Manage Listing'}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => handleContactSeller(e, stay)}
+                          disabled={contactingId === stay.id}
+                          className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===stay.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
+                          aria-label={`Contact host about ${stay.title}`}
+                        >
+                          {contactingId === stay.id ? t('loading') : t('contactSeller')}
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
