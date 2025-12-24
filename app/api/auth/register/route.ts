@@ -27,6 +27,7 @@ const registrationSchema = z.object({
   password: z.string().min(8),
   name: z.string().min(2),
   phoneNumber: z.string().regex(/^\+[1-9]\d{1,14}$/).optional(),
+  phoneVerified: z.boolean().optional(),
   role: z.enum(['USER', 'HOST', 'EMPLOYER']).default('USER'),
   captchaToken: z.string().min(1),
 });
@@ -128,6 +129,7 @@ export async function POST(req: Request) {
           password: hashedPassword,
           name: validatedData.name,
           phoneNumber: validatedData.phoneNumber,
+          phoneVerified: validatedData.phoneVerified ? new Date() : null,
           role: validatedData.role,
         }
       });
