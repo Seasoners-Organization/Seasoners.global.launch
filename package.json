@@ -25,6 +25,7 @@
     "@aws-sdk/s3-request-presigner": "^3.927.0",
     "@prisma/client": "^6.19.0",
     "@stripe/stripe-js": "^8.4.0",
+    "@vercel/analytics": "^1.6.1",
     "@zxcvbn-ts/core": "^3.0.4",
     "@zxcvbn-ts/language-common": "^3.0.4",
     "@zxcvbn-ts/language-en": "^3.0.2",
@@ -33,6 +34,7 @@
     "disposable-email-domains": "^1.0.62",
     "framer-motion": "^11.0.0",
     "jspdf": "^3.0.3",
+    "libphonenumber-js": "^1.11.10",
     "lucide-react": "^0.553.0",
     "multer": "^2.0.2",
     "next": "^15.5.9",
@@ -47,7 +49,6 @@
     "sharp": "^0.34.5",
     "stripe": "^19.3.0",
     "twilio": "^5.10.4",
-    "libphonenumber-js": "^1.11.10",
     "ws": "^8.16.0",
     "zod": "^4.1.12"
   },
