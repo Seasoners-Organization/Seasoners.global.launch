@@ -46,7 +46,8 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
       description: 'Required to send & receive messages',
       isVerified: !!user?.emailVerified,
       icon: '✉️',
-      onVerify: onEmailVerify,
+      verifiedDate: user?.emailVerified,
+      onVerify: user?.emailVerified ? null : onEmailVerify, // Don't show verify button if already verified
     },
     {
       id: 'phone',
@@ -54,7 +55,8 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
       description: 'Helps hosts/employers verify you',
       isVerified: !!user?.phoneVerified,
       icon: '📱',
-      onVerify: onPhoneVerify,
+      verifiedDate: user?.phoneVerified,
+      onVerify: user?.phoneVerified ? null : onPhoneVerify, // Don't show verify button if already verified
     },
     {
       id: 'identity',
@@ -62,6 +64,7 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
       description: 'Coming soon - we\'re building this feature',
       isVerified: !!user?.identityVerified,
       icon: '🆔',
+      verifiedDate: user?.identityVerified,
       onVerify: null, // Disabled while in development
     },
   ];
@@ -80,7 +83,7 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
         <div>
           <h3 className="text-lg font-bold text-slate-900">Verification Status</h3>
           <p className="text-sm text-slate-600 mt-1">
-            Complete verifications to unlock features
+            {unverifiedCount === 0 ? 'All verifications complete! 🎉' : 'Complete verifications to unlock features'}
           </p>
         </div>
         <div className="text-right">
@@ -153,7 +156,7 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
                 animate={{ opacity: 1 }}
                 className="mt-2 p-2 bg-emerald-50 rounded-lg text-xs text-emerald-700 border border-emerald-100"
               >
-                ✓ Verified on {new Date(user?.emailVerified || user?.phoneVerified || user?.identityVerified).toLocaleDateString()}
+                ✓ Verified on {new Date(verification.verifiedDate).toLocaleDateString()}
               </motion.div>
             )}
           </motion.div>

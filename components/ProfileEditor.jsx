@@ -195,39 +195,86 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
           {/* Email */}
           <div ref={emailVerificationRef}>
             <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full border border-slate-300 rounded-lg p-3"
-              autoComplete="email"
-            />
             {user?.emailVerified ? (
-              <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-xs text-green-700">
-                <span className="font-semibold">✓ Email verified</span> on {new Date(user.emailVerified).toLocaleDateString()}
+              <div className="space-y-3">
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full border border-slate-300 rounded-lg p-3"
+                  autoComplete="email"
+                  disabled
+                />
+                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="font-medium text-green-900">✓ Email Verified</p>
+                  <p className="text-xs text-green-600 mt-1">Verified on {new Date(user.emailVerified).toLocaleDateString()}</p>
+                </div>
+                <p className="text-xs text-slate-500">To change your email, please contact support</p>
               </div>
             ) : (
-              <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-700">
-                <span className="font-semibold">⚠ Email not verified</span>
+              <div className="space-y-2">
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full border border-slate-300 rounded-lg p-3"
+                  autoComplete="email"
+                />
+                <div className="p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-700">
+                  <span className="font-semibold">⚠ Email not verified</span>
+                </div>
               </div>
             )}
           </div>
           {/* Phone */}
           <div ref={phoneVerificationRef} tabIndex={-1}>
             <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
-            <PhoneVerification
-              userId={user?.id}
-              initialPhone={formData.phoneNumber}
-              verified={user?.phoneVerified}
-              onVerified={() => {
-                // Delay reload to let animations finish
-                setTimeout(() => window.location.reload(), 1500);
-              }}
-            />
-            {user?.phoneVerified && (
-              <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-xs text-green-700">
-                <span className="font-semibold">✓ Phone verified</span> on {new Date(user.phoneVerified).toLocaleDateString()}
+            {user?.phoneVerified && user?.phoneNumber ? (
+              <div className="space-y-3">
+                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-green-900">✓ Phone Verified</p>
+                      <p className="text-sm text-green-700 mt-1">{user.phoneNumber}</p>
+                      <p className="text-xs text-green-600 mt-1">Verified on {new Date(user.phoneVerified).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Show the phone verification component to allow changing
+                    const container = document.querySelector('[data-phone-container]');
+                    if (container) {
+                      container.classList.toggle('hidden');
+                    }
+                  }}
+                  className="text-sm text-slate-600 hover:text-slate-800 underline"
+                >
+                  Change phone number
+                </button>
+                <div data-phone-container className="hidden">
+                  <PhoneVerification
+                    userId={user?.id}
+                    initialPhone={formData.phoneNumber}
+                    verified={false}
+                    onVerified={() => {
+                      // Delay reload to let animations finish
+                      setTimeout(() => window.location.reload(), 1500);
+                    }}
+                  />
+                </div>
               </div>
+            ) : (
+              <PhoneVerification
+                userId={user?.id}
+                initialPhone={formData.phoneNumber}
+                verified={user?.phoneVerified}
+                onVerified={() => {
+                  // Delay reload to let animations finish
+                  setTimeout(() => window.location.reload(), 1500);
+                }}
+              />
             )}
           </div>
           {/* Date of Birth */}

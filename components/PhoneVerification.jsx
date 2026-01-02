@@ -12,6 +12,7 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const [isVerifiedPhone, setIsVerifiedPhone] = useState(!!verified);
 
   useEffect(() => {
     // Initialize localNumber/countryCode from initialPhone if provided
@@ -22,13 +23,19 @@ export default function PhoneVerification({ userId, initialPhone, verified, onVe
         setCountryIso(parsed.country || 'AT');
         // Set national part formatted for display
         setLocalNumber(parsed.nationalNumber || initialPhone.replace(/^\+\d{1,4}/, ''));
+        setPhone(initialPhone);
+        // If verified prop is true AND initialPhone exists, stay in verified state
+        if (verified) {
+          setStatus('verified');
+          setIsVerifiedPhone(true);
+        }
       }
     } else {
       // Auto-detect country code from browser locale
       const detectedIso = detectDefaultCountryIso();
       if (detectedIso) setCountryIso(detectedIso);
     }
-  }, [initialPhone]);
+  }, [initialPhone, verified]);
 
   // Fallback: auto-load current user's phone if not provided
   useEffect(() => {

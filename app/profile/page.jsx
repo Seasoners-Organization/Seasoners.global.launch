@@ -48,9 +48,10 @@ export default function ProfilePage() {
     const sp = new URLSearchParams(window.location.search);
     if (sp.get('success') === 'email_verified') {
       setVerificationToast('Email verified successfully');
+      refreshUser();
       setTimeout(() => setVerificationToast(''), 3000);
     }
-  }, []);
+  }, [refreshUser]);
   const [profileCompleteness, setProfileCompleteness] = useState(0);
 
   // Use shared user data if available
