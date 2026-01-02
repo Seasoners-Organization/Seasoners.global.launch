@@ -220,9 +220,41 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
                   className="w-full border border-slate-300 rounded-lg p-3"
                   autoComplete="email"
                 />
-                <div className="p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-700">
-                  <span className="font-semibold">⚠ Email not verified</span>
+                <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold text-yellow-900">⚠ Email Not Verified</p>
+                      <p className="text-xs text-yellow-700 mt-1">Verify your email to unlock features and increase trust</p>
+                    </div>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!formData.email) {
+                      setToast({ type: 'error', message: 'Please enter an email address' });
+                      return;
+                    }
+                    try {
+                      const response = await fetch('/api/auth/resend-verification', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: formData.email }),
+                      });
+                      const data = await response.json();
+                      if (response.ok) {
+                        setToast({ type: 'success', message: 'Verification email sent! Check your inbox.' });
+                      } else {
+                        setToast({ type: 'error', message: data.error || 'Failed to send verification email' });
+                      }
+                    } catch (error) {
+                      setToast({ type: 'error', message: 'Error sending verification email' });
+                    }
+                  }}
+                  className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition"
+                >
+                  Send Verification Email
+                </button>
               </div>
             )}
           </div>
