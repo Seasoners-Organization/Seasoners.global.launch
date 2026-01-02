@@ -139,11 +139,12 @@ export default function ProfilePage() {
       if (response.ok) {
         setListings(listings.filter((l) => l.id !== listingId));
         fetchUserData(); // Refresh to update totalListings count
+        setToast({ type: 'success', message: 'Listing deleted successfully' });
       } else {
-        alert("Failed to delete listing");
+        setToast({ type: 'error', message: 'Failed to delete listing' });
       }
     } catch (err) {
-      alert("Error deleting listing");
+      setToast({ type: 'error', message: 'Error deleting listing' });
     }
   };
 
