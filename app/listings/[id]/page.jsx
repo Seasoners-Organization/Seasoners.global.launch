@@ -12,6 +12,8 @@ import { canContactSellers } from "../../../utils/subscription";
 import { REGION_ENUM_TO_DISPLAY } from "../../../utils/regions";
 import { useLanguage } from "../../../components/LanguageProvider";
 import { useUserProfile } from "../../../hooks/useUserProfile";
+import ReportModal from "../../../components/ReportModal";
+import { generateListingStructuredData } from "../../../utils/structured-data";
 
 export default function ListingDetailPage() {
   const { data: session } = useSession();
@@ -24,6 +26,7 @@ export default function ListingDetailPage() {
   const [error, setError] = useState("");
   const [showSubscriptionGate, setShowSubscriptionGate] = useState(false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const userCanContact = user ? canContactSellers(user) : false;
 
@@ -114,6 +117,12 @@ export default function ListingDetailPage() {
 
   return (
     <main>
+      {listing && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateListingStructuredData(listing)) }}
+        />
+      )}
       <Navbar />
       <AnimatedPage>
         <section className="max-w-5xl mx-auto px-6 py-16">
@@ -385,6 +394,15 @@ export default function ListingDetailPage() {
                       Sign in required to contact
                     </p>
                   )}
+
+                  {!isOwnListing() && (
+                    <button
+                      onClick={() => setShowReportModal(true)}
+                      className="w-full mt-3 py-2 text-sm text-slate-600 hover:text-red-600 transition"
+                    >
+                      🚩 Report this listing
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -399,6 +417,13 @@ export default function ListingDetailPage() {
         requiredTier="SEARCHER"
         action={listing.type === 'JOB' ? 'contact employers' : 'contact hosts'}
         onUpgrade={handleUpgrade}
+      />
+
+      <ReportModal
+        isOpen={showReportModal}
+        onClose={() => setShowReportModal(false)}
+        listingId={listing.id}
+        listingTitle={listing.title}
       />
     </main>
   );

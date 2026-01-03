@@ -12,6 +12,7 @@ import ZonePreview from "../components/ZonePreview";
 import HeroWithCTA from "../components/HeroWithCTA";
 import { useLanguage } from "../components/LanguageProvider";
 import { ZONES } from '../data/zones';
+import { generateOrganizationStructuredData } from '../utils/structured-data';
 
 const Card = ({ href, title, subtitle, icon, t }) => (
   <motion.a
@@ -39,6 +40,10 @@ export default function HomePage() {
   const { t } = useLanguage();
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateOrganizationStructuredData()) }}
+      />
       <Navbar />
 
       {/* Hero */}

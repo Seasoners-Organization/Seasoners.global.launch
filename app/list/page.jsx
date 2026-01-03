@@ -6,6 +6,7 @@ import Footer from "../../components/Footer";
 import AnimatedPage from "../../components/AnimatedPage";
 import { useLanguage } from "../../components/LanguageProvider";
 import SubscriptionGate from "../../components/SubscriptionGate";
+import UnsavedChangesWarning from "../../components/UnsavedChangesWarning";
 import { motion } from "framer-motion";
 import { getCountriesBySeason, getRegionsByCountry, getLocations, getCountryName } from "../../utils/geo";
 import { canCreateListings } from "../../utils/subscription";
@@ -23,6 +24,7 @@ export default function List() {
   const [totalRoommates, setTotalRoommates] = useState(2);
   const [photos, setPhotos] = useState([]);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   // Location cascade
   const [season, setSeason] = useState('all');
   const [country, setCountry] = useState('all');
@@ -53,6 +55,7 @@ export default function List() {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
+    setHasUnsavedChanges(true);
     // Limit to 10 photos total
     if (photos.length + files.length > 10) {
       setError("Maximum 10 photos allowed per listing");
@@ -165,6 +168,7 @@ export default function List() {
       }
 
       setOk(true);
+      setHasUnsavedChanges(false);
       e.target.reset();
       setPhotos([]); // Clear photos
       setCurrentRoommates([]);
@@ -530,6 +534,8 @@ export default function List() {
         action="create listings"
         onUpgrade={handleUpgrade}
       />
+
+      <UnsavedChangesWarning hasUnsavedChanges={hasUnsavedChanges} />
     </main>
   );
 }

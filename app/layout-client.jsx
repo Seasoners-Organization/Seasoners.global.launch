@@ -2,12 +2,17 @@
 
 import { AppProviders } from './providers';
 import { Analytics } from '@vercel/analytics/next';
+import CookieConsent from '../components/CookieConsent';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 export function RootLayoutClient({ children }) {
   return (
     <AppProviders>
-      {children}
-      <Analytics />
+      <ErrorBoundary>
+        {children}
+        <CookieConsent />
+        <Analytics />
+      </ErrorBoundary>
     </AppProviders>
   );
 }
