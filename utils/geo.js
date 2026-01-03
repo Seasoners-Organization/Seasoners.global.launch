@@ -22,6 +22,11 @@ export const COUNTRY_NAMES = {
   VN: 'Vietnam',
 };
 
+// Reverse map for loose name matching
+const COUNTRY_NAME_TO_CODE = Object.fromEntries(
+  Object.entries(COUNTRY_NAMES).map(([code, name]) => [name.toLowerCase(), code])
+);
+
 // Country -> Cities/Towns mapping (replacing state-based regions with actual cities)
 export const COUNTRY_REGIONS = {
   AT: [
@@ -184,6 +189,74 @@ export function locationSeasonMap() {
 }
 
 // Apply compound filters to listings (client-side)
+// Region enums currently map to Austria; expand here if more structured regions are added later
+const REGION_COUNTRY = {
+  BURGENLAND: 'AT',
+  CARINTHIA: 'AT',
+  LOWER_AUSTRIA: 'AT',
+  SALZBURG: 'AT',
+  STYRIA: 'AT',
+  TIROL: 'AT',
+  UPPER_AUSTRIA: 'AT',
+  VIENNA: 'AT',
+  VORARLBERG: 'AT'
+};
+
+const REGION_DISPLAY = Object.fromEntries(
+  Object.entries(REGION_COUNTRY).map(([key, val]) => [prettyRegionName(key).toLowerCase(), val])
+);
+
+function inferCountry(listing) {
+  if (listing.countryCode) return listing.countryCode;
+  if (listing.region && REGION_COUNTRY[listing.region]) return REGION_COUNTRY[listing.region];
+
+  const loc = (listing.city || listing.location || '').toString();
+  if (!loc) return null;
+
+  // Break apart composite locations like "Innsbruck, Tirol"
+  const tokens = loc.split(',').map(t => t.trim()).filter(Boolean);
+  const candidates = [loc.trim(), ...tokens];
+
+  for (const candidate of candidates) {
+    const normalized = candidate.toLowerCase();
+
+    // Country full name (e.g., "Portugal")
+    if (COUNTRY_NAME_TO_CODE[normalized]) return COUNTRY_NAME_TO_CODE[normalized];
+
+    // Region display names (e.g., "Tirol")
+    if (REGION_DISPLAY[normalized]) return REGION_DISPLAY[normalized];
+
+    // Try city/region lists (case-insensitive exact)
+    for (const [countryCode, regionList] of Object.entries(COUNTRY_REGIONS)) {
+      if (regionList.some(r => r.toLowerCase() === normalized)) return countryCode;
+    }
+
+    // Try exact hotspot mapping
+    for (const [locName, countryCode] of Object.entries(LOCATION_COUNTRY)) {
+      if (locName.toLowerCase() === normalized) return countryCode;
+    }
+  }
+
+  return null;
+}
+
+function regionMatchesFilter(listing, regionFilter) {
+  if (regionFilter === 'all') return true;
+  const normalizedFilter = regionFilter.toLowerCase();
+
+  // Match structured Region enum (convert to display form)
+  if (listing.region) {
+    const pretty = prettyRegionName(listing.region).toLowerCase();
+    if (pretty === normalizedFilter) return true;
+  }
+
+  // Match city/location free text
+  const loc = (listing.city || listing.location || '').toString().trim().toLowerCase();
+  if (loc && loc === normalizedFilter) return true;
+
+  return false;
+}
+
 export function applyFilters(listings, filters) {
   const {
     season = 'all',
@@ -200,33 +273,37 @@ export function applyFilters(listings, filters) {
   const countriesForSeason = getCountriesBySeason(season);
 
   return listings.filter(l => {
-    // Structured location fields (future-proof: countryCode may be absent)
-    const locName = (l.city || l.location || '').toString();
-    const listingCountry = l.countryCode || LOCATION_COUNTRY[locName];
+    const listingCountry = inferCountry(l);
 
-    // Season filter
-    if (season !== 'all' && (!listingCountry || !countriesForSeason.includes(listingCountry))) return false;
+    // Season filter (require inferred country to narrow correctly)
+    if (season !== 'all') {
+      if (!listingCountry) return false;
+      if (!countriesForSeason.includes(listingCountry)) return false;
+    }
 
     // Country filter
-    if (country !== 'all' && listingCountry !== country) return false;
+    if (country !== 'all') {
+      if (!listingCountry) return false;
+      if (listingCountry !== country) return false;
+    }
 
-    // Region filter (only applies if structured region present)
-    if (region !== 'all' && l.region && l.region !== region) return false;
+    // Region / city filter
+    if (!regionMatchesFilter(l, region)) return false;
 
     // Price filters
-    if (priceMin != null && l.price < Number(priceMin)) return false;
-    if (priceMax != null && l.price > Number(priceMax)) return false;
+    if (priceMin != null && priceMin !== '' && l.price < Number(priceMin)) return false;
+    if (priceMax != null && priceMax !== '' && l.price > Number(priceMax)) return false;
 
     // Bedrooms (for stays/flatshares) - tolerate missing field
-    if (bedrooms != null && l.bedrooms != null && l.bedrooms !== Number(bedrooms)) return false;
+    if (bedrooms != null && bedrooms !== '' && l.bedrooms != null && l.bedrooms !== Number(bedrooms)) return false;
 
     // Roommates/spots (flatshare specifics)
-    if (roommates != null && l.totalRoommates != null && l.totalRoommates !== Number(roommates)) return false;
+    if (roommates != null && roommates !== '' && l.totalRoommates != null && l.totalRoommates !== Number(roommates)) return false;
 
     // Job type / industry apply only to JOB listings (type field expected)
     if (l.type === 'JOB') {
-      if (jobType && jobType !== 'all' && l.jobType && l.jobType !== jobType) return false;
-      if (industry && industry !== 'all' && l.industry && l.industry !== industry) return false;
+      if (jobType && jobType !== 'all' && l.jobType !== jobType) return false;
+      if (industry && industry !== 'all' && l.industry !== industry) return false;
     }
 
     return true;

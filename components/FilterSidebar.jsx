@@ -47,7 +47,8 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
   }, []);
 
   // Derived options
-  const countries = useMemo(() => getCountriesBySeason(season), [season]);
+  // Show all countries when "All" season is selected to avoid hiding valid options
+  const countries = useMemo(() => getCountriesBySeason(season === 'all' ? null : season), [season]);
   const regions = useMemo(() => country === 'all' ? [] : getRegionsByCountry(country), [country]);
 
   const showProperty = context === 'stays' || context === 'flatshares';
@@ -172,8 +173,8 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
             </select>
           </label>
           <label className="text-xs font-medium text-slate-600">Country
-            <select aria-label="Country" value={country} onChange={e => setCountry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" disabled={season==='all'}>
-              <option value="all">{season==='all' ? 'All' : 'Select country'}</option>
+            <select aria-label="Country" value={country} onChange={e => setCountry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
+              <option value="all">All</option>
               {countries.map(c => <option key={c} value={c}>{getCountryName(c)}</option>)}
             </select>
           </label>
