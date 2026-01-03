@@ -448,7 +448,7 @@ export default function ProfilePage() {
                 <ProfileCompletenessRoadmap 
                   user={user} 
                   onNavigate={(taskId, action) => {
-                    setActiveTab('edit');
+                    setActiveTab('profile');
                     setTimeout(() => {
                       let targetRef = null;
                       switch(taskId) {
