@@ -121,7 +121,7 @@ export default function ProfileCompletenessRoadmap({ user, onNavigate }) {
 
   const handleTaskClick = (task) => {
     if (onNavigate) {
-      onNavigate(task.action);
+      onNavigate(task.id, task.action);
     }
     setExpandedId(expandedId === task.id ? null : task.id);
   };

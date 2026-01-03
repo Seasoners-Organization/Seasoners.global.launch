@@ -44,6 +44,10 @@ export default function ProfilePage() {
   const emailVerificationRef = useRef(null);
   const bioSectionRef = useRef(null);
   const languageSectionRef = useRef(null);
+  const skillsSectionRef = useRef(null);
+  const interestsSectionRef = useRef(null);
+  const regionsSectionRef = useRef(null);
+  const profilePictureRef = useRef(null);
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
     if (sp.get('success') === 'email_verified') {
@@ -443,31 +447,41 @@ export default function ProfilePage() {
                 {/* Profile Completeness Roadmap - Interactive checklist */}
                 <ProfileCompletenessRoadmap 
                   user={user} 
-                  onNavigate={(action) => {
-                    if (action === 'verify') {
-                      setActiveTab('edit');
-                      // Scroll to phone verification section
-                      setTimeout(() => {
-                        if (phoneVerificationRef.current) {
-                          phoneVerificationRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                          phoneVerificationRef.current.focus();
-                        }
-                      }, 100);
-                    } else if (action === 'edit') {
-                      setActiveTab('edit');
-                      // Scroll to bio section
-                      setTimeout(() => {
-                        if (bioSectionRef.current) {
-                          bioSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
-                      }, 100);
-                    } else if (action === 'upload') {
-                      setActiveTab('edit');
-                      // Scroll to top of profile editor
-                      setTimeout(() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }, 100);
-                    }
+                  onNavigate={(taskId, action) => {
+                    setActiveTab('edit');
+                    setTimeout(() => {
+                      let targetRef = null;
+                      switch(taskId) {
+                        case 'picture':
+                          targetRef = profilePictureRef;
+                          break;
+                        case 'email':
+                          targetRef = emailVerificationRef;
+                          break;
+                        case 'phone':
+                          targetRef = phoneVerificationRef;
+                          break;
+                        case 'bio':
+                          targetRef = bioSectionRef;
+                          break;
+                        case 'languages':
+                          targetRef = languageSectionRef;
+                          break;
+                        case 'skills':
+                          targetRef = skillsSectionRef;
+                          break;
+                        case 'interests':
+                          targetRef = interestsSectionRef;
+                          break;
+                        case 'regions':
+                          targetRef = regionsSectionRef;
+                          break;
+                      }
+                      if (targetRef?.current) {
+                        targetRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetRef.current.focus?.();
+                      }
+                    }, 100);
                   }}
                 />
 
@@ -626,6 +640,10 @@ export default function ProfilePage() {
                 bioSectionRef={bioSectionRef}
                 emailVerificationRef={emailVerificationRef}
                 languageSectionRef={languageSectionRef}
+                skillsSectionRef={skillsSectionRef}
+                interestsSectionRef={interestsSectionRef}
+                regionsSectionRef={regionsSectionRef}
+                profilePictureRef={profilePictureRef}
               />
             )}
 

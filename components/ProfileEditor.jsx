@@ -4,7 +4,7 @@ import { REGIONS } from "../utils/regions";
 import PhoneVerification from "./PhoneVerification";
 import Toast from "./Toast";
 
-export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioSectionRef, emailVerificationRef, languageSectionRef }) {
+export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioSectionRef, emailVerificationRef, languageSectionRef, skillsSectionRef, interestsSectionRef, regionsSectionRef, profilePictureRef }) {
   const [formData, setFormData] = useState({
     email: user?.email || '',
     phoneNumber: user?.phoneNumber || '',
@@ -158,7 +158,7 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
   return (
     <div className="space-y-6">
       {/* Profile Picture Upload */}
-      <div className="bg-white rounded-xl shadow-sm border p-6">
+      <div ref={profilePictureRef} className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-4">Profile Picture</h3>
         <div className="flex items-center gap-6">
           <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-3xl font-bold">
@@ -431,7 +431,7 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
       </div>
 
       {/* Skills */}
-      <div className="bg-white rounded-xl shadow-sm border p-6">
+      <div ref={skillsSectionRef} className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-4">Skills</h3>
         <div className="flex flex-wrap gap-2 mb-3">
           {formData.skills.map((skill, idx) => (
@@ -474,7 +474,7 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
       </div>
 
       {/* Interests */}
-      <div className="bg-white rounded-xl shadow-sm border p-6">
+      <div ref={interestsSectionRef} className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-4">Interests & Hobbies</h3>
         <div className="flex flex-wrap gap-2 mb-3">
           {formData.interests.map((interest, idx) => (
@@ -571,7 +571,7 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
       </div>
 
       {/* Preferred Regions */}
-      <div className="bg-white rounded-xl shadow-sm border p-6">
+      <div ref={regionsSectionRef} className="bg-white rounded-xl shadow-sm border p-6">
         <h3 className="text-lg font-semibold mb-4">Preferred Regions</h3>
         <p className="text-sm text-slate-600 mb-3">Select regions where you'd like to work or live</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
