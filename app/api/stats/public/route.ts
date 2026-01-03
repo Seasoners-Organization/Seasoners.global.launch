@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { SEASON_COUNTRIES } from '@/utils/geo';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Cache for 1 hour
@@ -17,13 +18,12 @@ export async function GET() {
     // Count total listings (STAY + JOB + FLATSHARE)
     const listingCount = await prisma.listing.count();
 
-    // Count unique countries/regions from listings
-    const uniqueRegions = await prisma.listing.findMany({
-      distinct: ['region'],
-      select: { region: true },
-      where: { region: { not: null } }
-    });
-    const countryCount = uniqueRegions.filter(r => r.region).length;
+    // Count total available countries from geo data (winter + summer destinations)
+    const allCountries = new Set([
+      ...SEASON_COUNTRIES.winter,
+      ...SEASON_COUNTRIES.summer
+    ]);
+    const countryCount = allCountries.size;
 
     // Count messages (as a proxy for "connections made")
     // Each message represents an interaction between two users
