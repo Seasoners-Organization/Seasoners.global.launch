@@ -33,7 +33,7 @@ export const COUNTRY_REGIONS = {
     'Innsbruck', 'St. Anton', 'Sölden', 'Ischgl', 'Kitzbühel',
     'Mayrhofen', 'Zillertal', 'Obertauern', 'Zell am See', 'Saalbach',
     'Schladming', 'Bad Hofgastein', 'Lienz', 'Salzburg', 'Vienna',
-    'Linz', 'Graz', 'Innsbruck', 'Wörgl', 'Telfs'
+    'Linz', 'Graz', 'Innsbruck', 'Wörgl', 'Telfs', 'Zirl'
   ],
   CH: [
     'Zermatt', 'Verbier', 'St. Moritz', 'Davos', 'Interlaken',
@@ -275,15 +275,13 @@ export function applyFilters(listings, filters) {
   return listings.filter(l => {
     const listingCountry = inferCountry(l);
 
-    // Season filter (require inferred country to narrow correctly)
-    if (season !== 'all') {
-      if (!listingCountry) return false;
+    // Season filter: only exclude if we can infer country AND it doesn't match
+    if (season !== 'all' && listingCountry) {
       if (!countriesForSeason.includes(listingCountry)) return false;
     }
 
-    // Country filter
-    if (country !== 'all') {
-      if (!listingCountry) return false;
+    // Country filter: only exclude if we can infer country AND it doesn't match
+    if (country !== 'all' && listingCountry) {
       if (listingCountry !== country) return false;
     }
 
