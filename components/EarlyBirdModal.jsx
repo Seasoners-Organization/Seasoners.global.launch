@@ -110,11 +110,11 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <div className="text-4xl font-bold text-sky-600 mb-2">
-                        €21
-                        <span className="text-lg text-slate-500 line-through ml-2">€63</span>
+                        €0
+                        <span className="text-lg text-slate-500 line-through ml-2">€21</span>
                       </div>
                       <p className="text-sm text-slate-600 font-semibold mb-3">
-                        Searcher Plan (save €42)
+                        Searcher Plan (save €21)
                       </p>
                       <ul className="space-y-2 text-sm text-slate-700">
                         <li className="flex items-start gap-2">
@@ -134,11 +134,11 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
 
                     <div>
                       <div className="text-4xl font-bold text-sky-600 mb-2">
-                        €36
-                        <span className="text-lg text-slate-500 line-through ml-2">€108</span>
+                        €0
+                        <span className="text-lg text-slate-500 line-through ml-2">€36</span>
                       </div>
                       <p className="text-sm text-slate-600 font-semibold mb-3">
-                        Lister Plan (save €72)
+                        Lister Plan (save €36)
                       </p>
                       <ul className="space-y-2 text-sm text-slate-700">
                         <li className="flex items-start gap-2">

@@ -141,7 +141,7 @@ After completing this checklist:
 **Estimated Impact:** 
 - 30-50% increase in sign-up conversion
 - Build initial user base risk-free
-- €42-72 perceived value per user
+- €21-36 perceived value per user (3 months × monthly price)
 
 ---
 

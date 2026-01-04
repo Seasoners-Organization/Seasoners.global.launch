@@ -4,7 +4,7 @@
 
 ### 1. **EarlyBirdModal Component** (`components/EarlyBirdModal.jsx`)
 - Beautiful modal with gradient background and animations
-- Shows **3 MONTHS FREE** offer with €42-72 savings highlighted
+- Shows **3 MONTHS FREE** offer with €21-36 savings highlighted
 - Smart triggering system:
   - Appears after user views 2nd page on site
   - Appears on payment/subscription pages
@@ -70,7 +70,7 @@ Step 9: After 90 days → Auto-billing begins OR user cancels
 ### Psychological Triggers:
 ✅ **Scarcity:** "Launch Week Only" creates urgency  
 ✅ **Social Proof:** "No credit card required", "Cancel anytime"  
-✅ **Value Display:** Shows €42-72 in savings explicitly  
+✅ **Value Display:** Shows €21-36 in savings explicitly  
 ✅ **FOMO:** "Limited Time Offer" with countdown implication  
 ✅ **Risk Reversal:** No payment for 3 months removes friction  
 

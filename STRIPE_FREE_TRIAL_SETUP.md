@@ -210,7 +210,7 @@ The Early Bird modal will automatically show:
 
 ### 8.2 Promotional Copy Highlights
 The modal emphasizes:
-- **Savings:** Shows €42 saved (Searcher) or €72 saved (Lister)
+- **Savings:** Shows €21 saved (Searcher) or €36 saved (Lister)
 - **Urgency:** "Launch Week Only" creates FOMO
 - **No Risk:** "No credit card required" + "Cancel anytime"
 - **Social Proof:** Trust indicators at bottom
