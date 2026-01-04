@@ -13,11 +13,11 @@ export default function PaymentHelp() {
     },
     {
       q: "When will I be charged for my subscription?",
-      a: "You'll be charged after your 7-day free trial ends. If you subscribe monthly, you'll be charged on the same day each month. Annual subscriptions are charged once per year."
+      a: "You'll be charged after your 90-day free trial ends. If you subscribe monthly, you'll be charged on the same day each month. Annual subscriptions are charged once per year."
     },
     {
       q: "Can I get a refund?",
-      a: "Subscriptions can be cancelled anytime during your 7-day free trial at no cost. After the trial, subscriptions are non-refundable for the current billing period, but you can cancel to prevent future charges."
+      a: "Subscriptions can be cancelled anytime during your 90-day free trial at no cost. After the trial, subscriptions are non-refundable for the current billing period, but you can cancel to prevent future charges."
     },
     {
       q: "How do I update my payment method?",

@@ -177,7 +177,7 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                 <div className="flex flex-wrap gap-4 justify-center mb-6 text-xs text-slate-600">
                   <div className="flex items-center gap-1.5">
                     <span className="text-emerald-500 font-bold">✓</span>
-                    <span>No credit card required</span>
+                    <span>No charge for 90 days</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-emerald-500 font-bold">✓</span>

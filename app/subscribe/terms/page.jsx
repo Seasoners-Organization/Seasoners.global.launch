@@ -49,7 +49,7 @@ export default function SubscriptionTerms() {
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Full Access:</strong> Complete access to all features included in your chosen plan</li>
               <li><strong>No Payment Required:</strong> No charges for 90 days from subscription date</li>
-              <li><strong>No Credit Card Required Initially:</strong> You can browse and explore before adding payment details</li>
+              <li><strong>Credit Card Required:</strong> Payment method needed to start trial, but not charged until day 91</li>
               <li><strong>Premium Features:</strong> All Searcher or Lister benefits active immediately</li>
             </ul>
 

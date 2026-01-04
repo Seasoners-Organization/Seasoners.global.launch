@@ -23,7 +23,7 @@ export default function FAQ() {
         },
         {
           q: "Is Seasoners free to use?",
-          a: "Browsing and basic features are free. We offer premium subscriptions with a 7-day free trial. After the trial, choose monthly or annual plans for unlimited listings, verification badges, and priority support."
+          a: "Browsing and basic features are free. We offer premium subscriptions with a 90-day free trial (3 full months!). After the trial, choose monthly or annual plans for unlimited listings, verification badges, and priority support."
         },
         {
           q: "What countries does Seasoners operate in?",
