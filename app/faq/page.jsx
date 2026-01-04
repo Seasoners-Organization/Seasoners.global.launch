@@ -88,8 +88,28 @@ export default function FAQ() {
           a: "We accept all major credit/debit cards (Visa, Mastercard, Amex) and SEPA payments through our secure payment processor Stripe."
         },
         {
-          q: "How does the subscription work?",
-          a: "Start with a 7-day free trial. After the trial, choose monthly or annual plans. Benefits include unlimited listings, verification badge, priority support, and early access to new features. Cancel anytime during the trial at no cost."
+          q: "What is the Early Bird 3-Month Free Trial?",
+          a: "Early Bird users get 90 days (3 months) of completely free access to premium features. No payment required during the trial. You'll receive email reminders at 60, 30, 7, and 1 day before billing begins. Cancel anytime before day 90 with no charges."
+        },
+        {
+          q: "When will I be charged after the free trial?",
+          a: "Your payment method will be charged on day 91 (the day after your 90-day trial ends). You'll receive 4 reminder emails before billing: at 60 days, 30 days, 7 days, and 1 day remaining. This gives you plenty of time to decide."
+        },
+        {
+          q: "Will I receive reminders before my trial ends?",
+          a: "Yes! We'll send you email reminders at key milestones: when you have 60 days remaining (friendly reminder), 30 days remaining (billing info), 7 days remaining (urgent notice), and 1 day remaining (final notice). You'll never be surprised by a charge."
+        },
+        {
+          q: "Can I cancel during the free trial?",
+          a: "Absolutely! Cancel anytime during your 90-day trial period at no cost. If you cancel before day 90, you won't be charged anything. You'll keep access until the end of your trial period."
+        },
+        {
+          q: "What happens after the 3-month trial ends?",
+          a: "On day 91, your subscription automatically begins and your payment method is charged the monthly fee (€7 for Searcher, €12 for Lister). You can cancel before this date to avoid any charges, or continue enjoying premium features."
+        },
+        {
+          q: "How do I cancel my subscription?",
+          a: "Go to your Profile > Subscription Settings > Cancel Subscription. You can also click the cancellation link in any trial reminder email. Cancellation takes effect immediately but you keep access until the end of your current billing period."
         },
         {
           q: "Can I cancel my subscription anytime?",
@@ -97,7 +117,11 @@ export default function FAQ() {
         },
         {
           q: "Do you offer refunds?",
-          a: "You can cancel during your 7-day free trial at no cost. After the trial, subscriptions can be canceled anytime but are non-refundable for the current billing period."
+          a: "You can cancel during your 90-day free trial at no cost. After the trial, subscriptions can be canceled anytime but are non-refundable for the current billing period. We believe our 3-month trial gives you plenty of time to decide."
+        },
+        {
+          q: "Will the trial period change in the future?",
+          a: "The 90-day trial is exclusive to Early Bird users. As Seasoners grows, new users may receive shorter trial periods. However, if you sign up now, your 90-day trial period is locked in and won't change."
         }
       ]
     },

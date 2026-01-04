@@ -4,6 +4,7 @@ import { AppProviders } from './providers';
 import { Analytics } from '@vercel/analytics/next';
 import CookieConsent from '../components/CookieConsent';
 import ErrorBoundary from '../components/ErrorBoundary';
+import EarlyBirdModal from '../components/EarlyBirdModal';
 
 export function RootLayoutClient({ children }) {
   return (
@@ -11,6 +12,7 @@ export function RootLayoutClient({ children }) {
       <ErrorBoundary>
         {children}
         <CookieConsent />
+        <EarlyBirdModal trigger="navigation" />
         <Analytics />
       </ErrorBoundary>
     </AppProviders>

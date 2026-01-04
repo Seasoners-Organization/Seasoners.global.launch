@@ -7,6 +7,7 @@ import AnimatedPage from "../../components/AnimatedPage";
 import { useLanguage } from "../../components/LanguageProvider";
 import SubscriptionGate from "../../components/SubscriptionGate";
 import UnsavedChangesWarning from "../../components/UnsavedChangesWarning";
+import EarlyBirdModal from "../../components/EarlyBirdModal";
 import { motion } from "framer-motion";
 import { getCountriesBySeason, getRegionsByCountry, getLocations, getCountryName } from "../../utils/geo";
 import { canCreateListings } from "../../utils/subscription";
@@ -183,6 +184,7 @@ export default function List() {
   return (
     <main>
       <Navbar />
+      <EarlyBirdModal trigger="payment" />
       <AnimatedPage>
         <section className="max-w-xl mx-auto px-6 py-16">
           <motion.div

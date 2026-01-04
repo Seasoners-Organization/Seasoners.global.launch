@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import AnimatedPage from "../../components/AnimatedPage";
+import EarlyBirdModal from "../../components/EarlyBirdModal";
 import { motion } from "framer-motion";
 import { SUBSCRIPTION_PLANS } from "../../utils/subscription";
 import { useLanguage } from "../../components/LanguageProvider";
@@ -17,6 +18,7 @@ function SubscribeContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const returnTo = searchParams.get("returnTo") || "/";
+  const isEarlyBird = searchParams.get("promo") === "EARLYBIRD3";
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -27,8 +29,12 @@ function SubscribeContent() {
 
   // Use static Stripe Payment Links
   const paymentLinks = {
-    SEARCHER: "https://buy.stripe.com/fZudR17aPeAR5xU7my63K01",
-    LISTER: "https://buy.stripe.com/dRm4grdzd0K17G2dKW63K00"
+    SEARCHER: isEarlyBird 
+      ? process.env.NEXT_PUBLIC_STRIPE_EARLYBIRD_SEARCHER_LINK || "https://buy.stripe.com/fZudR17aPeAR5xU7my63K01"
+      : "https://buy.stripe.com/fZudR17aPeAR5xU7my63K01",
+    LISTER: isEarlyBird
+      ? process.env.NEXT_PUBLIC_STRIPE_EARLYBIRD_LISTER_LINK || "https://buy.stripe.com/dRm4grdzd0K17G2dKW63K00"
+      : "https://buy.stripe.com/dRm4grdzd0K17G2dKW63K00"
   };
 
   const handleSubscribe = (tier) => {
@@ -55,6 +61,7 @@ function SubscribeContent() {
   return (
     <main>
       <Navbar />
+      <EarlyBirdModal trigger="payment" />
       <AnimatedPage>
         <section className="max-w-6xl mx-auto px-6 py-16">
           <motion.div
@@ -62,11 +69,21 @@ function SubscribeContent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
+            {isEarlyBird && (
+              <div className="bg-gradient-to-r from-amber-400 to-orange-400 text-white py-3 px-6 rounded-xl text-center mb-6 max-w-3xl mx-auto">
+                <p className="font-bold text-lg">
+                  🎉 Early Bird Special: 3 Months FREE! No payment required today.
+                </p>
+              </div>
+            )}
+            
             <h1 className="text-4xl font-bold text-center text-sky-900 mb-4">
-              {t('chooseYourPlan')}
+              {isEarlyBird ? "Claim Your 3 Months Free" : t('chooseYourPlan')}
             </h1>
             <p className="text-center text-slate-600 mb-12 max-w-2xl mx-auto">
-              {t('subscribeSubtitle')}
+              {isEarlyBird 
+                ? "Lock in your early bird discount. Full access for 3 months, then continue at regular price or cancel anytime." 
+                : t('subscribeSubtitle')}
             </p>
 
             {error && (
@@ -86,23 +103,46 @@ function SubscribeContent() {
                       : "border-transparent"
                   }`}
                 >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                    {plan.name}
-                  </h2>
+                  <div className="flex justify-between items-start mb-2">
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      {plan.name}
+                    </h2>
+                    {isEarlyBird && (
+                      <span className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full animate-pulse">
+                        3 MONTHS FREE
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-baseline mb-6 gap-3">
-                    <span className="text-3xl font-bold text-gray-400 line-through">
-                      €{plan.price}
-                    </span>
-                    <span className="text-5xl font-extrabold text-green-600">
-                      €0
-                    </span>
-                    <span className="text-gray-600 ml-2">{t('perMonth')}</span>
+                    {isEarlyBird ? (
+                      <>
+                        <span className="text-5xl font-extrabold text-sky-600">
+                          €0
+                        </span>
+                        <span className="text-gray-600">for 3 months</span>
+                        <span className="text-sm text-gray-500 ml-2">
+                          then €{plan.price}/mo
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-3xl font-bold text-gray-400 line-through">
+                          €{plan.price}
+                        </span>
+                        <span className="text-5xl font-extrabold text-green-600">
+                          €0
+                        </span>
+                        <span className="text-gray-600 ml-2">{t('perMonth')}</span>
+                      </>
+                    )}
                   </div>
-                  <div className="mb-4">
-                    <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
-                      7-day free trial
-                    </span>
-                  </div>
+                  {!isEarlyBird && (
+                    <div className="mb-4">
+                      <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
+                        7-day free trial
+                      </span>
+                    </div>
+                  )}
 
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, index) => (
@@ -134,10 +174,13 @@ function SubscribeContent() {
                         : "bg-sky-600 hover:bg-sky-700 text-white"
                     }`}
                   >
-                    {loading ? t('processing') : plan.cta}
+                    {loading ? t('processing') : (isEarlyBird ? "Start 3-Month Free Trial" : plan.cta)}
                   </button>
                   <div className="mt-2 text-xs text-gray-500 text-center">
-                    No charge today. You will be notified before the first payment when paid subscriptions begin. <a href="/subscribe/terms" className="text-sky-600 underline">Subscription Terms</a>
+                    {isEarlyBird 
+                      ? "No payment required for 3 months. Cancel anytime before trial ends." 
+                      : "No charge today. You will be notified before the first payment when paid subscriptions begin."}
+                    {" "}<a href="/subscribe/terms" className="text-sky-600 underline">Subscription Terms</a>
                   </div>
 
                   {plan.tier === "LISTER" && (
