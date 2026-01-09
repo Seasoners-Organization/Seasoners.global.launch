@@ -2,9 +2,11 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function ZonePreview({ zones }) {
   const [selectedSeason, setSelectedSeason] = useState('all');
+  const router = useRouter();
 
   const seasons = [
     { id: 'all', label: 'All Seasons' },
@@ -56,7 +58,10 @@ export default function ZonePreview({ zones }) {
           {seasons.map(season => (
             <motion.button
               key={season.id}
-              onClick={() => setSelectedSeason(season.id)}
+              onClick={() => {
+                setSelectedSeason(season.id);
+                router.push(`/destinations/${season.id}`);
+              }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-all ${
