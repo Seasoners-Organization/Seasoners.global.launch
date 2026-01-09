@@ -7,12 +7,20 @@ export default function ZonePreview({ zones }) {
   const [selectedSeason, setSelectedSeason] = useState('all');
 
   const seasons = [
-    { id: 'all', label: 'All Seasons', emoji: '🌍' },
-    { id: 'winter', label: 'Winter', emoji: '❄️' },
-    { id: 'summer', label: 'Summer', emoji: '☀️' },
-    { id: 'spring', label: 'Spring', emoji: '🌸' },
-    { id: 'fall', label: 'Fall', emoji: '🍂' },
+    { id: 'all', label: 'All Seasons' },
+    { id: 'winter', label: 'Winter' },
+    { id: 'summer', label: 'Summer' },
+    { id: 'spring', label: 'Spring' },
+    { id: 'fall', label: 'Fall' },
   ];
+
+  const seasonZoneMap = {
+    'winter': ['tyrol', 'vorarlberg', 'salzburg'],
+    'summer': ['tyrol', 'vorarlberg', 'upper-austria', 'carinthia', 'salzburg'],
+    'spring': ['lower-austria', 'styria', 'vienna', 'upper-austria'],
+    'fall': ['styria', 'lower-austria', 'carinthia', 'salzburg'],
+    'all': zones.map(z => z.slug)
+  };
 
   // For demo purposes - in reality, this would come from the backend
   const getZoneStats = (zone) => {
@@ -31,10 +39,7 @@ export default function ZonePreview({ zones }) {
 
   const filteredZones = selectedSeason === 'all' 
     ? zones 
-    : zones.filter(zone => {
-        // Filter based on season - can be extended with actual season data
-        return true;
-      });
+    : zones.filter(zone => seasonZoneMap[selectedSeason]?.includes(zone.slug));
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-20">
@@ -60,7 +65,7 @@ export default function ZonePreview({ zones }) {
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
               }`}
             >
-              {season.emoji} {season.label}
+              {season.label}
             </motion.button>
           ))}
         </div>

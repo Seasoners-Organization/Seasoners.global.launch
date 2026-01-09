@@ -181,7 +181,6 @@ export default function ProfileCompletenessRoadmap({ user, onNavigate }) {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="text-2xl">{task.icon}</div>
                   <div>
                     <div className="font-medium text-slate-900 flex items-center gap-2">
                       {task.label}

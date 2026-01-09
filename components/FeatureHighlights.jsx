@@ -8,16 +8,9 @@ const FeatureCard = ({ icon, title, description, step }) => (
     transition={{ duration: 0.6 }}
     className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow"
   >
-    <div className="flex items-start gap-4 mb-4">
-      <div className="flex-shrink-0">
-        <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-sky-100 text-sky-600 text-xl">
-          {icon}
-        </div>
-      </div>
-      <div className="flex-1">
-        <h3 className="text-lg font-semibold text-slate-900 mb-2">{title}</h3>
-        <p className="text-slate-600 text-sm leading-relaxed">{description}</p>
-      </div>
+    <div className="flex-1 mb-4">
+      <h3 className="text-lg font-semibold text-slate-900 mb-2">{title}</h3>
+      <p className="text-slate-600 text-sm leading-relaxed">{description}</p>
     </div>
     {step && (
       <div className="inline-block text-xs font-bold text-sky-600 bg-sky-50 px-2 py-1 rounded-full">

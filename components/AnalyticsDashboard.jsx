@@ -117,7 +117,6 @@ export default function AnalyticsDashboard({ user }) {
                 <p className="text-sm text-slate-600 mb-1">{stat.label}</p>
                 <p className="text-3xl font-bold text-sky-700">{stat.value}</p>
               </div>
-              <span className="text-4xl">{stat.icon}</span>
             </div>
           </div>
         ))}

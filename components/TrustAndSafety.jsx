@@ -9,7 +9,6 @@ const TrustFeature = ({ icon, title, description }) => (
     transition={{ duration: 0.6 }}
     className="flex gap-4"
   >
-    <div className="flex-shrink-0 text-3xl">{icon}</div>
     <div>
       <h4 className="font-semibold text-slate-900 mb-1">{title}</h4>
       <p className="text-slate-600 text-sm">{description}</p>

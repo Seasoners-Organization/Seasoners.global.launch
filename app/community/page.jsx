@@ -58,7 +58,7 @@ export default function CommunityPage() {
               Connect with thousands of seasonal workers, share experiences, and build lasting relationships
             </p>
             <div className="inline-block px-6 py-3 bg-amber-100 text-amber-900 rounded-lg font-semibold">
-              🚀 Coming Soon
+              Coming Soon
             </div>
           </motion.div>
 
@@ -72,7 +72,6 @@ export default function CommunityPage() {
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
                 className="bg-white rounded-xl p-6 border border-slate-200 hover:shadow-lg transition-shadow"
               >
-                <div className="text-4xl mb-3">{feature.icon}</div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
                 <p className="text-slate-600 text-sm">{feature.description}</p>
               </motion.div>

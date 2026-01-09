@@ -9,7 +9,6 @@ const StatCard = ({ icon, label, value, suffix = '' }) => (
     transition={{ duration: 0.6 }}
     className="text-center p-6"
   >
-    <div className="text-4xl mb-2">{icon}</div>
     <div className="text-3xl md:text-4xl font-bold text-sky-800 mb-1">
       {value}{suffix}
     </div>

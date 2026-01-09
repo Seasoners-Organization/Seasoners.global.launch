@@ -108,7 +108,6 @@ export default function SmartProfileTips({ user, currentField }) {
           transition={{ delay: index * 0.1 }}
           className="bg-gradient-to-r from-blue-50 to-cyan-50 border-l-4 border-blue-500 p-4 rounded-lg flex items-start gap-3"
         >
-          <div className="text-2xl flex-shrink-0">{tip.icon}</div>
           <div className="flex-1 min-w-0">
             <h4 className="font-semibold text-slate-900 text-sm mb-1">{tip.title}</h4>
             <p className="text-xs text-slate-600 leading-relaxed">{tip.description}</p>
