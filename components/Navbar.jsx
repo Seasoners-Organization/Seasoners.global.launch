@@ -98,7 +98,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200">
       <div className="max-w-6xl mx-auto px-6 py-3 flex items-center gap-6">
         {/* Logo - Far left */}
-        <a href="/" className="flex items-center gap-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">
+        <a href="/" className="flex items-center gap-2 mr-12 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">
           <Image
             src="/seasoner-mountain-logo.png"
             alt="Seasoners Logo"

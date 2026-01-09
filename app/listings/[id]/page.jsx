@@ -309,7 +309,7 @@ export default function ListingDetailPage() {
                         <img 
                           src={listing.user.profilePicture} 
                           alt={listing.user.name}
-                          className="w-24 h-24 rounded-xl object-cover mb-3"
+                          className="w-24 h-24 rounded-full object-cover mb-3"
                         />
                       ) : (
                         <div className="w-24 h-24 bg-gradient-to-br from-sky-400 to-amber-400 rounded-xl flex items-center justify-center text-white text-3xl font-bold mb-3">
