@@ -10,7 +10,7 @@ describe('Navbar', () => {
     expect(screen.getByText('Seasoners')).toBeInTheDocument();
 
     // Current navbar shows these items (lowercase labels are intentional)
-    const links = ['stays', '🏠 Flatshares', 'jobs', 'destinations', 'agreement', 'about'];
+    const links = ['stays', 'flatshares', 'jobs', 'destinations', 'agreement', 'about'];
     links.forEach(link => {
       expect(screen.getByText(link)).toBeInTheDocument();
     });
@@ -21,7 +21,7 @@ describe('Navbar', () => {
 
     const linkMappings = {
       'stays': '/stays',
-      '🏠 Flatshares': '/flatshares',
+      'flatshares': '/flatshares',
       'jobs': '/jobs',
       'agreement': '/agreement',
       'about': '/about'
