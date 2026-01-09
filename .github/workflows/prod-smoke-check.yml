@@ -1,0 +1,22 @@
+name: Prod Smoke Check
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  smoke:
+    name: Check production endpoints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run smoke checks
+        run: |
+          bash scripts/smoke-check.sh
+        env:
+          BASE_URL: https://www.seasoners.eu
