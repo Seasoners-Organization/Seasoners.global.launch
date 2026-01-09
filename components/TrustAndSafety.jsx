@@ -20,17 +20,17 @@ const TrustFeature = ({ icon, title, description }) => (
 export default function TrustAndSafety() {
   const trustFeatures = [
     {
-      icon: '✓',
+      icon: '',
       title: 'Email Verification Required',
       description: 'All members verify their identity before accessing the platform.',
     },
     {
-      icon: '📱',
+      icon: '',
       title: 'Phone Verification Available',
       description: 'Optional phone verification strengthens your profile and builds member confidence.',
     },
     {
-      icon: '🆔',
+      icon: '',
       title: 'Identity Verification (Coming Soon)',
       description: 'Government ID verification for additional security and platform trust.',
     },
@@ -99,7 +99,7 @@ export default function TrustAndSafety() {
             {/* Verification badges */}
             <div className="space-y-3">
               <div className="flex items-center gap-2 p-3 bg-white rounded-lg border border-emerald-200">
-                <span className="text-2xl">✅</span>
+                <span className="text-2xl"></span>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">Email Verified</p>
                   <p className="text-xs text-slate-600">100% of users</p>
@@ -107,7 +107,7 @@ export default function TrustAndSafety() {
               </div>
 
               <div className="flex items-center gap-2 p-3 bg-white rounded-lg border border-emerald-200">
-                <span className="text-2xl">📱</span>
+                <span className="text-2xl"></span>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">Phone Verified</p>
                   <p className="text-xs text-slate-600">92% of active users</p>
@@ -115,7 +115,7 @@ export default function TrustAndSafety() {
               </div>
 
               <div className="flex items-center gap-2 p-3 bg-white rounded-lg border border-emerald-200">
-                <span className="text-2xl">🆔</span>
+                <span className="text-2xl"></span>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">ID Verified</p>
                   <p className="text-xs text-slate-600">78% of premium users</p>

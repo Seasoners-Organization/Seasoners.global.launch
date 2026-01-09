@@ -73,8 +73,6 @@ export default function SubscriptionSuccess() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-amber-50 px-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
-        <div className="text-6xl mb-6">🎉</div>
-        
         <h1 className="text-3xl font-bold text-slate-900 mb-2">
           Welcome to Seasoners!
         </h1>

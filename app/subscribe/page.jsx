@@ -72,7 +72,7 @@ function SubscribeContent() {
             {isEarlyBird && (
               <div className="bg-gradient-to-r from-amber-400 to-orange-400 text-white py-3 px-6 rounded-xl text-center mb-6 max-w-3xl mx-auto">
                 <p className="font-bold text-lg">
-                  🎉 Early Bird Special: 3 Months FREE! No payment required today.
+                  Early Bird Special: 3 Months FREE! No payment required today.
                 </p>
               </div>
             )}

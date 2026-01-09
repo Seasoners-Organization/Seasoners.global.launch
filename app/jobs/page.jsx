@@ -121,7 +121,7 @@ export default function JobsPage() {
             
             {!loading && !error && filteredJobs.length === 0 && (
               <EmptyState
-                icon="💼"
+                icon=""
                 title="No jobs found"
                 description="Try adjusting your filters or check back later for new opportunities."
                 actionLabel="Post a Job"

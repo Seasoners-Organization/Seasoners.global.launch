@@ -657,7 +657,7 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
           ) : (
             <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-sm text-blue-800">
-                <span className="font-semibold">🔒 Contact info is private by default.</span> Verify your email and phone to unlock the option to display your contact information publicly if you choose.
+                <span className="font-semibold">Contact info is private by default.</span> Verify your email and phone to unlock the option to display your contact information publicly if you choose.
               </p>
             </div>
           )}

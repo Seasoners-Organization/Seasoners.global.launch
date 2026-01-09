@@ -16,22 +16,22 @@ export default function RoommateIndicator({
   const getGenderEmoji = (gender) => {
     switch(gender?.toUpperCase()) {
       case 'FEMALE':
-        return { emoji: '👩', color: 'text-pink-600', bg: 'bg-pink-50' };
+        return { emoji: '', color: 'text-pink-600', bg: 'bg-pink-50' };
       case 'MALE':
-        return { emoji: '👨', color: 'text-blue-600', bg: 'bg-blue-50' };
+        return { emoji: '', color: 'text-blue-600', bg: 'bg-blue-50' };
       default:
-        return { emoji: '👤', color: 'text-slate-600', bg: 'bg-slate-50' };
+        return { emoji: '', color: 'text-slate-600', bg: 'bg-slate-50' };
     }
   };
 
   const getLookingForEmoji = (gender) => {
     switch(gender?.toUpperCase()) {
       case 'FEMALE':
-        return { emoji: '👩', color: 'text-pink-600', bg: 'bg-pink-100', border: 'border-pink-300' };
+        return { emoji: '', color: 'text-pink-600', bg: 'bg-pink-100', border: 'border-pink-300' };
       case 'MALE':
-        return { emoji: '👨', color: 'text-blue-600', bg: 'bg-blue-100', border: 'border-blue-300' };
+        return { emoji: '', color: 'text-blue-600', bg: 'bg-blue-100', border: 'border-blue-300' };
       default:
-        return { emoji: '👤', color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-300' };
+        return { emoji: '', color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-300' };
     }
   };
 

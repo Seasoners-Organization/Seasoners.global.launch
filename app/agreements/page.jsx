@@ -216,7 +216,6 @@ export default function AgreementsPage() {
 
                       <div className="grid grid-cols-2 gap-4 mb-4">
                         <div className="flex items-center space-x-2">
-                          <span>👤</span>
                           <div>
                             <p className="text-xs text-gray-500">
                               {isHost ? 'Guest' : 'Host'}

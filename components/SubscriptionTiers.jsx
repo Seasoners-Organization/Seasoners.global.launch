@@ -120,7 +120,7 @@ export default function SubscriptionTiers() {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="mt-16 bg-blue-50 rounded-2xl border-2 border-blue-200 p-8 text-center"
       >
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">💳 Premium ID Verification</h3>
+        <h3 className="text-xl font-semibold text-slate-900 mb-2">Premium ID Verification</h3>
         <p className="text-slate-600 mb-4">
           Unlock premium features like advanced verification, priority listings, and exclusive matches. Coming soon!
         </p>

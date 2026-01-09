@@ -7,19 +7,19 @@ export default function TrustBadge({ score = 0, size = 'sm', showLabel = false }
   if (score >= 80) {
     level = 'Exceptional';
     color = 'emerald';
-    icon = '🌟';
+    icon = '';
   } else if (score >= 60) {
     level = 'Trusted';
     color = 'sky';
-    icon = '✓';
+    icon = '';
   } else if (score >= 30) {
     level = 'Establishing';
     color = 'amber';
-    icon = '→';
+    icon = '';
   } else {
     level = 'New';
     color = 'slate';
-    icon = '○';
+    icon = '';
   }
 
   const colorClasses = {

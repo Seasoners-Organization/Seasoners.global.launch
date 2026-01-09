@@ -172,11 +172,11 @@ export default function FAQ() {
   ];
 
   const quickLinks = [
-    { title: "Account Help", href: "/help/account", icon: "👤" },
-    { title: "Listing Issues", href: "/help/listings", icon: "📝" },
-    { title: "Payment Support", href: "/help/payments", icon: "💰" },
-    { title: "Safety Resources", href: "/help/safety", icon: "🔒" },
-    { title: "Contact Support", href: "/contact", icon: "📧" }
+    { title: "Account Help", href: "/help/account", icon: "" },
+    { title: "Listing Issues", href: "/help/listings", icon: "" },
+    { title: "Payment Support", href: "/help/payments", icon: "" },
+    { title: "Safety Resources", href: "/help/safety", icon: "" },
+    { title: "Contact Support", href: "/contact", icon: "" }
   ];
 
   const filteredCategories = searchQuery

@@ -68,12 +68,12 @@ export default function HeroWithCTA() {
           </div>
           <span className="text-sky-400">•</span>
           <div className="flex items-center gap-2">
-            <span className="text-lg">🔒</span>
+            <span className="text-lg"></span>
             <span>Safe & Secure</span>
           </div>
           <span className="text-sky-400">•</span>
           <div className="flex items-center gap-2">
-            <span className="text-lg">📋</span>
+            <span className="text-lg"></span>
             <span>Protected Agreements</span>
           </div>
         </motion.div>

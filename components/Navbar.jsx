@@ -154,7 +154,6 @@ export default function Navbar() {
                     className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
                     onClick={() => setIsProfileOpen(false)}
                   >
-                    <span>👤</span>
                     <span>{t('profile')}</span>
                     {session.user.identityVerified === 'PENDING' && (
                       <span className="ml-auto h-2 w-2 bg-amber-500 rounded-full" />
@@ -166,7 +165,6 @@ export default function Navbar() {
                     className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
                     onClick={() => setIsProfileOpen(false)}
                   >
-                    <span>💬</span>
                     <span>{t('messages')}</span>
                     {unreadCount > 0 && (
                       <span className="ml-auto flex items-center justify-center min-w-[20px] h-5 px-1.5 bg-red-500 text-white text-xs font-semibold rounded-full">
@@ -180,7 +178,6 @@ export default function Navbar() {
                     className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
                     onClick={() => setIsProfileOpen(false)}
                   >
-                    <span>📄</span>
                     <span>{t('agreements')}</span>
                   </a>
 
@@ -212,7 +209,6 @@ export default function Navbar() {
                     }}
                     className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors w-full text-left"
                   >
-                    <span>🚪</span>
                     <span>{t('signOut')}</span>
                   </button>
                 </div>
@@ -247,11 +243,11 @@ export default function Navbar() {
             </button>
             {isDestinationsOpen && (
               <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 py-3 z-50">
-                <div className="px-4 pb-2 text-xs text-slate-500">❄️ {t('seasonWinter')}</div>
+                <div className="px-4 pb-2 text-xs text-slate-500">{t('seasonWinter')}</div>
                 {ZONES.filter(z => z.season === 'winter').map(z => (
                   <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100">{z.title}</a>
                 ))}
-                <div className="px-4 pt-2 text-xs text-slate-500">☀️ {t('seasonSummer')}</div>
+                <div className="px-4 pt-2 text-xs text-slate-500">{t('seasonSummer')}</div>
                 {ZONES.filter(z => z.season === 'summer').map(z => (
                   <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100">{z.title}</a>
                 ))}
@@ -274,7 +270,7 @@ export default function Navbar() {
               <div className="absolute left-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50">
                 <a href="/faq" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100" onClick={() => setIsSupportOpen(false)}>{t('faq')}</a>
                 <a href="/help" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100" onClick={() => setIsSupportOpen(false)}>{t('help')}</a>
-                <a href="/community" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100" onClick={() => setIsSupportOpen(false)}>💬 {t('community')}</a>
+                <a href="/community" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100" onClick={() => setIsSupportOpen(false)}>{t('community')}</a>
               </div>
             )}
           </div>
@@ -361,7 +357,7 @@ export default function Navbar() {
               <div className="pl-4 flex flex-col">
                 <a href="/faq" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('faq')}</a>
                 <a href="/help" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('help')}</a>
-                <a href="/community" className="py-2" onClick={() => setIsMobileOpen(false)}>💬 {t('community')}</a>
+                <a href="/community" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('community')}</a>
               </div>
             </details>
             <a href="/about" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('about')}</a>

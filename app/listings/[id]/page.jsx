@@ -409,7 +409,7 @@ export default function ListingDetailPage() {
                       onClick={() => setShowReportModal(true)}
                       className="w-full mt-3 py-2 text-sm text-slate-600 hover:text-red-600 transition"
                     >
-                      🚩 Report this listing
+                      Report this listing
                     </button>
                   )}
                 </div>

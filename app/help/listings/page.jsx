@@ -62,7 +62,6 @@ export default function ListingHelp() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center mb-12"
             >
-              <div className="text-6xl mb-4">📝</div>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
                 Listing Issues
               </h1>

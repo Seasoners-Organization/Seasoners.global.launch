@@ -11,7 +11,7 @@ export default function SubscriptionTerms() {
         {/* Early Bird Promotion Banner */}
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 rounded-xl p-6 mb-8">
           <h2 className="text-2xl font-bold text-amber-900 mb-3 flex items-center gap-2">
-            🎉 Early Bird Promotion - 3 Months Free
+            Early Bird Promotion - 3 Months Free
           </h2>
           <p className="text-amber-800 font-semibold mb-3">
             Sign up during our launch period and receive <strong>90 days (3 months) of completely free access</strong> to your chosen plan.

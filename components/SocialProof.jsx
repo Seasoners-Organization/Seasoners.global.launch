@@ -99,25 +99,25 @@ export default function SocialProof() {
 
       <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl border border-sky-200 p-8">
         <StatCard
-          icon="✓"
+          icon=""
           label="Verified Members"
           value={stats.users}
           suffix="+"
         />
         <StatCard
-          icon="📋"
+          icon=""
           label="Verified Listings"
           value={stats.listings}
           suffix="+"
         />
         <StatCard
-          icon="✓"
+          icon=""
           label="Successful Matches"
           value={stats.connections}
           suffix="+"
         />
         <StatCard
-          icon="🌐"
+          icon=""
           label="Countries Active"
           value={stats.countries}
           suffix=""

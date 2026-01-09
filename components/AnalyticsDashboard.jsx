@@ -93,22 +93,22 @@ export default function AnalyticsDashboard({ user }) {
           {
             label: 'Total Views',
             value: analytics.reduce((sum, item) => sum + item.stats.totalViews, 0),
-            icon: '👁️',
+            icon: '',
           },
           {
             label: 'Total Messages',
             value: analytics.reduce((sum, item) => sum + item.stats.totalMessages, 0),
-            icon: '💬',
+            icon: '',
           },
           {
             label: 'Total Applications',
             value: analytics.reduce((sum, item) => sum + item.stats.totalApplications, 0),
-            icon: '📧',
+            icon: '',
           },
           {
             label: 'Total Saves',
             value: analytics.reduce((sum, item) => sum + item.stats.totalSaves, 0),
-            icon: '❤️',
+            icon: '',
           },
         ].map((stat, idx) => (
           <div key={idx} className="bg-white rounded-lg border p-4 shadow-sm">

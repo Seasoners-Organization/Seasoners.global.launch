@@ -7,7 +7,7 @@ const completionTasks = [
     id: 'picture',
     label: 'Profile Picture',
     description: 'Add a clear, friendly photo',
-    icon: '📸',
+    icon: '',
     priority: 'high',
     impact: 15,
     action: 'upload',
@@ -16,7 +16,7 @@ const completionTasks = [
     id: 'email',
     label: 'Verify Email',
     description: 'Confirm your email address',
-    icon: '✉️',
+    icon: '',
     priority: 'high',
     impact: 10,
     action: 'verify',
@@ -25,7 +25,7 @@ const completionTasks = [
     id: 'phone',
     label: 'Verify Phone',
     description: 'Add & verify your phone number',
-    icon: '📱',
+    icon: '',
     priority: 'high',
     impact: 10,
     action: 'verify',
@@ -34,7 +34,7 @@ const completionTasks = [
     id: 'bio',
     label: 'Write a Bio',
     description: '50+ characters about yourself',
-    icon: '✍️',
+    icon: '',
     priority: 'high',
     impact: 15,
     action: 'edit',
@@ -43,7 +43,7 @@ const completionTasks = [
     id: 'languages',
     label: 'Add Languages',
     description: 'Languages you speak',
-    icon: '🗣️',
+    icon: '',
     priority: 'medium',
     impact: 10,
     action: 'edit',
@@ -52,7 +52,7 @@ const completionTasks = [
     id: 'skills',
     label: 'List Skills',
     description: 'Professional or personal skills',
-    icon: '⭐',
+    icon: '',
     priority: 'medium',
     impact: 10,
     action: 'edit',
@@ -61,7 +61,7 @@ const completionTasks = [
     id: 'interests',
     label: 'Share Interests',
     description: 'Hobbies & things you enjoy',
-    icon: '🎯',
+    icon: '',
     priority: 'medium',
     impact: 10,
     action: 'edit',
@@ -70,7 +70,7 @@ const completionTasks = [
     id: 'regions',
     label: 'Preferred Regions',
     description: 'Where you want to work/live',
-    icon: '🗺️',
+    icon: '',
     priority: 'low',
     impact: 5,
     action: 'edit',
@@ -244,7 +244,6 @@ export default function ProfileCompletenessRoadmap({ user, onNavigate }) {
           animate={{ opacity: 1, scale: 1 }}
           className="mt-6 p-4 bg-emerald-50 border-2 border-emerald-200 rounded-lg text-center"
         >
-          <div className="text-3xl mb-2">🎉</div>
           <p className="font-bold text-emerald-900">Profile Complete!</p>
           <p className="text-sm text-emerald-700">
             You've maximized your profile. Keep it up to date!

@@ -31,7 +31,7 @@ export default function SafetyHelp() {
     },
     {
       title: "Protecting Your Privacy",
-      icon: "🔒",
+      icon: "",
       tips: [
         "Don't share your full address in your listing description",
         "Use Seasoners messaging instead of personal email or phone initially",
@@ -109,7 +109,6 @@ export default function SafetyHelp() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center mb-12"
             >
-              <div className="text-6xl mb-4">🔒</div>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
                 Safety Resources
               </h1>

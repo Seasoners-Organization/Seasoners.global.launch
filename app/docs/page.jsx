@@ -15,7 +15,7 @@ export default function Documentation() {
     {
       id: "getting-started",
       title: "Getting Started",
-      icon: "🚀",
+      icon: "",
       content: {
         intro: "Welcome to Seasoners! This guide will help you get started on your seasonal adventure.",
         topics: [
@@ -41,7 +41,7 @@ export default function Documentation() {
     {
       id: "hosts",
       title: "For Hosts & Employers",
-      icon: "🏠",
+      icon: "",
       content: {
         intro: "List your property or job opportunity and connect with quality seasonal workers and travelers.",
         topics: [
@@ -71,7 +71,7 @@ export default function Documentation() {
     {
       id: "seekers",
       title: "For Job & Stay Seekers",
-      icon: "🌍",
+      icon: "",
       content: {
         intro: "Find and secure your next seasonal adventure with confidence.",
         topics: [
@@ -101,7 +101,7 @@ export default function Documentation() {
     {
       id: "trust-safety",
       title: "Trust & Safety",
-      icon: "🛡️",
+      icon: "",
       content: {
         intro: "Your safety is our top priority. Learn how we protect our community.",
         topics: [
@@ -135,7 +135,7 @@ export default function Documentation() {
     {
       id: "payments",
       title: "Payments & Billing",
-      icon: "💳",
+      icon: "",
       content: {
         intro: "Understand how payments work on Seasoners.",
         topics: [

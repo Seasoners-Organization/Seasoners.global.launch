@@ -45,7 +45,7 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
       label: 'Email Address',
       description: 'Required to send & receive messages',
       isVerified: !!user?.emailVerified,
-      icon: '✉️',
+      icon: '',
       verifiedDate: user?.emailVerified,
       onVerify: user?.emailVerified ? null : onEmailVerify, // Don't show verify button if already verified
     },
@@ -54,7 +54,7 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
       label: 'Phone Number',
       description: 'Helps hosts/employers verify you',
       isVerified: !!user?.phoneVerified,
-      icon: '📱',
+      icon: '',
       verifiedDate: user?.phoneVerified,
       onVerify: user?.phoneVerified ? null : onPhoneVerify, // Don't show verify button if already verified
     },
@@ -83,7 +83,7 @@ export default function InlineVerificationStatus({ user, onEmailVerify, onPhoneV
         <div>
           <h3 className="text-lg font-bold text-slate-900">Verification Status</h3>
           <p className="text-sm text-slate-600 mt-1">
-            {unverifiedCount === 0 ? 'All verifications complete! 🎉' : 'Complete verifications to unlock features'}
+            {unverifiedCount === 0 ? 'All verifications complete!' : 'Complete verifications to unlock features'}
           </p>
         </div>
         <div className="text-right">

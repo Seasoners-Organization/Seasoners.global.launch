@@ -4,49 +4,49 @@ import { useState, useEffect } from 'react';
 
 const tips = [
   {
-    icon: '📸',
+    icon: '',
     title: 'Profile Picture Impact',
     description: 'Users with profile pictures are 3x more likely to receive messages.',
     field: 'profilePicture',
   },
   {
-    icon: '✉️',
+    icon: '',
     title: 'Email Verification Matters',
     description: 'Verify your email to build trust and unlock messaging features.',
     field: 'emailVerified',
   },
   {
-    icon: '📱',
+    icon: '',
     title: 'Phone Verification',
     description: 'Add your phone number to get access to premium features.',
     field: 'phoneVerified',
   },
   {
-    icon: '✍️',
+    icon: '',
     title: 'Write a Compelling Bio',
     description: 'A 50+ character bio helps others understand who you are. Be authentic!',
     field: 'aboutMe',
   },
   {
-    icon: '🗣️',
+    icon: '',
     title: 'Language Skills',
     description: 'List languages you speak to connect with more people.',
     field: 'spokenLanguages',
   },
   {
-    icon: '⭐',
+    icon: '',
     title: 'Showcase Your Skills',
     description: 'Professional skills help hosts/employers evaluate compatibility.',
     field: 'skills',
   },
   {
-    icon: '🎯',
+    icon: '',
     title: 'Share Your Interests',
     description: 'Interests help find people with similar passions for better matches.',
     field: 'interests',
   },
   {
-    icon: '🗺️',
+    icon: '',
     title: 'Mark Preferred Regions',
     description: 'Help others know where you want to live or work.',
     field: 'preferredRegions',

@@ -30,32 +30,32 @@ const FeatureCard = ({ icon, title, description, step }) => (
 export default function FeatureHighlights() {
   const features = [
     {
-      icon: '✅',
+      icon: '',
       title: 'Verified Users',
       description: 'Every user is verified through email, phone, and optional ID verification. Hosts and employers know exactly who they\'re working with.',
     },
     {
-      icon: '⭐',
+      icon: '',
       title: 'Verified Reputation',
       description: 'Every interaction builds reputation. Users with excellent ratings and verified status stand out. Trust is earned through consistent, positive behavior.',
     },
     {
-      icon: '📝',
+      icon: '',
       title: 'Legally Clear Agreements',
       description: 'Dual-language agreements with digital signatures protect both parties. Clear terms, flexible terms, and transparent dispute resolution.',
     },
     {
-      icon: '🌐',
+      icon: '',
       title: 'Global Communication',
       description: 'Connect with people worldwide. Real-time translation removes language barriers so everyone can communicate clearly across 50+ languages.',
     },
     {
-      icon: '💬',
+      icon: '',
       title: 'Private & Secure Messaging',
       description: 'Encrypted in-app messaging ensures your conversations stay private and secure. No need to share personal details until you\'re comfortable.',
     },
     {
-      icon: '🛡️',
+      icon: '',
       title: 'Community Safety Standards',
       description: 'Reporting, blocking, and community guidelines create a safe space for everyone. We enforce standards consistently across all interactions.',
     },
@@ -63,25 +63,25 @@ export default function FeatureHighlights() {
 
   const workflowSteps = [
     {
-      icon: '🔍',
+      icon: '',
       title: 'Discover Verified Opportunities',
       description: 'Browse verified listings and profiles. Filter by location, season, and requirements. Preview comprehensive host and employer profiles.',
       step: 1,
     },
     {
-      icon: '💬',
+      icon: '',
       title: 'Connect with Confidence',
       description: 'Use secure in-app messaging to ask questions and discuss details. Build trust through real conversation before making any commitment.',
       step: 2,
     },
     {
-      icon: '📋',
+      icon: '',
       title: 'Sign a Clear Agreement',
       description: 'Both parties review and sign a transparent, dual-language agreement with clear terms and legal protections.',
       step: 3,
     },
     {
-      icon: '🚀',
+      icon: '',
       title: 'Start Your Experience',
       description: 'Begin your seasonal journey with confidence. Stay connected through Seasoners, build your verified reputation, and unlock future opportunities.',
       step: 4,

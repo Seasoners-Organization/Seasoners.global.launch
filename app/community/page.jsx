@@ -8,32 +8,32 @@ import Link from "next/link";
 export default function CommunityPage() {
   const features = [
     {
-      icon: "💬",
+      icon: "",
       title: "Community Discussions",
       description: "Share experiences, ask questions, and connect with seasonal workers worldwide"
     },
     {
-      icon: "📍",
+      icon: "",
       title: "Destination Guides",
       description: "Crowdsourced tips and recommendations for every zone we operate in"
     },
     {
-      icon: "⭐",
+      icon: "",
       title: "Success Stories",
       description: "Read inspiring stories from members who've built amazing seasonal careers"
     },
     {
-      icon: "🤝",
+      icon: "",
       title: "Peer Support",
       description: "Get advice from experienced seasonal workers in your industry"
     },
     {
-      icon: "🎯",
+      icon: "",
       title: "Verified Badges",
       description: "See trusted community members and verified hosts sharing insights"
     },
     {
-      icon: "🌍",
+      icon: "",
       title: "Global Network",
       description: "Connect with seasonal workers across 12+ countries and counting"
     }
@@ -136,7 +136,7 @@ export default function CommunityPage() {
                     </div>
                     <ul className="space-y-1">
                       {phase.items.map((item, i) => (
-                        <li key={i} className="text-sm text-slate-600">✓ {item}</li>
+                        <li key={i} className="text-sm text-slate-600">• {item}</li>
                       ))}
                     </ul>
                   </div>

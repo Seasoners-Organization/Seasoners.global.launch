@@ -279,7 +279,7 @@ export default function List() {
                   <div className="flex flex-wrap gap-2 mb-2">
                     {currentRoommates.map((gender, idx) => (
                       <div key={idx} className="flex items-center gap-1 bg-white border rounded-lg px-3 py-1">
-                        <span>{gender === 'FEMALE' ? '👩' : gender === 'MALE' ? '👨' : '👤'}</span>
+                        <span>{gender === 'FEMALE' ? 'F' : gender === 'MALE' ? 'M' : ''}</span>
                         <button
                           type="button"
                           onClick={() => setCurrentRoommates(currentRoommates.filter((_, i) => i !== idx))}
@@ -299,7 +299,7 @@ export default function List() {
                         className="flex-1 border border-pink-300 bg-pink-50 hover:bg-pink-100 text-pink-700 py-2 rounded-lg"
                         disabled={loading}
                       >
-                        👩 Female
+                        Female
                       </button>
                       <button
                         type="button"
@@ -307,7 +307,7 @@ export default function List() {
                         className="flex-1 border border-blue-300 bg-blue-50 hover:bg-blue-100 text-blue-700 py-2 rounded-lg"
                         disabled={loading}
                       >
-                        👨 Male
+                        Male
                       </button>
                       <button
                         type="button"
@@ -315,7 +315,7 @@ export default function List() {
                         className="flex-1 border border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 rounded-lg"
                         disabled={loading}
                       >
-                        👤 Any
+                        Any
                       </button>
                     </div>
                   )}
@@ -331,9 +331,9 @@ export default function List() {
                     className="w-full border p-2 rounded-lg"
                     disabled={loading}
                   >
-                    <option value="ANY">👤 Any Gender</option>
-                    <option value="FEMALE">👩 Female</option>
-                    <option value="MALE">👨 Male</option>
+                    <option value="ANY">Any Gender</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="MALE">Male</option>
                   </select>
                 </div>
 

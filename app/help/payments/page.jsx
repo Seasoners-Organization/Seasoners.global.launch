@@ -114,7 +114,6 @@ export default function PaymentHelp() {
               transition={{ delay: 0.6 }}
               className="mt-12 bg-green-50 rounded-lg p-8 text-center"
             >
-              <div className="text-4xl mb-3">🔒</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 Secure Payment Processing
               </h3>
