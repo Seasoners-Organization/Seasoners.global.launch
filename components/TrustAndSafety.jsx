@@ -21,33 +21,33 @@ export default function TrustAndSafety() {
   const trustFeatures = [
     {
       icon: '✓',
-      title: 'Email Verification',
-      description: 'All users must verify their email address to access the platform.',
+      title: 'Email Verification Required',
+      description: 'All members verify their identity before accessing the platform.',
     },
     {
       icon: '📱',
-      title: 'Phone Verification',
-      description: 'Optional phone verification adds an extra layer of security and trust.',
+      title: 'Phone Verification Available',
+      description: 'Optional phone verification strengthens your profile and builds member confidence.',
     },
     {
       icon: '🆔',
-      title: 'Government ID Verification',
-      description: 'Coming soon - We\'re building this feature for premium users.',
+      title: 'Identity Verification (Coming Soon)',
+      description: 'Government ID verification for additional security and platform trust.',
     },
     {
       icon: '⭐',
-      title: 'Trust Score System',
-      description: 'Every interaction builds a public trust score visible to other users on the platform.',
+      title: 'Public Trust Scores',
+      description: 'Transparent trust metrics built from verified interactions and community feedback.',
     },
     {
       icon: '📋',
-      title: 'Digital Agreements',
-      description: 'All stays and jobs are protected by legally-binding digital agreements with e-signatures.',
+      title: 'Legally Binding Agreements',
+      description: 'Every arrangement is protected by clear, verified agreements with secure e-signatures.',
     },
     {
       icon: '🛡️',
       title: 'Dispute Resolution',
-      description: 'Built-in dispute resolution process helps resolve disagreements fairly and transparently.',
+      description: 'Fair, transparent process to resolve disputes and protect all parties involved.',
     },
   ];
 

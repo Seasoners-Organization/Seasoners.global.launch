@@ -88,17 +88,17 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                 
                 <div className="relative">
                   <div className="inline-block mb-4">
-                    <span className="bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">
-                      🎉 Launch Special
+                    <span className="bg-emerald-400 text-emerald-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">
+                      Early Supporter Offer
                     </span>
                   </div>
                   
                   <h2 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-                    Get 3 Months FREE!
+                    Experience Premium Free
                   </h2>
                   
                   <p className="text-xl text-sky-100 font-medium">
-                    Be an early bird and unlock premium features at no cost
+                    Unlock full access for 90 days at no cost — no credit card required for trial
                   </p>
                 </div>
               </div>

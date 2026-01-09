@@ -201,7 +201,7 @@ export default function JobsPage() {
                       {isOwnListing(job) ? (
                         <button
                           onClick={(e) => handleManageListing(e, job)}
-                          className="w-full py-2 text-sm border rounded-lg font-medium transition bg-gradient-to-r from-sky-600 to-amber-600 text-white border-transparent hover:from-sky-700 hover:to-amber-700"
+                          className="w-full py-2 text-sm border rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 bg-gradient-to-r from-sky-600 to-amber-600 text-white border-transparent hover:from-sky-700 hover:to-amber-700"
                           aria-label={`Manage listing ${job.title}`}
                         >
                           {t('manageListing') || 'Manage Listing'}
@@ -210,7 +210,7 @@ export default function JobsPage() {
                         <button
                           onClick={(e) => handleContactEmployer(e, job)}
                           disabled={contactingId === job.id}
-                          className={`w-full py-2 text-sm border rounded-lg font-medium transition ${contactingId===job.id ? 'bg-sky-100 text-sky-400 border-sky-200' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
+                          className={`w-full py-2 text-sm border rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 ${contactingId===job.id ? 'bg-sky-100 text-sky-400 border-sky-200 cursor-not-allowed' : 'text-sky-700 hover:bg-sky-50 border-sky-200'}`}
                           aria-label={`Contact employer about ${job.title}`}
                         >
                           {contactingId === job.id ? t('loading') : t('contactEmployer')}
@@ -270,17 +270,17 @@ export default function JobsPage() {
                 <div className="p-5 pb-4 border-b border-slate-100">
                   <div className="flex items-center gap-3">
                     {job.user?.profilePicture ? (
-                      <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
                         <Image 
                           src={job.user.profilePicture} 
                           alt={job.user.name}
                           fill
-                          sizes="64px"
+                          sizes="48px"
                           className="object-cover"
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
                         {job.user?.name?.charAt(0).toUpperCase() || 'U'}
                       </div>
                     )}

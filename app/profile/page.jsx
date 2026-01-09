@@ -804,7 +804,7 @@ export default function ProfilePage() {
                     <input
                       type="text"
                       defaultValue={user.name}
-                      className="w-full border border-slate-300 rounded-lg p-3"
+                      className="w-full border border-slate-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed"
                       disabled
                     />
                     <p className="text-sm text-slate-500 mt-1">Contact support to update your name</p>
@@ -814,7 +814,7 @@ export default function ProfilePage() {
                     <input
                       type="email"
                       defaultValue={user.email}
-                      className="w-full border border-slate-300 rounded-lg p-3"
+                      className="w-full border border-slate-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed"
                       disabled
                     />
                     <p className="text-sm text-slate-500 mt-1">Contact support to update your email</p>
@@ -824,7 +824,7 @@ export default function ProfilePage() {
                     <input
                       type="tel"
                       defaultValue={user.phoneNumber || 'Not provided'}
-                      className="w-full border border-slate-300 rounded-lg p-3"
+                      className="w-full border border-slate-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed"
                       disabled
                     />
                   </div>
@@ -839,7 +839,12 @@ export default function ProfilePage() {
 
                   {/* Danger Zone */}
                   <div className="pt-6 mt-6 border-t-2 border-red-200">
-                    <h4 className="text-lg font-semibold text-red-600 mb-3">⚠️ Danger Zone</h4>
+                    <div className="flex items-center gap-2 mb-3">
+                      <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4v2m0 0v2m0-4v-2m0 0v-2" />
+                      </svg>
+                      <h4 className="text-lg font-semibold text-red-600">Danger Zone</h4>
+                    </div>
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                       <p className="text-sm text-red-800 mb-2">
                         <strong>Delete Account</strong>

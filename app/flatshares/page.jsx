@@ -66,7 +66,7 @@ export default function FlatsharesPage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-slate-900 mb-3">
-              🏠 Flatshares
+              Flatshares
             </h1>
             <p className="text-lg text-slate-600">
               Find your next shared apartment with compatible roommates
@@ -116,17 +116,17 @@ export default function FlatsharesPage() {
                       <div className="p-5 pb-4 border-b border-slate-100">
                         <div className="flex items-center gap-3">
                           {listing.user?.profilePicture ? (
-                            <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                            <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
                               <Image 
                                 src={listing.user.profilePicture} 
                                 alt={listing.user.name}
                                 fill
-                                sizes="64px"
+                                sizes="48px"
                                 className="object-cover"
                               />
                             </div>
                           ) : (
-                            <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-sky-400 to-amber-400 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
                               {listing.user?.name?.charAt(0).toUpperCase() || 'U'}
                             </div>
                           )}

@@ -24,10 +24,10 @@ export default function ContactForm() {
         <p className="text-green-600">Thank you! Your message has been sent.</p>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input required type="text" name="name" placeholder="Your Name" className="w-full border p-3 rounded-lg" />
-          <input required type="email" name="email" placeholder="Your Email" className="w-full border p-3 rounded-lg" />
-          <textarea required name="message" placeholder="Your Message" rows="4" className="w-full border p-3 rounded-lg"></textarea>
-          <button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 rounded-xl">
+          <input required type="text" name="name" placeholder="Your Name" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+          <input required type="email" name="email" placeholder="Your Email" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+          <textarea required name="message" placeholder="Your Message" rows="4" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none"></textarea>
+          <button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
             Send Message
           </button>
         </form>

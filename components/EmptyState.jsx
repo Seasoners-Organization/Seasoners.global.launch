@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 
 export default function EmptyState({ 
   icon = "📭", 
-  title = "No items found", 
-  description = "Try adjusting your filters or check back later.",
+  title = "No results yet", 
+  description = "Try adjusting your search criteria or explore our featured listings.",
   actionLabel,
   actionHref,
   actionOnClick

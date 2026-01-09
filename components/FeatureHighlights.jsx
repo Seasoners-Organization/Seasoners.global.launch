@@ -6,7 +6,7 @@ const FeatureCard = ({ icon, title, description, step }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
-    className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-shadow"
+    className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow"
   >
     <div className="flex items-start gap-4 mb-4">
       <div className="flex-shrink-0">
@@ -36,54 +36,54 @@ export default function FeatureHighlights() {
     },
     {
       icon: '⭐',
-      title: 'Trust Scores',
-      description: 'Our algorithmic trust system rewards responsible behavior and helps users build their reputation on the platform.',
+      title: 'Verified Reputation',
+      description: 'Every interaction builds reputation. Users with excellent ratings and verified status stand out. Trust is earned through consistent, positive behavior.',
     },
     {
       icon: '📝',
-      title: 'Smart Agreements',
-      description: 'Digital agreements with e-signatures protect both parties. Clear terms, flexible arrangements, dispute resolution built-in.',
+      title: 'Legally Clear Agreements',
+      description: 'Dual-language agreements with digital signatures protect both parties. Clear terms, flexible terms, and transparent dispute resolution.',
     },
     {
       icon: '🌐',
-      title: 'Multi-Language',
-      description: 'Connect with people worldwide. Real-time translation helps break down language barriers across 50+ languages.',
+      title: 'Global Communication',
+      description: 'Connect with people worldwide. Real-time translation removes language barriers so everyone can communicate clearly across 50+ languages.',
     },
     {
       icon: '💬',
-      title: 'Secure Messaging',
-      description: 'Encrypted in-app messaging keeps conversations private. No need to share personal contact info until you\'re ready.',
+      title: 'Private & Secure Messaging',
+      description: 'Encrypted in-app messaging ensures your conversations stay private and secure. No need to share personal details until you\'re comfortable.',
     },
     {
       icon: '🛡️',
-      title: 'Safety First',
-      description: 'Report system, blocking features, and community guidelines ensure a safe environment for everyone.',
+      title: 'Community Safety Standards',
+      description: 'Reporting, blocking, and community guidelines create a safe space for everyone. We enforce standards consistently across all interactions.',
     },
   ];
 
   const workflowSteps = [
     {
       icon: '🔍',
-      title: 'Find Your Match',
-      description: 'Browse verified listings, filter by location, season, and preferences. Preview profiles to find the perfect fit.',
+      title: 'Discover Verified Opportunities',
+      description: 'Browse verified listings and profiles. Filter by location, season, and requirements. Preview comprehensive host and employer profiles.',
       step: 1,
     },
     {
       icon: '💬',
-      title: 'Connect & Chat',
-      description: 'Message hosts or employees directly. Ask questions, discuss details, and build trust through conversation.',
+      title: 'Connect with Confidence',
+      description: 'Use secure in-app messaging to ask questions and discuss details. Build trust through real conversation before making any commitment.',
       step: 2,
     },
     {
       icon: '📋',
-      title: 'Create Agreement',
-      description: 'Both parties sign a digital agreement with clear terms, expectations, and responsibilities.',
+      title: 'Sign a Clear Agreement',
+      description: 'Both parties review and sign a transparent, dual-language agreement with clear terms and legal protections.',
       step: 3,
     },
     {
       icon: '🚀',
-      title: 'Get Started',
-      description: 'Begin your seasonal adventure! Stay connected through the platform, share updates, and build your reputation.',
+      title: 'Start Your Experience',
+      description: 'Begin your seasonal journey with confidence. Stay connected through Seasoners, build your verified reputation, and unlock future opportunities.',
       step: 4,
     },
   ];

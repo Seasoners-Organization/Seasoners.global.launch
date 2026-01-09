@@ -192,10 +192,10 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
         <legend className="text-xs font-medium text-slate-500 px-1">Economics</legend>
         <div className="grid grid-cols-2 gap-2">
           <label className="text-xs font-medium text-slate-600">Price Min
-            <input aria-label="Price minimum" type="number" min="0" value={priceMin} onChange={e=>setPriceMin(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" />
+            <input aria-label="Price minimum" type="number" min="0" value={priceMin} onChange={e=>setPriceMin(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
           </label>
           <label className="text-xs font-medium text-slate-600">Price Max
-            <input aria-label="Price maximum" type="number" min="0" value={priceMax} onChange={e=>setPriceMax(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" />
+            <input aria-label="Price maximum" type="number" min="0" value={priceMax} onChange={e=>setPriceMax(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
           </label>
         </div>
       </fieldset>
@@ -206,10 +206,10 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
           <legend className="text-xs font-medium text-slate-500 px-1">Property</legend>
           <div className="grid grid-cols-2 gap-2">
             <label className="text-xs font-medium text-slate-600">Bedrooms
-              <input aria-label="Bedrooms" type="number" min="0" value={bedrooms} onChange={e=>setBedrooms(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" />
+              <input aria-label="Bedrooms" type="number" min="0" value={bedrooms} onChange={e=>setBedrooms(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
             </label>
             <label className="text-xs font-medium text-slate-600">Roommates
-              <input aria-label="Roommates" type="number" min="0" value={roommates} onChange={e=>setRoommates(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" />
+              <input aria-label="Roommates" type="number" min="0" value={roommates} onChange={e=>setRoommates(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
             </label>
           </div>
         </fieldset>

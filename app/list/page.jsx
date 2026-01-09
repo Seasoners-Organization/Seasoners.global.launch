@@ -223,7 +223,7 @@ export default function List() {
 
             <div>
               <label htmlFor="title" className="sr-only">{t('listingTitle')}</label>
-              <input id="title" name="title" className="w-full border p-3 rounded-lg" placeholder={t('listingTitle')} required disabled={status === "unauthenticated" || loading} />
+              <input id="title" name="title" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder={t('listingTitle')} required disabled={status === "unauthenticated" || loading} />
             </div>
 
             <div>
@@ -375,7 +375,7 @@ export default function List() {
                 </div>
                 <div>
                   <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">Or enter custom city</label>
-                  <input id="city" name="city" className="w-full border p-3 rounded-lg" placeholder="e.g., Innsbruck, Sydney" disabled={status === "unauthenticated" || loading} />
+                  <input id="city" name="city" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder="e.g., Innsbruck, Sydney" disabled={status === "unauthenticated" || loading} />
                   <p className="text-xs text-gray-500 mt-1">Enter if your location isn't in the list above.</p>
                 </div>
               </div>
@@ -415,26 +415,26 @@ export default function List() {
 
                   <div>
                     <label htmlFor="wage" className="block text-sm font-medium text-gray-700 mb-1">Wage / Salary (optional)</label>
-                    <input id="wage" name="wage" type="text" className="w-full border p-2 rounded-lg" placeholder="e.g., €1,500/month or $20/hour" disabled={loading} />
+                    <input id="wage" name="wage" type="text" className="w-full border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder="e.g., €1,500/month or $20/hour" disabled={loading} />
                     <p className="text-xs text-gray-500 mt-1">Leave blank if not disclosing wage</p>
                   </div>
 
                   <div>
                     <label htmlFor="benefits" className="block text-sm font-medium text-gray-700 mb-1">Benefits / Perks</label>
-                    <textarea id="benefits" name="benefits" className="w-full border p-2 rounded-lg" rows="2" placeholder="e.g., Free accommodation, Meals included, Ski pass, Travel allowance" disabled={loading} />
+                    <textarea id="benefits" name="benefits" className="w-full border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="2" placeholder="e.g., Free accommodation, Meals included, Ski pass, Travel allowance" disabled={loading} />
                   </div>
                 </div>
               </>
             ) : (
               <div>
                 <label htmlFor="price" className="sr-only">{t('priceLabel')}</label>
-                <input id="price" name="price" type="number" step="0.01" className="w-full border p-3 rounded-lg" placeholder={t('pricePlaceholderShort')} disabled={status === "unauthenticated" || loading} />
+                <input id="price" name="price" type="number" step="0.01" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder={t('pricePlaceholderShort')} disabled={status === "unauthenticated" || loading} />
               </div>
             )}
 
             <div>
               <label htmlFor="details" className="sr-only">{t('descriptionLabel')}</label>
-              <textarea id="details" name="details" className="w-full border p-3 rounded-lg" rows="4" placeholder={listingType === "Seasonal Job" ? "Job description, responsibilities, required skills, schedule, etc." : t('detailsPlaceholderShort')} required disabled={status === "unauthenticated" || loading} />
+              <textarea id="details" name="details" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="4" placeholder={listingType === "Seasonal Job" ? "Job description, responsibilities, required skills, schedule, etc." : t('detailsPlaceholderShort')} required disabled={status === "unauthenticated" || loading} />
             </div>
 
 {listingType !== "Seasonal Job" && (
@@ -510,14 +510,14 @@ export default function List() {
                 )}
 
                 <p className="text-xs text-gray-500 mt-2">
-                  💡 First photo will be the cover image. Add up to 10 photos to showcase your listing.
+                  First photo will be the cover image. Add up to 10 photos to showcase your listing.
                 </p>
               </div>
             )}
 
             <button 
               type="submit"
-              className="w-full bg-amber-700 hover:brightness-110 text-white font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-amber-700 hover:brightness-110 text-white font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-700"
               disabled={status === "unauthenticated" || loading}
             >
               {loading ? t('submittingGeneric') : t('submitGeneric')}

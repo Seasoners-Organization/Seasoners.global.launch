@@ -485,7 +485,7 @@ export default function MessagesPage() {
                   <button
                     type="submit"
                     disabled={sending || !input.trim()}
-                    className={`px-5 h-16 rounded-xl text-sm font-semibold transition-colors ${sending || !input.trim() ? 'bg-slate-200 text-slate-500' : 'bg-sky-600 text-white hover:bg-sky-700'}`}
+                    className={`px-5 h-16 rounded-xl text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 ${sending || !input.trim() ? 'bg-slate-200 text-slate-500 cursor-not-allowed' : 'bg-sky-600 text-white hover:bg-sky-700'}`}
                   >
                     {sending ? t('sending') : t('sendMessage')}
                   </button>

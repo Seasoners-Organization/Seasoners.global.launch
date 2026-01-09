@@ -79,7 +79,7 @@ export default function ZonePreview({ zones }) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
               whileHover={{ y: -4, shadow: 'lg' }}
-              className="group rounded-2xl border bg-white/80 backdrop-blur overflow-hidden hover:shadow-lg transition-all"
+              className="group rounded-2xl border bg-white/80 backdrop-blur overflow-hidden shadow-sm hover:shadow-lg transition-all"
             >
               {/* Image Container */}
               <div className="h-36 w-full relative bg-slate-100 overflow-hidden">

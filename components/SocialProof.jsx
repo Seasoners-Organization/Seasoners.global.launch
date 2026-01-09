@@ -90,35 +90,35 @@ export default function SocialProof() {
     >
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-4">
-          Join a Growing Community
+          Trusted by Global Seasonal Workers & Hosts
         </h2>
         <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-          Thousands of seasonal workers and hosts are already connecting on Seasoners
+          Verified members across 50+ countries creating meaningful work and living experiences through fair agreements and transparent communication.
         </p>
       </div>
 
       <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl border border-sky-200 p-8">
         <StatCard
-          icon="👥"
-          label="Active Users"
+          icon="✓"
+          label="Verified Members"
           value={stats.users}
           suffix="+"
         />
         <StatCard
-          icon="🏡"
-          label="Active Listings"
+          icon="📋"
+          label="Verified Listings"
           value={stats.listings}
           suffix="+"
         />
         <StatCard
-          icon="🤝"
-          label="Connections Made"
+          icon="✓"
+          label="Successful Matches"
           value={stats.connections}
           suffix="+"
         />
         <StatCard
-          icon="🌍"
-          label="Countries"
+          icon="🌐"
+          label="Countries Active"
           value={stats.countries}
           suffix=""
         />

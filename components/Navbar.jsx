@@ -98,7 +98,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200">
       <div className="max-w-6xl mx-auto px-6 py-3 flex items-center gap-6">
         {/* Logo - Far left */}
-        <a href="/" className="flex items-center gap-2">
+        <a href="/" className="flex items-center gap-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">
           <Image
             src="/seasoner-mountain-logo.png"
             alt="Seasoners Logo"
@@ -115,7 +115,7 @@ export default function Navbar() {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500"
             >
               {userDetails?.profilePicture ? (
                 <img 
@@ -126,16 +126,6 @@ export default function Navbar() {
               ) : (
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-sky-600 to-sky-800 flex items-center justify-center text-white font-semibold text-sm">
                   {session.user.name?.charAt(0).toUpperCase() || 'U'}
-                </div>
-              )}
-              {userDetails && (
-                <div className="flex items-center gap-1 ml-1">
-                  {userDetails.emailVerified && (
-                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-green-100 text-green-700">{t('emailVerifiedBadge')}</span>
-                  )}
-                  {userDetails.phoneVerified && (
-                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-green-100 text-green-700">{t('phoneVerifiedBadge')}</span>
-                  )}
                 </div>
               )}
               <svg
@@ -161,7 +151,7 @@ export default function Navbar() {
                 <div className="py-1">
                   <a
                     href="/profile"
-                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
                     onClick={() => setIsProfileOpen(false)}
                   >
                     <span>👤</span>
@@ -173,7 +163,7 @@ export default function Navbar() {
 
                   <a
                     href="/messages"
-                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
                     onClick={() => setIsProfileOpen(false)}
                   >
                     <span>💬</span>
@@ -187,7 +177,7 @@ export default function Navbar() {
 
                   <a
                     href="/agreements"
-                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
                     onClick={() => setIsProfileOpen(false)}
                   >
                     <span>📄</span>
@@ -196,7 +186,7 @@ export default function Navbar() {
 
                   <a
                     href="/subscribe"
-                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
                     onClick={() => setIsProfileOpen(false)}
                   >
                     {userDetails && (
@@ -242,13 +232,13 @@ export default function Navbar() {
             </a>
           )}
           <a href="/stays" className="hover:text-sky-700">{t('stays')}</a>
-          <a href="/flatshares" className="hover:text-sky-700">{t('flatshares') || 'Flatshares'}</a>
-          <a href="/jobs" className="hover:text-sky-700">{t('jobs')}</a>
+          <a href="/flatshares" className="hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded px-2 py-1">{t('flatshares') || 'Flatshares'}</a>
+          <a href="/jobs" className="hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded px-2 py-1">{t('jobs')}</a>
           {/* Destinations dropdown */}
           <div className="relative" ref={destinationsRef}>
             <button 
               onClick={() => setIsDestinationsOpen(!isDestinationsOpen)}
-              className="hover:text-sky-700 flex items-center gap-2"
+              className="hover:text-sky-700 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded px-2 py-1"
             >
               {t('destinations')}
               <svg className={`w-4 h-4 text-slate-600 transition-transform ${isDestinationsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,21 +249,21 @@ export default function Navbar() {
               <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 py-3 z-50">
                 <div className="px-4 pb-2 text-xs text-slate-500">❄️ {t('seasonWinter')}</div>
                 {ZONES.filter(z => z.season === 'winter').map(z => (
-                  <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">{z.title}</a>
+                  <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100">{z.title}</a>
                 ))}
                 <div className="px-4 pt-2 text-xs text-slate-500">☀️ {t('seasonSummer')}</div>
                 {ZONES.filter(z => z.season === 'summer').map(z => (
-                  <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">{z.title}</a>
+                  <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100">{z.title}</a>
                 ))}
               </div>
             )}
           </div>
-          <a href="/agreement" className="hover:text-sky-700">{t('agreement')}</a>
+          <a href="/agreement" className="hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded px-2 py-1">{t('agreement')}</a>
           {/* Support Dropdown (click-controlled for better usability) */}
           <div className="relative" ref={supportRef}>
             <button
               onClick={() => setIsSupportOpen(prev => !prev)}
-              className="hover:text-sky-700 flex items-center gap-2 focus:outline-none"
+              className="hover:text-sky-700 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded px-2 py-1"
             >
               {t('support') || 'Support'}
               <svg className={`w-4 h-4 text-slate-600 transition-transform ${isSupportOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -282,13 +272,13 @@ export default function Navbar() {
             </button>
             {isSupportOpen && (
               <div className="absolute left-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50">
-                <a href="/faq" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setIsSupportOpen(false)}>{t('faq')}</a>
-                <a href="/help" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setIsSupportOpen(false)}>{t('help')}</a>
-                <a href="/community" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setIsSupportOpen(false)}>💬 {t('community')}</a>
+                <a href="/faq" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100" onClick={() => setIsSupportOpen(false)}>{t('faq')}</a>
+                <a href="/help" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100" onClick={() => setIsSupportOpen(false)}>{t('help')}</a>
+                <a href="/community" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100" onClick={() => setIsSupportOpen(false)}>💬 {t('community')}</a>
               </div>
             )}
           </div>
-          <a href="/about" className="hover:text-sky-700">{t('about')}</a>
+          <a href="/about" className="hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded px-2 py-1">{t('about')}</a>
         </nav>
 
         {/* Right side - Auth or Language (desktop) */}
@@ -297,13 +287,13 @@ export default function Navbar() {
             <>
               <button
                 onClick={() => signIn()}
-                className="px-3 py-1.5 rounded-md text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                className="px-3 py-1.5 rounded-md text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition focus:outline-none focus:ring-2 focus:ring-sky-500"
               >
                 {t('signIn')}
               </button>
               <a
                 href="/auth/register"
-                className="px-3 py-1.5 rounded-md text-sm font-medium bg-sky-600 hover:bg-sky-700 text-white transition"
+                className="px-3 py-1.5 rounded-md text-sm font-medium bg-sky-600 hover:bg-sky-700 text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
               >
                 {t('register')}
               </a>

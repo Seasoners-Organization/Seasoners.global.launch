@@ -179,7 +179,7 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
             />
             <label
               htmlFor="profile-picture-upload"
-              className="inline-block px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium cursor-pointer transition disabled:opacity-50"
+              className="inline-block px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
             >
               {uploadingPicture ? 'Uploading...' : 'Upload New Picture'}
             </label>
@@ -201,7 +201,7 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg p-3"
+                  className="w-full border border-slate-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed"
                   autoComplete="email"
                   disabled
                 />
@@ -217,7 +217,7 @@ export default function ProfileEditor({ user, onSave, phoneVerificationRef, bioS
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg p-3"
+                  className="w-full border border-slate-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
                   autoComplete="email"
                 />
                 <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">

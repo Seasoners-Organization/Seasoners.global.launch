@@ -190,7 +190,9 @@ export default function AgreementSignModal({ agreement, isOpen, onClose, onSign,
                   animate={{ opacity: 1, y: 0 }}
                   className="flex items-start space-x-2 p-3 bg-red-50 border border-red-200 rounded-lg"
                 >
-                  <span className="text-red-600 flex-shrink-0 mt-0.5">⚠️</span>
+                  <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4v2m0 0v2m0-4v-2m0 0v-2" />
+                  </svg>
                   <p className="text-sm text-red-700">{error}</p>
                 </motion.div>
               )}

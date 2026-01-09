@@ -80,7 +80,7 @@ export default function AgreementsPage() {
       ACTIVE: { color: 'bg-sky-100 text-sky-700', icon: '✓', label: 'Active' },
       COMPLETED: { color: 'bg-emerald-100 text-emerald-700', icon: '✓', label: 'Completed' },
       CANCELLED: { color: 'bg-gray-100 text-gray-700', icon: '✕', label: 'Cancelled' },
-      DISPUTED: { color: 'bg-red-100 text-red-700', icon: '⚠️', label: 'Disputed' },
+      DISPUTED: { color: 'bg-red-100 text-red-700', icon: '!', label: 'Disputed' },
     };
 
     const badge = badges[status] || badges.DRAFT;
@@ -239,7 +239,9 @@ export default function AgreementsPage() {
 
                       {needsMySignature && (
                         <div className="flex items-center space-x-2 mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                          <span className="flex-shrink-0">⚠️</span>
+                          <svg className="w-5 h-5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4v2m0 0v2m0-4v-2m0 0v-2" />
+                          </svg>
                           <p className="text-sm text-amber-700 font-medium">
                             Action required: Your signature is needed
                           </p>

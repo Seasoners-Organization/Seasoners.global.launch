@@ -80,7 +80,7 @@ export default function SubscriptionGate({
           <button
             onClick={handleUpgrade}
             disabled={loading}
-            className="w-full bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
           >
             {loading ? "Processing..." : `Upgrade for €${plan.price}/month`}
           </button>

@@ -7,10 +7,10 @@ const SubscriptionPlan = ({ name, price, period, features, highlighted, cta }) =
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
-    className={`rounded-2xl border-2 p-8 relative ${
+    className={`rounded-2xl border-2 p-8 relative transition-shadow ${
       highlighted
         ? 'bg-gradient-to-br from-sky-50 to-blue-50 border-sky-400 shadow-lg'
-        : 'bg-white border-slate-200'
+        : 'bg-white border-slate-200 shadow-sm hover:shadow-md'
     }`}
   >
     {highlighted && (
@@ -56,13 +56,13 @@ export default function SubscriptionTiers() {
       name: 'Free',
       price: 0,
       period: 'forever',
-      cta: 'Get Started',
+      cta: 'Start Exploring',
       features: [
-        'Browse all listings',
-        'View verified user profiles',
-        'View trust scores',
-        'Save favorites (limited)',
-        'Platform updates',
+        'Browse verified listings',
+        'View trusted member profiles',
+        'Transparent trust scores',
+        'Save up to 5 favorites',
+        'Access to community guidelines',
       ],
     },
     {
@@ -70,29 +70,29 @@ export default function SubscriptionTiers() {
       price: 7,
       period: 'month',
       highlighted: true,
-      cta: 'Choose Searcher',
+      cta: 'Unlock Searcher Access',
       features: [
         'Everything in Free, plus:',
-        'Contact hosts & employers',
+        'Message hosts & employers',
         'Unlimited messaging',
         'Save unlimited favorites',
         'Priority support',
-        'Advanced filters',
+        'Advanced search filters',
       ],
     },
     {
       name: 'Lister',
       price: 12,
       period: 'month',
-      cta: 'Choose Lister',
+      cta: 'Unlock Lister Access',
       features: [
         'Everything in Searcher, plus:',
         'Create unlimited listings',
-        'Featured badge on listings',
-        'Request agreements',
-        'Messaging & chat',
-        'Response analytics',
-        'Early access to features',
+        'Featured listing badge',
+        'Request secure agreements',
+        'Applicant messaging',
+        'Performance analytics',
+        'Early access to new tools',
       ],
     },
   ];

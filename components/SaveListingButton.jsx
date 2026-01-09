@@ -11,12 +11,12 @@ export default function SaveListingButton({
   const { data: session, status } = useSession();
   const [isSaved, setIsSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showToast, setShowToast] = useState('');
+  const [showToast, setShowToast] = useState({ message: '', type: 'info' });
 
   const handleToggleSave = async () => {
     // Check if user is signed in
     if (status === 'unauthenticated') {
-      setShowToast('Sign in to save listings');
+      setShowToast({ message: 'Sign in to save listings', type: 'info' });
       return;
     }
 
@@ -30,17 +30,20 @@ export default function SaveListingButton({
       if (!response.ok) {
         const data = await response.json();
         if (response.status === 403) {
-          setShowToast('Upgrade to Searcher to save listings');
+          setShowToast({ message: 'Upgrade to Searcher to save listings', type: 'error' });
         } else {
-          setShowToast(data.error || 'Failed to update');
+          setShowToast({ message: data.error || 'Failed to update', type: 'error' });
         }
         return;
       }
 
       setIsSaved(!isSaved);
-      setShowToast(isSaved ? 'Removed from favorites' : 'Added to favorites');
+      setShowToast({ 
+        message: isSaved ? 'Removed from favorites' : 'Added to favorites',
+        type: 'success'
+      });
     } catch (error) {
-      setShowToast('Something went wrong');
+      setShowToast({ message: 'Something went wrong', type: 'error' });
       console.error('Error:', error);
     } finally {
       setIsLoading(false);
@@ -80,19 +83,40 @@ export default function SaveListingButton({
       </motion.button>
 
       {/* Toast Notification */}
-      {showToast && (
+      {showToast.message && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-4 right-4 bg-slate-900 text-white px-4 py-3 rounded-lg shadow-lg text-sm z-50"
+          className={`fixed bottom-4 right-4 flex items-center gap-3 px-5 py-3 rounded-lg shadow-lg text-sm z-50 font-medium ${
+            showToast.type === 'success'
+              ? 'bg-emerald-600 text-white'
+              : showToast.type === 'error'
+              ? 'bg-red-600 text-white'
+              : 'bg-sky-600 text-white'
+          }`}
           onAnimationComplete={() => {
-            if (showToast) {
-              setTimeout(() => setShowToast(''), 3000);
+            if (showToast.message) {
+              setTimeout(() => setShowToast({ message: '', type: 'info' }), 3000);
             }
           }}
         >
-          {showToast}
+          {showToast.type === 'success' && (
+            <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+            </svg>
+          )}
+          {showToast.type === 'error' && (
+            <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
+          )}
+          {showToast.type === 'info' && (
+            <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h2V7zm0 8h-2v2h2v-2z" />
+            </svg>
+          )}
+          <span>{showToast.message}</span>
         </motion.div>
       )}
     </>

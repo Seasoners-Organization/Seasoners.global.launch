@@ -353,7 +353,9 @@ export default function Documentation() {
               {/* Bottom CTA */}
               <div className="mt-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
                 <div className="flex items-start gap-4">
-                  <div className="text-3xl">💡</div>
+                  <svg className="w-8 h-8 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                   <div>
                     <h3 className="font-semibold text-slate-800 mb-2">
                       Can't find what you're looking for?
