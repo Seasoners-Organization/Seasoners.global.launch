@@ -11,6 +11,7 @@ import ProfileEditor from "../../components/ProfileEditor";
 import ProfileCompletenessRoadmap from "../../components/ProfileCompletenessRoadmap";
 import SmartProfileTips from "../../components/SmartProfileTips";
 import InlineVerificationStatus from "../../components/InlineVerificationStatus";
+import AnalyticsDashboard from "../../components/AnalyticsDashboard";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 const PhoneVerification = dynamic(() => import("../../components/PhoneVerification"), { ssr: false });
@@ -405,12 +406,12 @@ export default function ProfilePage() {
 
             {/* Tabs */}
             <div className="border-b border-slate-200 mb-6">
-              <div className="flex gap-6">
-                {["overview", "profile", "listings", "subscription", "settings"].map((tab) => (
+              <div className="flex gap-6 overflow-x-auto">
+                {["overview", "profile", "listings", "subscription", "analytics", "settings"].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`pb-3 px-1 font-medium transition-colors relative ${
+                    className={`pb-3 px-1 font-medium transition-colors relative whitespace-nowrap ${
                       activeTab === tab
                         ? "text-sky-700"
                         : "text-slate-600 hover:text-slate-900"
@@ -420,6 +421,7 @@ export default function ProfilePage() {
                     {tab === 'profile' && 'Edit Profile'}
                     {tab === 'listings' && t('myListings')}
                     {tab === 'subscription' && t('subscription')}
+                    {tab === 'analytics' && 'Analytics'}
                     {tab === 'settings' && t('settings')}
                     {activeTab === tab && (
                       <motion.div
@@ -784,6 +786,12 @@ export default function ProfilePage() {
                     )}
                   </div>
                 </div>
+              </div>
+            )}
+
+            {activeTab === "analytics" && (
+              <div>
+                <AnalyticsDashboard user={user} />
               </div>
             )}
 

@@ -7,6 +7,7 @@ import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import AnimatedPage from "../../../components/AnimatedPage";
 import SubscriptionGate from "../../../components/SubscriptionGate";
+import SaveListingButton from "../../../components/SaveListingButton";
 import { motion } from "framer-motion";
 import { canContactSellers } from "../../../utils/subscription";
 import { REGION_ENUM_TO_DISPLAY } from "../../../utils/regions";
@@ -381,12 +382,20 @@ export default function ListingDetailPage() {
                       Edit Listing
                     </button>
                   ) : (
-                    <button
-                      onClick={handleContact}
-                      className="w-full py-3 px-6 bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold rounded-xl transition-all"
-                    >
-                      Contact {listing.type === 'JOB' ? 'Employer' : 'Host'}
-                    </button>
+                    <div className="space-y-3">
+                      <button
+                        onClick={handleContact}
+                        className="w-full py-3 px-6 bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold rounded-xl transition-all"
+                      >
+                        Contact {listing.type === 'JOB' ? 'Employer' : 'Host'}
+                      </button>
+                      <div className="flex gap-2">
+                        <SaveListingButton
+                          listingId={listing.id}
+                          className="flex-1"
+                        />
+                      </div>
+                    </div>
                   )}
 
                   {!session && (

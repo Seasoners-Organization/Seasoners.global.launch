@@ -195,6 +195,7 @@ model User {
   waitlistSignups   WaitlistSignup[] @relation("UserWaitlistSignups")
   sentMessages      Message[] @relation("SentMessages")
   receivedMessages  Message[] @relation("ReceivedMessages")
+  savedListings     SavedListing[] @relation("SavedListings")
 }
 
 model Listing {
@@ -227,6 +228,8 @@ model Listing {
   reviews     Review[]
   agreements  Agreement[]
   messages    Message[]
+  savedBy     SavedListing[] @relation("SavedBy")
+  analytics   ListingAnalytics[] @relation("ListingAnalytics")
 }
 
 model Agreement {
@@ -315,6 +318,46 @@ model WaitlistSignup {
   notified        Boolean  @default(false) // Launch email sent
   userId          String?  // Optional link if the email corresponds to a User
   user            User?    @relation("UserWaitlistSignups", fields: [userId], references: [id])
+}
+
+model SavedListing {
+  id          String   @id @default(cuid())
+  userId      String
+  listingId   String
+  createdAt   DateTime @default(now())
+
+  user        User     @relation("SavedListings", fields: [userId], references: [id], onDelete: Cascade)
+  listing     Listing  @relation("SavedBy", fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, listingId])
+  @@index([userId])
+  @@index([listingId])
+  @@index([createdAt])
+}
+
+model ListingAnalytics {
+  id              String   @id @default(cuid())
+  listingId       String
+  date            DateTime @default(now())
+  
+  // View metrics
+  pageViews       Int      @default(0)
+  uniqueViews     Int      @default(0)
+  
+  // Engagement metrics
+  messagesSent    Int      @default(0)
+  applicationsReceived Int @default(0)
+  savedCount      Int      @default(0)
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  listing         Listing  @relation("ListingAnalytics", fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([listingId, date])
+  @@index([listingId])
+  @@index([date])
 }
 
 model Message {
