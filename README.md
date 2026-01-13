@@ -9,28 +9,8 @@ This is the official **Seasoners v1** test build — a Next.js + Tailwind site w
 npm install
 ```
 
-2. Set up your environment variables in `.env`:
-```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/seasoners"
-
-# Authentication
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-nextauth-secret" # generate with: openssl rand -base64 32
-
-# Google OAuth
-GOOGLE_CLIENT_ID="your-google-client-id"
-GOOGLE_CLIENT_SECRET="your-google-client-secret"
-
-# Email (Resend)
-RESEND_API_KEY="your-resend-api-key"
 ```
 
-3. Initialize the database:
-```bash
-npx prisma generate
-npx prisma migrate dev
-```
 
 4. Run the development server:
 ```bash
