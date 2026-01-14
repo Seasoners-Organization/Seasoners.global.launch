@@ -1,46 +1,73 @@
-# Seasoners Starter 🌍
+# Seasoners Starter
 
-This is the official **Seasoners v1** test build — a Next.js + Tailwind site with Magic Link & Google OAuth authentication, Prisma ORM, and more.
+Seasoners is a Next.js app for trusted seasonal work and stays. We verify people, provide dual-language agreements, and let hosts, employers, and talent meet in one workflow (stays + jobs). 90-day free trial, no card required.
 
-### 🚀 Quick Start
+## Stack
+- Next.js (App Router), React 18
+- TailwindCSS
+- Prisma + PostgreSQL
+- NextAuth (email magic link + Google)
+- Framer Motion, Lucide icons
 
-1. Install dependencies:
+## Quick Start
 ```bash
 npm install
-```
-
-2. Set up your environment variables in `.env`:
-```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/seasoners"
-
-# Authentication
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-nextauth-secret" # generate with: openssl rand -base64 32
-
-# Google OAuth
-GOOGLE_CLIENT_ID="your-google-client-id"
-GOOGLE_CLIENT_SECRET="your-google-client-secret"
-
-# Email (Resend)
-RESEND_API_KEY="your-resend-api-key"
-```
-
-3. Initialize the database:
-```bash
 npx prisma generate
-npx prisma migrate dev
-```
-
-4. Run the development server:
-```bash
 npm run dev
 ```
 
-### 🔐 Authentication
+### Environment
+Create `.env.local` with at least:
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/seasoners"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-nextauth-secret" # openssl rand -base64 32
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+RESEND_API_KEY="your-resend-api-key"
+```
 
-The application uses NextAuth.js for authentication with two providers:
-- Email Magic Links (passwordless)
-- Google OAuth
+### Database
+```bash
+npx prisma migrate dev   # local
+npx prisma db push       # sync schema without data loss (when appropriate)
+```
 
-Users can sign in using either method and their session will be persisted across visits.
+### Run / Build
+```bash
+npm run dev
+npm run build
+npm start
+```
+
+### Tests
+```bash
+npm test          # Jest unit tests
+npm run test:e2e  # Playwright (if configured)
+```
+
+### Production Smoke Check
+CI workflow runs a smoke script against https://www.seasoners.eu:
+- .github/workflows/prod-smoke-check.yml
+- scripts/smoke-check.sh
+
+Run locally:
+```bash
+BASE_URL=https://www.seasoners.eu ./scripts/smoke-check.sh
+```
+
+### Notable Features
+- Dual-language, plain-language agreement flow for stays and jobs
+- Verification signals (email, phone, ID) and trust scores
+- Combined marketplace for seasonal stays and jobs with messaging
+- Season-aware destinations (/destinations/[season])
+- 90-day free trial flow and subscription tiers
+
+### Deployment
+- Vercel (see vercel.json for headers, rewrites, and cron config)
+- Cron routes: /api/cron/trial-reminders, /api/cron/trial-ending
+
+### Troubleshooting
+- Ensure `prisma generate` after dependency installs
+- Check env vars for auth and email providers
+- If tests complain about missing DOM libs, install @testing-library/dom (already added)
