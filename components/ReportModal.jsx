@@ -52,7 +52,7 @@ export default function ReportModal({ isOpen, onClose, listingId, listingTitle }
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -64,7 +64,7 @@ export default function ReportModal({ isOpen, onClose, listingId, listingTitle }
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 z-10"
+            className="relative bg-white rounded-2xl shadow-2xl max-w-md sm:max-w-lg w-full p-5 sm:p-6 z-10 max-h-[85vh] overflow-y-auto"
           >
             {success ? (
               <div className="text-center py-8">

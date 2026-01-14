@@ -71,7 +71,7 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={(e) => e.target === e.currentTarget && handleRemindLater()}
           >
-            <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden relative">
+            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg md:max-w-2xl overflow-hidden relative max-h-[85vh] flex flex-col">
               {/* Close Button */}
               <button
                 onClick={handleClose}
@@ -82,7 +82,7 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
               </button>
 
               {/* Header with Gradient */}
-              <div className="bg-gradient-to-br from-sky-600 via-blue-600 to-sky-700 text-white p-8 pb-12 relative overflow-hidden">
+              <div className="bg-gradient-to-br from-sky-600 via-blue-600 to-sky-700 text-white p-6 md:p-8 pb-10 md:pb-12 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32" />
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24" />
                 
@@ -93,27 +93,27 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                     </span>
                   </div>
                   
-                  <h2 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+                  <h2 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
                     Experience Premium Free
                   </h2>
                   
-                  <p className="text-xl text-sky-100 font-medium">
+                  <p className="text-lg md:text-xl text-sky-100 font-medium">
                     Unlock full access for 90 days at no cost — no credit card required for trial
                   </p>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-8 -mt-6 relative">
+              <div className="p-5 md:p-8 -mt-6 relative overflow-y-auto">
                 {/* Value Proposition Cards */}
-                <div className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl border-2 border-sky-200 p-6 mb-6">
-                  <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl border-2 border-sky-200 p-4 md:p-6 mb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <div className="text-4xl font-bold text-sky-600 mb-2">
+                      <div className="text-3xl md:text-4xl font-bold text-sky-600 mb-2">
                         €0
-                        <span className="text-lg text-slate-500 line-through ml-2">€21</span>
+                        <span className="text-base md:text-lg text-slate-500 line-through ml-2">€21</span>
                       </div>
-                      <p className="text-sm text-slate-600 font-semibold mb-3">
+                      <p className="text-sm md:text-base text-slate-600 font-semibold mb-3">
                         Searcher Plan (save €21)
                       </p>
                       <ul className="space-y-2 text-sm text-slate-700">
@@ -133,11 +133,11 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                     </div>
 
                     <div>
-                      <div className="text-4xl font-bold text-sky-600 mb-2">
+                      <div className="text-3xl md:text-4xl font-bold text-sky-600 mb-2">
                         €0
-                        <span className="text-lg text-slate-500 line-through ml-2">€36</span>
+                        <span className="text-base md:text-lg text-slate-500 line-through ml-2">€36</span>
                       </div>
-                      <p className="text-sm text-slate-600 font-semibold mb-3">
+                      <p className="text-sm md:text-base text-slate-600 font-semibold mb-3">
                         Lister Plan (save €36)
                       </p>
                       <ul className="space-y-2 text-sm text-slate-700">
@@ -159,7 +159,7 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                 </div>
 
                 {/* Urgency Message */}
-                <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 mb-6">
+                <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 md:p-5 mb-6">
                   <div className="flex items-start gap-3">
                     <span className="text-2xl">⏰</span>
                     <div>
@@ -174,7 +174,7 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                 </div>
 
                 {/* Trust Indicators */}
-                <div className="flex flex-wrap gap-4 justify-center mb-6 text-xs text-slate-600">
+                <div className="flex flex-wrap gap-3 justify-center mb-6 text-xs md:text-sm text-slate-600">
                   <div className="flex items-center gap-1.5">
                     <span className="text-emerald-500 font-bold">✓</span>
                     <span>No charge for 90 days</span>
@@ -193,14 +193,14 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={handleSignUp}
-                    className="flex-1 bg-gradient-to-r from-sky-600 to-blue-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-sky-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    className="flex-1 bg-gradient-to-r from-sky-600 to-blue-600 text-white py-3.5 px-6 rounded-xl font-bold text-base md:text-lg hover:from-sky-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
                     Claim Your 3 Months Free →
                   </button>
                   
                   <button
                     onClick={handleRemindLater}
-                    className="sm:w-auto px-6 py-4 text-slate-600 hover:text-slate-900 font-semibold transition-colors"
+                    className="sm:w-auto px-6 py-3.5 text-slate-600 hover:text-slate-900 font-semibold transition-colors"
                   >
                     Remind me later
                   </button>

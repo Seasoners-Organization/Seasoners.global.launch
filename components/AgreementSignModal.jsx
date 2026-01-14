@@ -80,17 +80,17 @@ export default function AgreementSignModal({ agreement, isOpen, onClose, onSign,
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden"
+            className="bg-white rounded-xl shadow-2xl w-full max-w-full sm:max-w-3xl max-h-[90vh] overflow-hidden mx-3 sm:mx-0"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between p-5 sm:p-6 border-b border-gray-200">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Smart Stay Agreement</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Smart Stay Agreement</h2>
                 <p className="text-sm text-gray-600 mt-1">{listing?.title}</p>
               </div>
               <button
@@ -102,9 +102,9 @@ export default function AgreementSignModal({ agreement, isOpen, onClose, onSign,
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto max-h-[calc(90vh-280px)] p-6 space-y-6">
+            <div className="overflow-y-auto max-h-[calc(90vh-240px)] p-5 sm:p-6 space-y-6">
               {/* Agreement Details */}
-              <div className="grid grid-cols-2 gap-4 p-4 bg-sky-50 rounded-lg">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-sky-50 rounded-lg">
                 <div className="flex items-start space-x-3">
                   <span className="text-sky-600 mt-0.5">👥</span>
                   <div>
@@ -216,7 +216,7 @@ export default function AgreementSignModal({ agreement, isOpen, onClose, onSign,
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 sm:p-6 border-t border-gray-200 bg-gray-50">
               <div className="flex items-center space-x-3">
                 <button
                   onClick={onClose}
@@ -228,7 +228,7 @@ export default function AgreementSignModal({ agreement, isOpen, onClose, onSign,
                 {status === 'FULLY_SIGNED' && (
                   <button
                     onClick={() => downloadAgreementPDF(agreement)}
-                    className="px-6 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors flex items-center space-x-2"
+                    className="px-5 sm:px-6 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors flex items-center space-x-2"
                   >
                     <span>📄</span>
                     <span>Download PDF</span>
@@ -240,7 +240,7 @@ export default function AgreementSignModal({ agreement, isOpen, onClose, onSign,
                 <button
                   onClick={handleSign}
                   disabled={isSigning || !accepted || !agreement?.id}
-                  className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+                  className="px-5 sm:px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
                 >
                   {isSigning ? (
                     <>
