@@ -23,7 +23,7 @@ export default function FAQ() {
         },
         {
           q: "Is Seasoners free to use?",
-          a: "Browsing and basic features are free. We offer premium subscriptions with a 90-day free trial (3 full months!). After the trial, choose monthly or annual plans for unlimited listings, verification badges, and priority support."
+          a: "Browsing and basic features are free. Premium subscriptions include a 90-day free trial (card required to start, no charges until day 91). After the trial, choose monthly or annual plans for unlimited listings, verification badges, and priority support."
         },
         {
           q: "What countries does Seasoners operate in?",
@@ -89,7 +89,7 @@ export default function FAQ() {
         },
         {
           q: "What is the Early Bird 3-Month Free Trial?",
-          a: "Early Bird users get 90 days (3 months) of completely free access to premium features. No payment required during the trial. You'll receive email reminders at 60, 30, 7, and 1 day before billing begins. Cancel anytime before day 90 with no charges."
+          a: "Early Bird users get 90 days (3 months) of completely free access to premium features. A card is required to start, but you will not be charged until day 91. You'll receive email reminders at 60, 30, 7, and 1 day before billing begins. Cancel anytime before day 90 with no charges."
         },
         {
           q: "When will I be charged after the free trial?",

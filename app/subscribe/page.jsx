@@ -72,7 +72,7 @@ function SubscribeContent() {
             {isEarlyBird && (
               <div className="bg-gradient-to-r from-amber-400 to-orange-400 text-white py-3 px-6 rounded-xl text-center mb-6 max-w-3xl mx-auto">
                 <p className="font-bold text-lg">
-                  Early Bird Special: 3 Months FREE! No payment required today.
+                  Early Bird Special: 3 Months FREE! Card required; no charges today.
                 </p>
               </div>
             )}
@@ -178,8 +178,8 @@ function SubscribeContent() {
                   </button>
                   <div className="mt-2 text-xs text-gray-500 text-center">
                     {isEarlyBird 
-                      ? "No payment required for 3 months. Cancel anytime before trial ends." 
-                      : "No charge today. You will be notified before the first payment when paid subscriptions begin."}
+                      ? "Card required to start; no charges for 3 months. Cancel anytime before trial ends." 
+                      : "Card required to start; no charges until day 91. We will notify you before the first payment."}
                     {" "}<a href="/subscribe/terms" className="text-sky-600 underline">Subscription Terms</a>
                   </div>
 

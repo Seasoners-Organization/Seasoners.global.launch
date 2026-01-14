@@ -52,8 +52,26 @@ export default function HomePage() {
       body: "Hosts, employers, and talent meet in the same workflow with messaging and trust scores included.",
     },
     {
-      title: "90-day free trial — no card",
-      body: "Try the full platform before you pay. Keep control of your data and your decisions.",
+      title: "90-day free trial (card required)",
+      body: "Add a card to start, pay only after day 90. Keep control of your data and your decisions.",
+    },
+  ];
+
+  const howItWorks = [
+    {
+      title: "Verify and set your profile",
+      body: "Email, phone, and ID checks build trust. Pick your role (searcher, lister, employer).",
+      action: { label: "Finish verification", href: "/profile" },
+    },
+    {
+      title: "List or apply with built-in agreements",
+      body: "Create stays or jobs, or apply to existing ones. Start from a dual-language, plain agreement template.",
+      action: { label: "See the agreement", href: "/agreement" },
+    },
+    {
+      title: "Connect, sign, and go",
+      body: "Message, agree on terms, sign, and get working or move in. 90-day free trial with card on file; billing starts day 91.",
+      action: { label: "Start 90-day trial", href: "/subscribe" },
     },
   ];
   return (
@@ -92,6 +110,43 @@ export default function HomePage() {
         </motion.p>
       </section>
 
+      {/* How it works */}
+      <section className="max-w-6xl mx-auto px-6 pb-12">
+        <div className="rounded-3xl bg-white/80 backdrop-blur border shadow-sm p-6 md:p-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div>
+              <p className="text-sm uppercase font-semibold text-sky-700 tracking-wide">How it works</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mt-1">From sign-up to signed agreement</h2>
+            </div>
+            <a
+              href="/subscribe"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-sky-600 text-white font-semibold hover:bg-sky-700 transition"
+            >
+              Start 90-day trial →
+            </a>
+          </div>
+          <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+            {howItWorks.map((item, idx) => (
+              <div key={item.title} className="p-4 md:p-5 rounded-2xl border bg-slate-50/60 h-full flex flex-col">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-lg font-semibold text-sky-900">{item.title}</h3>
+                  <span className="text-sm font-semibold text-sky-700">{idx + 1}</span>
+                </div>
+                <p className="text-slate-700 text-sm leading-relaxed flex-1">{item.body}</p>
+                {item.action && (
+                  <a
+                    href={item.action.href}
+                    className="mt-4 inline-flex items-center text-sm font-semibold text-sky-700 hover:text-sky-900"
+                  >
+                    {item.action.label} →
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Why we're different */}
       <section className="max-w-6xl mx-auto px-6 pb-12">
         <div className="rounded-3xl bg-white/80 backdrop-blur border shadow-sm p-6 md:p-8">
@@ -104,7 +159,7 @@ export default function HomePage() {
               href="/subscribe"
               className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-sky-600 text-white font-semibold hover:bg-sky-700 transition"
             >
-              Start free for 90 days →
+              Start 90-day trial →
             </a>
           </div>
           <div className="grid sm:grid-cols-2 gap-4 md:gap-6">

@@ -19,7 +19,7 @@ export default function SubscriptionTerms() {
           <ul className="space-y-2 text-amber-900 text-sm">
             <li className="flex items-start gap-2">
               <span className="text-emerald-600 font-bold">✓</span>
-              <span><strong>No payment required for 90 days</strong> - Full access to all premium features</span>
+              <span><strong>Card required, no charges for 90 days</strong> - Full access to all premium features</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-emerald-600 font-bold">✓</span>
@@ -48,8 +48,8 @@ export default function SubscriptionTerms() {
             <h3 className="text-xl font-semibold text-sky-800 mb-2 mt-4">1.2 What You Get During Trial</h3>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Full Access:</strong> Complete access to all features included in your chosen plan</li>
-              <li><strong>No Payment Required:</strong> No charges for 90 days from subscription date</li>
-              <li><strong>Credit Card Required:</strong> Payment method needed to start trial, but not charged until day 91</li>
+              <li><strong>No Charges During Trial:</strong> No billing for the first 90 days from subscription date</li>
+              <li><strong>Credit Card Required:</strong> Payment method needed to start trial; billing begins on day 91</li>
               <li><strong>Premium Features:</strong> All Searcher or Lister benefits active immediately</li>
             </ul>
 

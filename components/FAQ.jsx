@@ -70,7 +70,7 @@ export default function FAQ() {
     {
       question: 'Can I get a refund if I don\'t like the platform?',
       answer:
-        'Yes! We offer a 90-day free trial (3 full months!) on all subscriptions with no questions asked. Cancel anytime during the trial period at no cost. Just contact support@seasoners.eu.',
+        'Yes! We offer a 90-day free trial (3 full months!) on all subscriptions. A card is required to start, but you will not be charged until day 91. Cancel anytime during the trial period at no cost by contacting support@seasoners.eu.',
     },
     {
       question: 'How do trust scores work?',

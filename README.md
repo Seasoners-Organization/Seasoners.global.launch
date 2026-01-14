@@ -1,6 +1,6 @@
 # Seasoners Starter
 
-Seasoners is a Next.js app for trusted seasonal work and stays. We verify people, provide dual-language agreements, and let hosts, employers, and talent meet in one workflow (stays + jobs). 90-day free trial, no card required.
+Seasoners is a Next.js app for trusted seasonal work and stays. We verify people, provide dual-language agreements, and let hosts, employers, and talent meet in one workflow (stays + jobs). 90-day free trial with card on file (no charges until day 91).
 
 ## Stack
 - Next.js (App Router), React 18
@@ -61,7 +61,7 @@ BASE_URL=https://www.seasoners.eu ./scripts/smoke-check.sh
 - Verification signals (email, phone, ID) and trust scores
 - Combined marketplace for seasonal stays and jobs with messaging
 - Season-aware destinations (/destinations/[season])
-- 90-day free trial flow and subscription tiers
+- 90-day free trial flow and subscription tiers (card required to start)
 
 ### Deployment
 - Vercel (see vercel.json for headers, rewrites, and cron config)

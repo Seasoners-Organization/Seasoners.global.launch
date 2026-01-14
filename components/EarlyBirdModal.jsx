@@ -98,7 +98,7 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                   </h2>
                   
                   <p className="text-lg md:text-xl text-sky-100 font-medium">
-                    Unlock full access for 90 days at no cost — no credit card required for trial
+                    Unlock full access for 90 days at no cost — card required, no charge until day 91
                   </p>
                 </div>
               </div>
@@ -178,6 +178,10 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                   <div className="flex items-center gap-1.5">
                     <span className="text-emerald-500 font-bold">✓</span>
                     <span>No charge for 90 days</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-emerald-500 font-bold">✓</span>
+                    <span>Card on file; billing starts day 91</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-emerald-500 font-bold">✓</span>
