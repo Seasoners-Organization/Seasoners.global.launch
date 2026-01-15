@@ -61,20 +61,20 @@ export default function FlatsharesPage() {
     <main className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-amber-50">
       <Navbar />
       
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8 sm:py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-3">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2 sm:mb-3">
               Flatshares
             </h1>
-            <p className="text-lg text-slate-600">
+            <p className="text-base sm:text-lg text-slate-600">
               Find your next shared apartment with compatible roommates
             </p>
           </div>
 
           {/* Filters Sidebar + Results */}
-          <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-6">
+          <div className="grid lg:grid-cols-[260px_1fr] gap-4 sm:gap-8 mb-6">
             <FilterSidebar context="flatshares" listings={listings} onFiltered={setFiltered} />
             <div>
               {loading ? (
@@ -82,13 +82,16 @@ export default function FlatsharesPage() {
               ) : filtered.length === 0 ? (
                 <EmptyState
                   icon="🏠"
-                  title="No flatshares found"
-                  description="Try adjusting your filters or be the first to list a flatshare."
+                  title="Be the First to List a Flatshare!"
+                  description="We're building the community for seasonal flatshares. List your place now and help other travelers find their perfect home away from home."
                   actionLabel="List Your Flatshare"
                   actionHref="/list"
+                  showSecondaryAction={true}
+                  secondaryActionLabel="Explore"
+                  secondaryActionOnClick={() => window.location.reload()}
                 />
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                   {filtered.map(listing => (
                     <div
                       key={listing.id}

@@ -102,17 +102,17 @@ export default function JobsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-extrabold text-sky-900 mb-2">{t('jobsTitle')}</h1>
-        <p className="text-slate-700 mb-8">
-          {t('jobsSubtitle')}
-        </p>
-        <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-8">
-          <FilterSidebar context="jobs" listings={jobs} onFiltered={setFilteredJobs} />
-          <div>
-            {loading && <SkeletonGrid count={6} />}
-            
-            {error && (
-              <ErrorState
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-sky-900 mb-2">{t('jobsTitle')}</h1>
+            <p className="text-sm sm:text-base text-slate-700 mb-6 sm:mb-8">
+              {t('jobsSubtitle')}
+            </p>
+            <div className="grid lg:grid-cols-[260px_1fr] gap-4 sm:gap-8 mb-8">
+              <FilterSidebar context="jobs" listings={jobs} onFiltered={setFilteredJobs} />
+              <div>
+                {loading && <SkeletonGrid count={6} />}
+                
+                {error && (
+                  <ErrorState
                 title="Failed to load jobs"
                 description={error}
                 onRetry={() => window.location.reload()}
@@ -121,17 +121,20 @@ export default function JobsPage() {
             
             {!loading && !error && filteredJobs.length === 0 && (
               <EmptyState
-                icon=""
-                title="No jobs found"
-                description="Try adjusting your filters or check back later for new opportunities."
-                actionLabel="Post a Job"
+                icon="💼"
+                title="Hiring? Post Your Opportunity!"
+                description="We're in early stages and looking for employers. Post your seasonal job today and connect with talented workers from around the world."
+                actionLabel="Post a Job Now"
                 actionHref="/list"
+                showSecondaryAction={true}
+                secondaryActionLabel="Browse"
+                secondaryActionOnClick={() => window.location.reload()}
               />
             )}
             {!loading && !error && filteredJobs.length > 0 && (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                 {filteredJobs.map((job) => (
-                  <div key={job.id} className="bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                  <div key={job.id} className="bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow touch-highlight">
                     {job.photos && job.photos.length > 0 && (
                       <a href={`/listings/${job.id}`} className="block">
                         <div className="relative aspect-[4/3] overflow-hidden">

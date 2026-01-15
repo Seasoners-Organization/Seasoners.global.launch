@@ -99,42 +99,45 @@ export default function StaysPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-extrabold text-sky-900 mb-2">{t('staysTitle')}</h1>
-        <p className="text-slate-700 mb-6">
-          {t('staysSubtitle')}
-        </p>
-        <div className="grid lg:grid-cols-[260px_1fr] gap-8 mb-8">
-          <FilterSidebar context="stays" listings={stays} onFiltered={setFilteredStays} />
-          <div>
-            {loading && <SkeletonGrid count={6} />}
-            
-            {error && (
-              <ErrorState
-                title="Failed to load stays"
-                description={error}
-                onRetry={() => window.location.reload()}
-              />
-            )}
-            
-            {!loading && !error && filteredStays.length === 0 && (
-              <EmptyState
-                icon="🏠"
-                title="No stays found"
-                description="Try adjusting your filters or check back later for new listings."
-                actionLabel="List Your Stay"
-                actionHref="/list"
-              />
-            )}
-            {!loading && !error && filteredStays.length > 0 && (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredStays.map((stay) => (
-                  <div key={stay.id} className="bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                    {stay.photos && stay.photos.length > 0 && (
-                      <a href={`/listings/${stay.id}`} className="block">
-                        <div className="relative aspect-[4/3] overflow-hidden">
-                          <Image 
-                            src={stay.photos[0]} 
-                            alt={stay.title}
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-sky-900 mb-2">{t('staysTitle')}</h1>
+            <p className="text-sm sm:text-base text-slate-700 mb-6">
+              {t('staysSubtitle')}
+            </p>
+            <div className="grid lg:grid-cols-[260px_1fr] gap-4 sm:gap-8 mb-8">
+              <FilterSidebar context="stays" listings={stays} onFiltered={setFilteredStays} />
+              <div>
+                {loading && <SkeletonGrid count={6} />}
+                
+                {error && (
+                  <ErrorState
+                    title="Failed to load stays"
+                    description={error}
+                    onRetry={() => window.location.reload()}
+                  />
+                )}
+                
+                {!loading && !error && filteredStays.length === 0 && (
+                  <EmptyState
+                    icon="🏠"
+                    title="Be the First to List!"
+                    description="We're in early stages and looking for hosts. List your space today and be featured as one of our founding members. Help build the future of seasonal living."
+                    actionLabel="List Your Stay Now"
+                    actionHref="/list"
+                    showSecondaryAction={true}
+                    secondaryActionLabel="Browse Listings"
+                    secondaryActionOnClick={() => window.location.reload()}
+                  />
+                )}
+                {!loading && !error && filteredStays.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                    {filteredStays.map((stay) => (
+                      <div key={stay.id} className="bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow touch-highlight">
+                        {stay.photos && stay.photos.length > 0 && (
+                          <a href={`/listings/${stay.id}`} className="block">
+                            <div className="relative aspect-[4/3] overflow-hidden">
+                              <Image 
+                                src={stay.photos[0]} 
+                                alt={stay.title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             className="object-cover hover:scale-105 transition-transform duration-300"

@@ -186,17 +186,33 @@ export default function List() {
       <Navbar />
       <EarlyBirdModal trigger="payment" />
       <AnimatedPage>
-        <section className="max-w-xl mx-auto px-6 py-16">
+        <section className="max-w-xl mx-auto px-3 sm:px-6 py-8 sm:py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-bold text-sky-800 mb-6 text-center">{t('listPlaceOrJob')}</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-sky-800 mb-4 sm:mb-6 text-center">{t('listPlaceOrJob')}</h1>
+            
+            {/* Quick Start Banner */}
+            <div className="bg-gradient-to-r from-sky-50 to-blue-50 border-2 border-sky-200 rounded-lg p-4 sm:p-6 mb-6">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <span className="text-2xl sm:text-3xl flex-shrink-0">⚡</span>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-sky-900 mb-2">Quick Start - Get Listed in Minutes</h2>
+                  <p className="text-sky-700 text-xs sm:text-sm mb-3">Complete your basic listing details below. You can add more details and photos anytime.</p>
+                  <div className="grid grid-cols-3 gap-2 text-xs text-sky-600">
+                    <div className="flex items-center gap-1">✓ <span>Basic info</span></div>
+                    <div className="flex items-center gap-1">✓ <span>Photos</span></div>
+                    <div className="flex items-center gap-1">✓ <span>Go live</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             
             {status === "unauthenticated" && (
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
-                <p className="text-amber-800 text-center">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4 mb-4">
+                <p className="text-amber-800 text-center text-sm sm:text-base">
                   {t('pleaseSignInToList').replace('sign in', '')}
                   <a href="/auth/signin" className="underline font-semibold">{t('signIn')}</a>
                 </p>
@@ -214,40 +230,63 @@ export default function List() {
         {ok ? (
           <p className="text-green-600 text-center font-semibold">{t('thanksListingSubmitted')}</p>
         ) : (
-          <form onSubmit={submit} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                <p className="text-red-600 text-sm">{error}</p>
+          <>
+            {/* Progress Indicator */}
+            {/* Progress Indicator */}
+            <div className="mb-6 sm:mb-8">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs sm:text-sm font-semibold text-slate-700">Progress</span>
+                <span className="text-xs sm:text-sm text-slate-500">{photos.length > 0 ? '3 of 3' : listingType ? '2 of 3' : '1 of 3'}</span>
               </div>
-            )}
+              <div className="w-full bg-slate-200 rounded-full h-2">
+                <div 
+                  className="bg-sky-600 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${photos.length > 0 ? 100 : listingType ? 66 : 33}%` }}
+                />
+              </div>
+            </div>
+          
+            <form onSubmit={submit} className="space-y-4">
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <p className="text-red-600 text-sm">{error}</p>
+                </div>
+              )}
 
             <div>
               <label htmlFor="title" className="sr-only">{t('listingTitle')}</label>
-              <input id="title" name="title" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder={t('listingTitle')} required disabled={status === "unauthenticated" || loading} />
+              <input id="title" name="title" className="w-full border border-slate-300 p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder={t('listingTitle')} required disabled={status === "unauthenticated" || loading} />
             </div>
 
             <div>
-              <label htmlFor="listingType" className="sr-only">{t('selectListingType')}</label>
-              <select 
-                id="listingType" 
-                name="listingType" 
-                className="w-full border p-3 rounded-lg" 
-                required 
-                disabled={status === "unauthenticated" || loading}
-                value={listingType}
-                onChange={(e) => setListingType(e.target.value)}
-              >
-                <option value="">{t('selectListingType')}</option>
-                <option value="Apartment/Room">{t('apartmentRoom')}</option>
-                <option value="Staff Housing">{t('staffHousing')}</option>
-                <option value="Flatshare">🏠 Flatshare / WG</option>
-                <option value="Seasonal Job">{t('seasonalJobOption')}</option>
-              </select>
+              <label className="block text-sm sm:text-base font-semibold text-slate-800 mb-3">{t('selectListingType')}</label>
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                {[
+                  { value: "Apartment/Room", label: "🏘️ Apartment/Room", icon: "🏘️" },
+                  { value: "Staff Housing", label: "🏗️ Staff Housing", icon: "🏗️" },
+                  { value: "Flatshare", label: "🏠 Flatshare/WG", icon: "🏠" },
+                  { value: "Seasonal Job", label: "💼 Job", icon: "💼" }
+                ].map(option => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setListingType(option.value)}
+                    className={`p-3 sm:p-4 rounded-lg border-2 transition-all text-center font-medium min-h-[80px] sm:min-h-[100px] flex flex-col items-center justify-center touch-manipulation active:scale-95 ${
+                      listingType === option.value
+                        ? 'border-sky-500 bg-sky-50 text-sky-900'
+                        : 'border-slate-300 bg-white text-slate-700 hover:border-sky-300'
+                    }`}
+                  >
+                    <div className="text-xl sm:text-2xl mb-1">{option.icon}</div>
+                    <div className="text-xs sm:text-sm">{option.label.split(' ')[1]} {option.label.split(' ')[2] || ''}</div>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {listingType === "Flatshare" && (
-              <div className="bg-sky-50 border border-sky-200 rounded-lg p-4 space-y-4">
-                <h3 className="font-semibold text-sky-800">Flatshare Details</h3>
+              <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 sm:p-4 space-y-4">
+                <h3 className="font-semibold text-sky-800 text-sm sm:text-base">Flatshare Details</h3>
                 
                 <div>
                   <label htmlFor="totalRoommates" className="block text-sm font-medium text-gray-700 mb-1">
@@ -267,7 +306,7 @@ export default function List() {
                         setCurrentRoommates([]);
                       }
                     }}
-                    className="w-full border p-2 rounded-lg"
+                    className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]"
                     disabled={loading}
                   />
                 </div>
@@ -328,7 +367,7 @@ export default function List() {
                   <select 
                     id="lookingForGender" 
                     name="lookingForGender"
-                    className="w-full border p-2 rounded-lg"
+                    className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]"
                     disabled={loading}
                   >
                     <option value="ANY">Any Gender</option>
@@ -348,7 +387,7 @@ export default function List() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Season</label>
-                  <select aria-label="Season" className="w-full border p-3 rounded-lg" value={season} onChange={e=>setSeason(e.target.value)} disabled={status === "unauthenticated" || loading}>
+                  <select aria-label="Season" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" value={season} onChange={e=>setSeason(e.target.value)} disabled={status === "unauthenticated" || loading}>
                     <option value="all">All</option>
                     <option value="winter">winter</option>
                     <option value="summer">summer</option>
@@ -356,7 +395,7 @@ export default function List() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
-                  <select aria-label="Country" className="w-full border p-3 rounded-lg" value={country} onChange={e=>setCountry(e.target.value)} disabled={status === "unauthenticated" || loading}>
+                  <select aria-label="Country" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" value={country} onChange={e=>setCountry(e.target.value)} disabled={status === "unauthenticated" || loading}>
                     <option value="all">Select country</option>
                     {countries.map(c => <option key={c} value={c}>{getCountryName(c)}</option>)}
                   </select>
@@ -367,7 +406,7 @@ export default function List() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Region / City {country === 'AT' && <span className="text-xs text-gray-500">(Austrian federal states)</span>}
                   </label>
-                  <select aria-label="Region" className="w-full border p-3 rounded-lg" value={region} onChange={e=>setRegion(e.target.value)} disabled={status === "unauthenticated" || loading || country==='all'}>
+                  <select aria-label="Region" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" value={region} onChange={e=>setRegion(e.target.value)} disabled={status === "unauthenticated" || loading || country==='all'}>
                     <option value="all">{country === 'all' ? 'Select country first' : 'Select a city or town'}</option>
                     {regions.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
@@ -390,7 +429,7 @@ export default function List() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <label htmlFor="jobType" className="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
-                      <select id="jobType" name="jobType" className="w-full border p-2 rounded-lg" disabled={loading}>
+                      <select id="jobType" name="jobType" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" disabled={loading}>
                         <option value="">Select type</option>
                         <option value="FULL_TIME">Full Time</option>
                         <option value="PART_TIME">Part Time</option>
@@ -400,7 +439,7 @@ export default function List() {
                     </div>
                     <div>
                       <label htmlFor="industry" className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
-                      <select id="industry" name="industry" className="w-full border p-2 rounded-lg" disabled={loading}>
+                      <select id="industry" name="industry" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" disabled={loading}>
                         <option value="">Select industry</option>
                         <option value="HOSPITALITY">Hospitality</option>
                         <option value="FOOD_SERVICE">Food Service</option>
@@ -415,26 +454,26 @@ export default function List() {
 
                   <div>
                     <label htmlFor="wage" className="block text-sm font-medium text-gray-700 mb-1">Wage / Salary (optional)</label>
-                    <input id="wage" name="wage" type="text" className="w-full border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder="e.g., €1,500/month or $20/hour" disabled={loading} />
+                    <input id="wage" name="wage" type="text" className="w-full border border-slate-300 p-2 sm:p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed min-h-[44px]" placeholder="e.g., €1,500/month or $20/hour" disabled={loading} />
                     <p className="text-xs text-gray-500 mt-1">Leave blank if not disclosing wage</p>
                   </div>
 
                   <div>
                     <label htmlFor="benefits" className="block text-sm font-medium text-gray-700 mb-1">Benefits / Perks</label>
-                    <textarea id="benefits" name="benefits" className="w-full border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="2" placeholder="e.g., Free accommodation, Meals included, Ski pass, Travel allowance" disabled={loading} />
+                    <textarea id="benefits" name="benefits" className="w-full border border-slate-300 p-2 sm:p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="2" placeholder="e.g., Free accommodation, Meals included, Ski pass, Travel allowance" disabled={loading} />
                   </div>
                 </div>
               </>
             ) : (
               <div>
                 <label htmlFor="price" className="sr-only">{t('priceLabel')}</label>
-                <input id="price" name="price" type="number" step="0.01" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder={t('pricePlaceholderShort')} disabled={status === "unauthenticated" || loading} />
+                <input id="price" name="price" type="number" step="0.01" className="w-full border border-slate-300 p-2 sm:p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed min-h-[44px]" placeholder={t('pricePlaceholderShort')} disabled={status === "unauthenticated" || loading} />
               </div>
             )}
 
             <div>
               <label htmlFor="details" className="sr-only">{t('descriptionLabel')}</label>
-              <textarea id="details" name="details" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="4" placeholder={listingType === "Seasonal Job" ? "Job description, responsibilities, required skills, schedule, etc." : t('detailsPlaceholderShort')} required disabled={status === "unauthenticated" || loading} />
+              <textarea id="details" name="details" className="w-full border border-slate-300 p-2 sm:p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="4" placeholder={listingType === "Seasonal Job" ? "Job description, responsibilities, required skills, schedule, etc." : t('detailsPlaceholderShort')} required disabled={status === "unauthenticated" || loading} />
             </div>
 
 {listingType !== "Seasonal Job" && (
@@ -517,12 +556,20 @@ export default function List() {
 
             <button 
               type="submit"
-              className="w-full bg-amber-700 hover:brightness-110 text-white font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-700"
+              className="w-full bg-amber-700 hover:brightness-110 text-white font-semibold py-3 sm:py-4 rounded-xl text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-700 active:scale-95 touch-manipulation min-h-[48px]"
               disabled={status === "unauthenticated" || loading}
             >
               {loading ? t('submittingGeneric') : t('submitGeneric')}
             </button>
-          </form>
+            
+            {/* Success Encouragement */}
+            <div className="mt-4 sm:mt-6 bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4 text-center">
+              <p className="text-xs sm:text-sm text-green-700">
+                <span className="font-semibold">💡 Pro Tip:</span> Early hosts get featured! Your listing will be highlighted to help you attract the first guests.
+              </p>
+            </div>
+            </form>
+          </>
         )}
           </motion.div>
         </section>
