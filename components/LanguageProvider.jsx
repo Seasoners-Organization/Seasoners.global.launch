@@ -1,15 +1,38 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import en from "../locales/en.json";
-import de from "../locales/de.json";
-import es from "../locales/es.json";
-import fr from "../locales/fr.json";
-import it from "../locales/it.json";
-import pt from "../locales/pt.json";
 
-const LOCALES = { en, de, es, fr, it, pt };
 const DEFAULT = "en";
+let LOCALES = {};
+
+// Load translations - using dynamic import to ensure they're properly bundled
+async function loadTranslations() {
+  if (Object.keys(LOCALES).length > 0) return LOCALES;
+  
+  try {
+    const [en, de, es, fr, it, pt] = await Promise.all([
+      import("../locales/en.json").then(m => m.default || m),
+      import("../locales/de.json").then(m => m.default || m),
+      import("../locales/es.json").then(m => m.default || m),
+      import("../locales/fr.json").then(m => m.default || m),
+      import("../locales/it.json").then(m => m.default || m),
+      import("../locales/pt.json").then(m => m.default || m),
+    ]);
+    
+    LOCALES = { en, de, es, fr, it, pt };
+    
+    if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
+      console.log('[LanguageProvider] Translations loaded successfully');
+      console.log('- Keys in en:', Object.keys(en).length);
+      console.log('- Sample key (footerStays):', en.footerStays);
+    }
+    
+    return LOCALES;
+  } catch (error) {
+    console.error('[LanguageProvider] Failed to load translations:', error);
+    return {};
+  }
+}
 
 const LanguageContext = createContext({
   locale: DEFAULT,
@@ -19,7 +42,16 @@ const LanguageContext = createContext({
 
 export function LanguageProvider({ children }) {
   const [locale, setLocaleState] = useState(DEFAULT);
+  const [translationsLoaded, setTranslationsLoaded] = useState(false);
 
+  // Load translations on mount
+  useEffect(() => {
+    loadTranslations().then(() => {
+      setTranslationsLoaded(true);
+    });
+  }, []);
+
+  // Set locale from localStorage or browser language
   useEffect(() => {
     try {
       const stored = localStorage.getItem("locale");
