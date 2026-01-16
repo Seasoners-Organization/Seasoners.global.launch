@@ -448,5 +448,15 @@
   "backToProfile": "Voltar ao Perfil",
   "listingUpdatedSuccess": "Anúncio atualizado com sucesso!",
   "failedToLoadListing": "Falha ao carregar o anúncio",
-  "failedToUpdateListing": "Falha ao atualizar o anúncio"
+  "failedToUpdateListing": "Falha ao atualizar o anúncio",
+  "failedToLoadStays": "Falha ao carregar hospedagens",
+  "emptyStaysTitle": "Seja o primeiro a listar!",
+  "emptyStaysDesc": "Estamos nos estágios iniciais e procuramos anfitriões. Liste seu espaço hoje e seja destacado como um de nossos membros fundadores. Ajude a construir o futuro da vida sazonal.",
+  "listYourStayNow": "Liste sua hospedagem agora",
+  "browseListings": "Explorar anúncios",
+  "manageListing": "Gerenciar Anúncio",
+  "failedToLoadJobs": "Falha ao carregar empregos",
+  "emptyJobsTitle": "Seja o primeiro a postar!",
+  "emptyJobsDesc": "Estamos nos estágios iniciais e procuramos empregadores. Publique sua oportunidade hoje e seja destacado como um de nossos parceiros fundadores. Ajude a construir o futuro da contratação sazonal.",
+  "postJobNow": "Postar emprego agora"
 }

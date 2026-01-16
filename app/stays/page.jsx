@@ -110,7 +110,7 @@ export default function StaysPage() {
                 
                 {error && (
                   <ErrorState
-                    title="Failed to load stays"
+                    title={t('failedToLoadStays')}
                     description={error}
                     onRetry={() => window.location.reload()}
                   />
@@ -119,12 +119,12 @@ export default function StaysPage() {
                 {!loading && !error && filteredStays.length === 0 && (
                   <EmptyState
                     icon="🏠"
-                    title="Be the First to List!"
-                    description="We're in early stages and looking for hosts. List your space today and be featured as one of our founding members. Help build the future of seasonal living."
-                    actionLabel="List Your Stay Now"
+                    title={t('emptyStaysTitle')}
+                    description={t('emptyStaysDesc')}
+                    actionLabel={t('listYourStayNow')}
                     actionHref="/list"
                     showSecondaryAction={true}
-                    secondaryActionLabel="Browse Listings"
+                    secondaryActionLabel={t('browseListings')}
                     secondaryActionOnClick={() => window.location.reload()}
                   />
                 )}
@@ -204,7 +204,7 @@ export default function StaysPage() {
                           className="w-full py-2 text-sm border rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 bg-gradient-to-r from-sky-600 to-amber-600 text-white border-transparent hover:from-sky-700 hover:to-amber-700"
                           aria-label={`Manage listing ${stay.title}`}
                         >
-                          {t('manageListing') || 'Manage Listing'}
+                          {t('manageListing')}
                         </button>
                       ) : (
                         <button

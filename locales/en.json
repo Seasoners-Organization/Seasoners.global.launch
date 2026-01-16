@@ -448,5 +448,15 @@
   "backToProfile": "Back to Profile",
   "listingUpdatedSuccess": "Listing updated successfully!",
   "failedToLoadListing": "Failed to load listing",
-  "failedToUpdateListing": "Failed to update listing"
+  "failedToUpdateListing": "Failed to update listing",
+  "failedToLoadStays": "Failed to load stays",
+  "emptyStaysTitle": "Be the First to List!",
+  "emptyStaysDesc": "We're in early stages and looking for hosts. List your space today and be featured as one of our founding members. Help build the future of seasonal living.",
+  "listYourStayNow": "List Your Stay Now",
+  "browseListings": "Browse Listings",
+  "manageListing": "Manage Listing",
+  "failedToLoadJobs": "Failed to load jobs",
+  "emptyJobsTitle": "Be the First to Post!",
+  "emptyJobsDesc": "We're in early stages and looking for employers. Post your opportunity today and be featured as one of our founding partners. Help build the future of seasonal hiring.",
+  "postJobNow": "Post Job Now"
 }

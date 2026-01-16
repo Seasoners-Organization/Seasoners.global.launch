@@ -82,7 +82,7 @@ export default function JobsPage() {
         
         setJobs(data.listings || []);
       } catch (err) {
-        setError(err.message || "Failed to load jobs");
+        setError(err.message || t('failedToLoadJobs'));
       } finally {
         setLoading(false);
       }
@@ -113,21 +113,21 @@ export default function JobsPage() {
                 
                 {error && (
                   <ErrorState
-                title="Failed to load jobs"
-                description={error}
-                onRetry={() => window.location.reload()}
-              />
-            )}
+                    title={t('failedToLoadJobs')}
+                    description={error}
+                    onRetry={() => window.location.reload()}
+                  />
+                )}
             
             {!loading && !error && filteredJobs.length === 0 && (
               <EmptyState
                 icon="💼"
-                title="Hiring? Post Your Opportunity!"
-                description="We're in early stages and looking for employers. Post your seasonal job today and connect with talented workers from around the world."
-                actionLabel="Post a Job Now"
+                title={t('emptyJobsTitle')}
+                description={t('emptyJobsDesc')}
+                actionLabel={t('postJobNow')}
                 actionHref="/list"
                 showSecondaryAction={true}
-                secondaryActionLabel="Browse"
+                secondaryActionLabel={t('browseListings')}
                 secondaryActionOnClick={() => window.location.reload()}
               />
             )}

@@ -448,5 +448,15 @@
   "backToProfile": "Volver al Perfil",
   "listingUpdatedSuccess": "¡Anuncio actualizado correctamente!",
   "failedToLoadListing": "No se pudo cargar el anuncio",
-  "failedToUpdateListing": "No se pudo actualizar el anuncio"
+  "failedToUpdateListing": "No se pudo actualizar el anuncio",
+  "failedToLoadStays": "Error al cargar los alojamientos",
+  "emptyStaysTitle": "¡Sé el primero en listar!",
+  "emptyStaysDesc": "Estamos en las primeras etapas y buscamos anfitriones. Enumera tu espacio hoy y destacado como uno de nuestros miembros fundadores. Ayuda a construir el futuro de la vida estacional.",
+  "listYourStayNow": "Lista tu alojamiento ahora",
+  "browseListings": "Explorar anuncios",
+  "manageListing": "Administrar Anuncio",
+  "failedToLoadJobs": "Error al cargar los trabajos",
+  "emptyJobsTitle": "¡Sé el primero en publicar!",
+  "emptyJobsDesc": "Estamos en las primeras etapas y buscamos empleadores. Publica tu oportunidad hoy y destacado como uno de nuestros socios fundadores. Ayuda a construir el futuro de la contratación estacional.",
+  "postJobNow": "Publica un trabajo ahora"
 }

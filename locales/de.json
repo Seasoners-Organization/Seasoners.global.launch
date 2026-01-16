@@ -448,5 +448,15 @@
   "backToProfile": "Zurück zum Profil",
   "listingUpdatedSuccess": "Angebot erfolgreich aktualisiert!",
   "failedToLoadListing": "Angebot konnte nicht geladen werden",
-  "failedToUpdateListing": "Angebot konnte nicht aktualisiert werden"
+  "failedToUpdateListing": "Angebot konnte nicht aktualisiert werden",
+  "failedToLoadStays": "Fehler beim Laden der Unterkünfte",
+  "emptyStaysTitle": "Sei der Erste, der anbietet!",
+  "emptyStaysDesc": "Wir befinden uns in einem frühen Stadium und suchen Gastgeber. Bieten Sie Ihren Platz heute an und werden Sie einer unserer Gründungsmitglieder. Helfen Sie, die Zukunft des Saisonlebens zu gestalten.",
+  "listYourStayNow": "Jetzt Ihre Unterkunft anbieten",
+  "browseListings": "Angebote durchsuchen",
+  "manageListing": "Angebot verwalten",
+  "failedToLoadJobs": "Fehler beim Laden der Jobs",
+  "emptyJobsTitle": "Sei der Erste, der postet!",
+  "emptyJobsDesc": "Wir befinden uns in einem frühen Stadium und suchen Arbeitgeber. Veröffentlichen Sie Ihre Gelegenheit heute und werden Sie einer unserer Gründungspartner. Helfen Sie, die Zukunft der saisonalen Einstellung zu gestalten.",
+  "postJobNow": "Job jetzt veröffentlichen"
 }

@@ -448,5 +448,15 @@
   "backToProfile": "Retour au Profil",
   "listingUpdatedSuccess": "Annonce mise à jour avec succès!",
   "failedToLoadListing": "Impossible de charger l'annonce",
-  "failedToUpdateListing": "Impossible de mettre à jour l'annonce"
+  "failedToUpdateListing": "Impossible de mettre à jour l'annonce",
+  "failedToLoadStays": "Échec du chargement des séjours",
+  "emptyStaysTitle": "Soyez le premier à lister!",
+  "emptyStaysDesc": "Nous en sommes aux premiers stades et recherchons des hôtes. Listez votre espace aujourd'hui et soyez présenté comme l'un de nos membres fondateurs. Aidez à construire l'avenir de la vie saisonnière.",
+  "listYourStayNow": "Listez votre séjour maintenant",
+  "browseListings": "Parcourir les annonces",
+  "manageListing": "Gérer l'Annonce",
+  "failedToLoadJobs": "Échec du chargement des emplois",
+  "emptyJobsTitle": "Soyez le premier à publier!",
+  "emptyJobsDesc": "Nous en sommes aux premiers stades et recherchons des employeurs. Publiez votre opportunité aujourd'hui et soyez présenté comme l'un de nos partenaires fondateurs. Aidez à construire l'avenir du recrutement saisonnier.",
+  "postJobNow": "Publier un emploi maintenant"
 }
