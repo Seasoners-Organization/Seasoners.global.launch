@@ -458,5 +458,17 @@
   "failedToLoadJobs": "Failed to load jobs",
   "emptyJobsTitle": "Be the First to Post!",
   "emptyJobsDesc": "We're in early stages and looking for employers. Post your opportunity today and be featured as one of our founding partners. Help build the future of seasonal hiring.",
-  "postJobNow": "Post Job Now"
+  "postJobNow": "Post Job Now",
+  "listingPosted": "Posted",
+  "listingRegion": "Region",
+  "listingCity": "City",
+  "languages": "Languages",
+  "interests": "Interests",
+  "contactHost": "Contact Host",
+  "reportListing": "Report this listing",
+  "seasonAll": "All Seasons",
+  "seasonSpring": "Spring",
+  "seasonFall": "Fall",
+  "zonePreviewTitle": "Explore Seasons & Destinations",
+  "zonePreviewDesc": "Find seasonal opportunities across Europe, from ski resorts to wine regions"
 }

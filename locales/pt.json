@@ -458,5 +458,17 @@
   "failedToLoadJobs": "Falha ao carregar empregos",
   "emptyJobsTitle": "Seja o primeiro a postar!",
   "emptyJobsDesc": "Estamos nos estágios iniciais e procuramos empregadores. Publique sua oportunidade hoje e seja destacado como um de nossos parceiros fundadores. Ajude a construir o futuro da contratação sazonal.",
-  "postJobNow": "Postar emprego agora"
+  "postJobNow": "Postar emprego agora",
+  "listingPosted": "Publicado",
+  "listingRegion": "Região",
+  "listingCity": "Cidade",
+  "languages": "Idiomas",
+  "interests": "Interesses",
+  "contactHost": "Contatar Anfitrião",
+  "reportListing": "Denunciar este anúncio",
+  "seasonAll": "Todas as Estações",
+  "seasonSpring": "Primavera",
+  "seasonFall": "Outono",
+  "zonePreviewTitle": "Explorar Estações e Destinos",
+  "zonePreviewDesc": "Encontre oportunidades sazonais em toda a Europa, desde estações de esqui até regiões vinícolas"
 }

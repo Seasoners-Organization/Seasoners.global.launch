@@ -458,5 +458,17 @@
   "failedToLoadJobs": "Fehler beim Laden der Jobs",
   "emptyJobsTitle": "Sei der Erste, der postet!",
   "emptyJobsDesc": "Wir befinden uns in einem frühen Stadium und suchen Arbeitgeber. Veröffentlichen Sie Ihre Gelegenheit heute und werden Sie einer unserer Gründungspartner. Helfen Sie, die Zukunft der saisonalen Einstellung zu gestalten.",
-  "postJobNow": "Job jetzt veröffentlichen"
+  "postJobNow": "Job jetzt veröffentlichen",
+  "listingPosted": "Veröffentlicht",
+  "listingRegion": "Region",
+  "listingCity": "Stadt",
+  "languages": "Sprachen",
+  "interests": "Interessen",
+  "contactHost": "Gastgeber kontaktieren",
+  "reportListing": "Dieses Angebot melden",
+  "seasonAll": "Alle Jahreszeiten",
+  "seasonSpring": "Frühling",
+  "seasonFall": "Herbst",
+  "zonePreviewTitle": "Erkunden Sie Jahreszeiten und Ziele",
+  "zonePreviewDesc": "Finden Sie saisonale Gelegenheiten in ganz Europa, von Skigebieten bis zu Weinregionen"
 }

@@ -458,5 +458,17 @@
   "failedToLoadJobs": "Errore nel caricamento dei lavori",
   "emptyJobsTitle": "Sii il primo a pubblicare!",
   "emptyJobsDesc": "Siamo nelle fasi iniziali e cerchiamo datori di lavoro. Pubblica la tua opportunità oggi e sia presente come uno dei nostri partner fondatori. Aiuta a costruire il futuro dell'assunzione stagionale.",
-  "postJobNow": "Pubblica un lavoro ora"
+  "postJobNow": "Pubblica un lavoro ora",
+  "listingPosted": "Pubblicato",
+  "listingRegion": "Regione",
+  "listingCity": "Città",
+  "languages": "Lingue",
+  "interests": "Interessi",
+  "contactHost": "Contatta Ospite",
+  "reportListing": "Segnala questo annuncio",
+  "seasonAll": "Tutte le Stagioni",
+  "seasonSpring": "Primavera",
+  "seasonFall": "Autunno",
+  "zonePreviewTitle": "Esplora Stagioni e Destinazioni",
+  "zonePreviewDesc": "Trova opportunità stagionali in tutta Europa, dalle stazioni sciistiche alle regioni vinicole"
 }

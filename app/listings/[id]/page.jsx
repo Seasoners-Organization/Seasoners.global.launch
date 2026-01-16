@@ -211,7 +211,7 @@ export default function ListingDetailPage() {
                       </span>
                       {listing.verified && (
                         <span className="px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-sm font-medium">
-                          ✓ Verified
+                          ✓ {t('verified')}
                         </span>
                       )}
                     </div>
@@ -231,7 +231,7 @@ export default function ListingDetailPage() {
                   <div className="mb-6 pb-6 border-b">
                     <div className="flex items-baseline gap-2">
                       <span className="text-4xl font-bold text-sky-900">€{listing.price}</span>
-                      <span className="text-slate-600">/month</span>
+                      <span className="text-slate-600">{t('pricePerMonth')}</span>
                     </div>
                   </div>
 
@@ -246,22 +246,22 @@ export default function ListingDetailPage() {
                     <h2 className="text-xl font-semibold text-gray-900 mb-3">{t('details')}</h2>
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm text-slate-500">Posted</p>
+                        <p className="text-sm text-slate-500">{t('listingPosted')}</p>
                         <p className="font-medium">{new Date(listing.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-slate-500">Region</p>
+                        <p className="text-sm text-slate-500">{t('listingRegion')}</p>
                         <p className="font-medium">{regionDisplay || 'Austria'}</p>
                       </div>
                       {listing.city && (
                         <div>
-                          <p className="text-sm text-slate-500">City</p>
+                          <p className="text-sm text-slate-500">{t('listingCity')}</p>
                           <p className="font-medium">{listing.city}</p>
                         </div>
                       )}
                       <div>
-                        <p className="text-sm text-slate-500">Type</p>
-                        <p className="font-medium">{listing.type === 'JOB' ? 'Seasonal Job' : 'Short-Term Stay'}</p>
+                        <p className="text-sm text-slate-500">{t('listingType')}</p>
+                        <p className="font-medium">{listing.type === 'JOB' ? t('seasonalJob') : t('shortTermStay')}</p>
                       </div>
                     </div>
                   </div>
@@ -302,7 +302,7 @@ export default function ListingDetailPage() {
                 <div className="bg-white rounded-2xl shadow-sm border p-6 sticky top-24">
                   <div className="mb-6 pb-6 border-b">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                      {listing.type === 'JOB' ? 'Employer' : 'Host'}
+                      {listing.type === 'JOB' ? t('employer') : t('host')}
                     </h3>
                     <div className="flex flex-col items-center text-center mb-4">
                       {listing.user.profilePicture ? (
@@ -327,14 +327,14 @@ export default function ListingDetailPage() {
 
                     {listing.user.aboutMe && (
                       <div className="mb-4 pb-4 border-b">
-                        <h4 className="text-sm font-semibold text-slate-700 mb-2">About</h4>
+                        <h4 className="text-sm font-semibold text-slate-700 mb-2">{t('about')}</h4>
                         <p className="text-sm text-slate-600 line-clamp-4">{listing.user.aboutMe}</p>
                       </div>
                     )}
 
                     {listing.user.spokenLanguages && listing.user.spokenLanguages.length > 0 && (
                       <div className="mb-4 pb-4 border-b">
-                        <h4 className="text-sm font-semibold text-slate-700 mb-2">Languages</h4>
+                        <h4 className="text-sm font-semibold text-slate-700 mb-2">{t('languages')}</h4>
                         <div className="flex flex-wrap gap-2">
                           {listing.user.spokenLanguages.map((lang, idx) => (
                             <span key={idx} className="px-2 py-1 bg-sky-100 text-sky-700 rounded-full text-xs">
@@ -347,7 +347,7 @@ export default function ListingDetailPage() {
 
                     {listing.user.interests && listing.user.interests.length > 0 && (
                       <div className="mb-4 pb-4 border-b">
-                        <h4 className="text-sm font-semibold text-slate-700 mb-2">Interests</h4>
+                        <h4 className="text-sm font-semibold text-slate-700 mb-2">{t('interests')}</h4>
                         <div className="flex flex-wrap gap-2">
                           {listing.user.interests.map((interest, idx) => (
                             <span key={idx} className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
@@ -360,15 +360,15 @@ export default function ListingDetailPage() {
 
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-600">Trust Score</span>
+                        <span className="text-slate-600">{t('trustScore')}</span>
                         <span className="font-medium text-amber-600">⭐ {listing.user.trustScore.toFixed(1)}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-600">Response Rate</span>
+                        <span className="text-slate-600">{t('responseRate')}</span>
                         <span className="font-medium text-green-600">{(listing.user.responseRate * 100).toFixed(0)}%</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-600">Member Since</span>
+                        <span className="text-slate-600">{t('memberSince')}</span>
                         <span className="font-medium text-slate-900">{new Date(listing.user.createdAt).getFullYear()}</span>
                       </div>
                     </div>
@@ -379,7 +379,7 @@ export default function ListingDetailPage() {
                       onClick={() => router.push(`/listings/${listing.id}/edit`)}
                       className="w-full py-3 px-6 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold rounded-xl transition-all"
                     >
-                      Edit Listing
+                      {t('editListing')}
                     </button>
                   ) : (
                     <div className="space-y-3">
@@ -387,7 +387,7 @@ export default function ListingDetailPage() {
                         onClick={handleContact}
                         className="w-full py-3 px-6 bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold rounded-xl transition-all"
                       >
-                        Contact {listing.type === 'JOB' ? 'Employer' : 'Host'}
+                        {listing.type === 'JOB' ? t('contactEmployer') : t('contactHost')}
                       </button>
                       <div className="flex gap-2">
                         <SaveListingButton
@@ -400,7 +400,7 @@ export default function ListingDetailPage() {
 
                   {!session && (
                     <p className="text-xs text-center text-slate-500 mt-3">
-                      Sign in required to contact
+                      {t('signInRequired')}
                     </p>
                   )}
 
@@ -409,7 +409,7 @@ export default function ListingDetailPage() {
                       onClick={() => setShowReportModal(true)}
                       className="w-full mt-3 py-2 text-sm text-slate-600 hover:text-red-600 transition"
                     >
-                      Report this listing
+                      {t('reportListing')}
                     </button>
                   )}
                 </div>

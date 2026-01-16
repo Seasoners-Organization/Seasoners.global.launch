@@ -458,5 +458,17 @@
   "failedToLoadJobs": "Échec du chargement des emplois",
   "emptyJobsTitle": "Soyez le premier à publier!",
   "emptyJobsDesc": "Nous en sommes aux premiers stades et recherchons des employeurs. Publiez votre opportunité aujourd'hui et soyez présenté comme l'un de nos partenaires fondateurs. Aidez à construire l'avenir du recrutement saisonnier.",
-  "postJobNow": "Publier un emploi maintenant"
+  "postJobNow": "Publier un emploi maintenant",
+  "listingPosted": "Publié",
+  "listingRegion": "Région",
+  "listingCity": "Ville",
+  "languages": "Langues",
+  "interests": "Intérêts",
+  "contactHost": "Contacter l'Hôte",
+  "reportListing": "Signaler cette annonce",
+  "seasonAll": "Toutes les Saisons",
+  "seasonSpring": "Printemps",
+  "seasonFall": "Automne",
+  "zonePreviewTitle": "Explorez les Saisons et Destinations",
+  "zonePreviewDesc": "Trouvez des opportunités saisonnières à travers l'Europe, des stations de ski aux régions viticoles"
 }

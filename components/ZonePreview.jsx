@@ -3,17 +3,19 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from './LanguageProvider';
 
 export default function ZonePreview({ zones }) {
   const [selectedSeason, setSelectedSeason] = useState('all');
   const router = useRouter();
+  const { t } = useLanguage();
 
   const seasons = [
-    { id: 'all', label: 'All Seasons' },
-    { id: 'winter', label: 'Winter' },
-    { id: 'summer', label: 'Summer' },
-    { id: 'spring', label: 'Spring' },
-    { id: 'fall', label: 'Fall' },
+    { id: 'all', label: t('seasonAll') },
+    { id: 'winter', label: t('seasonWinter') },
+    { id: 'summer', label: t('seasonSummer') },
+    { id: 'spring', label: t('seasonSpring') },
+    { id: 'fall', label: t('seasonFall') },
   ];
 
   const seasonZoneMap = {
@@ -47,10 +49,10 @@ export default function ZonePreview({ zones }) {
     <section className="max-w-6xl mx-auto px-6 py-20">
       <div className="mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-6">
-          Explore Seasons & Destinations
+          {t('zonePreviewTitle')}
         </h2>
         <p className="text-slate-600 text-lg mb-8">
-          Find seasonal opportunities across Europe, from ski resorts to wine regions
+          {t('zonePreviewDesc')}
         </p>
 
         {/* Season Filter */}
