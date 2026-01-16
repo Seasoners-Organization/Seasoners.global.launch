@@ -174,14 +174,6 @@ export default function Navbar() {
                   </a>
 
                   <a
-                    href="/agreements"
-                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
-                    onClick={() => setIsProfileOpen(false)}
-                  >
-                    <span>{t('agreements')}</span>
-                  </a>
-
-                  <a
                     href="/subscribe"
                     className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:bg-slate-100"
                     onClick={() => setIsProfileOpen(false)}
@@ -254,7 +246,6 @@ export default function Navbar() {
               </div>
             )}
           </div>
-          <a href="/agreement" className="hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 rounded px-2 py-1">{t('agreement')}</a>
           {/* Support Dropdown (click-controlled for better usability) */}
           <div className="relative" ref={supportRef}>
             <button
@@ -350,7 +341,6 @@ export default function Navbar() {
                 </div>
               </details>
             </div>
-            <a href="/agreement" className="py-2" onClick={() => setIsMobileOpen(false)}>{t('agreement')}</a>
             {/* Support Dropdown (Mobile) */}
             <details>
               <summary className="py-2 cursor-pointer select-none flex items-center gap-2">{t('support') || 'Support'}</summary>

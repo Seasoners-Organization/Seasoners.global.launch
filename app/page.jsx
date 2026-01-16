@@ -40,38 +40,38 @@ export default function HomePage() {
   const { t } = useLanguage();
   const differentiators = [
     {
-      title: "Verified people, not anonymous accounts",
-      body: "ID, phone, and dual-language agreements keep every stay and job accountable.",
+      title: "Direct connection between people",
+      body: "No middlemen, no algorithms. You control who you work with and where you stay.",
     },
     {
-      title: "Plain-language agreements built in",
-      body: "Start with a clear template for stays and seasonal work — no hidden terms or surprise fees.",
+      title: "Verified trust, not anonymity",
+      body: "ID and phone verification create real accountability and safety for both sides.",
     },
     {
-      title: "One place for both stays and jobs",
-      body: "Hosts, employers, and talent meet in the same workflow with messaging and trust scores included.",
+      title: "One platform for stays and jobs",
+      body: "Find seasonal work or a place to stay from real people — all in one place with built-in messaging.",
     },
     {
-      title: "90-day free trial (card required)",
-      body: "Add a card to start, pay only after day 90. Keep control of your data and your decisions.",
+      title: "Start free, no card required",
+      body: "Browse, connect, and negotiate directly with owners and employers at no cost.",
     },
   ];
 
   const howItWorks = [
     {
-      title: "Verify and set your profile",
-      body: "Email, phone, and ID checks build trust. Pick your role (searcher, lister, employer).",
-      action: { label: "Finish verification", href: "/profile" },
+      title: "Create your profile",
+      body: "Tell us about yourself. Verify your identity and get a trust score that helps you stand out.",
+      action: { label: "Get started", href: "/auth/signin" },
     },
     {
-      title: "List or apply with built-in agreements",
-      body: "Create stays or jobs, or apply to existing ones. Start from a dual-language, plain agreement template.",
-      action: { label: "See the agreement", href: "/agreement" },
+      title: "Find or list opportunities",
+      body: "Browse seasonal stays and jobs, or post what you're offering. Connect directly with people you trust.",
+      action: { label: "Browse listings", href: "/stays" },
     },
     {
-      title: "Connect, sign, and go",
-      body: "Message, agree on terms, sign, and get working or move in. 90-day free trial with card on file; billing starts day 91.",
-      action: { label: "Start 90-day trial", href: "/subscribe" },
+      title: "Message and agree",
+      body: "Chat directly with hosts and employers. Negotiate terms, discuss details, and move forward together.",
+      action: { label: "Start connecting", href: "/messages" },
     },
   ];
   return (
@@ -116,13 +116,13 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
               <p className="text-sm uppercase font-semibold text-sky-700 tracking-wide">How it works</p>
-              <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mt-1">From sign-up to signed agreement</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mt-1">Connect in three simple steps</h2>
             </div>
             <a
-              href="/subscribe"
+              href="/stays"
               className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-sky-600 text-white font-semibold hover:bg-sky-700 transition"
             >
-              Start 90-day trial →
+              Find opportunities →
             </a>
           </div>
           <div className="grid md:grid-cols-3 gap-4 md:gap-6">
