@@ -1,8 +1,9 @@
 "use client";
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useLanguage } from './LanguageProvider';
 
-const FAQItem = ({ question, answer, index }) => {
+const FAQItem = ({ questionKey, answerKey, index, t }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -16,7 +17,7 @@ const FAQItem = ({ question, answer, index }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="w-full py-4 px-6 flex items-center justify-between hover:bg-slate-50 transition-colors"
       >
-        <span className="font-semibold text-slate-900 text-left">{question}</span>
+        <span className="font-semibold text-slate-900 text-left">{t(questionKey)}</span>
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -33,7 +34,7 @@ const FAQItem = ({ question, answer, index }) => {
         className="overflow-hidden"
       >
         <div className="px-6 pb-4 text-slate-600 text-sm leading-relaxed">
-          {answer}
+          {t(answerKey)}
         </div>
       </motion.div>
     </motion.div>
@@ -41,63 +42,32 @@ const FAQItem = ({ question, answer, index }) => {
 };
 
 export default function FAQ() {
+  const { t } = useLanguage();
   const faqs = [
-    {
-      question: 'How do I get started on Seasoners?',
-      answer:
-        'Create an account with your email, verify it, and complete your profile. Add your phone number and optional government ID for verification. Browse listings, message hosts or employers, and start your seasonal adventure!',
-    },
-    {
-      question: 'Is it really safe to use Seasoners?',
-      answer:
-        'Yes! We verify all users, maintain trust scores, use digital agreements with e-signatures, and have dispute resolution built-in. Report any suspicious activity and we\'ll investigate immediately.',
-    },
-    {
-      question: 'What\'s the difference between Free, Searcher, and Lister plans?',
-      answer:
-        'Free: Browse and view profiles. Searcher (€7/month): Contact hosts/employers and message freely. Lister (€12/month): Create unlimited listings and manage agreements. All plans include safety features.',
-    },
-    {
-      question: 'How do agreements work?',
-      answer:
-        'Once you and a host/employer agree on terms, both sign a digital agreement that outlines expectations, duration, payment, and responsibilities. The agreement protects both parties and can be used if disputes arise.',
-    },
-    {
-      question: 'What if there\'s a problem with my stay or job?',
-      answer:
-        'Use our in-app messaging to resolve issues first. If needed, you can escalate to our dispute resolution team. We\'ll review both sides fairly and find a solution that protects everyone.',
-    },
-    {
-      question: 'Can I get a refund if I don\'t like the platform?',
-      answer:
-        'Yes! We offer a 90-day free trial (3 full months!) on all subscriptions. A card is required to start, but you will not be charged until day 91. Cancel anytime during the trial period at no cost by contacting support@seasoners.eu.',
-    },
-    {
-      question: 'How do trust scores work?',
-      answer:
-        'Your trust score increases when you verify information, complete stays/jobs successfully, and get positive feedback. It decreases if you cancel agreements or receive complaints. Higher scores get priority in search results.',
-    },
-    {
-      question: 'Is my data private?',
-      answer:
-        'Absolutely. We use industry-standard encryption, follow GDPR guidelines, and never sell your data. Your contact info is only shared with people you approve.',
-    },
+    { questionKey: 'faq1Q', answerKey: 'faq1A' },
+    { questionKey: 'faq2Q', answerKey: 'faq2A' },
+    { questionKey: 'faq3Q', answerKey: 'faq3A' },
+    { questionKey: 'faq4Q', answerKey: 'faq4A' },
+    { questionKey: 'faq5Q', answerKey: 'faq5A' },
+    { questionKey: 'faq6Q', answerKey: 'faq6A' },
+    { questionKey: 'faq7Q', answerKey: 'faq7A' },
+    { questionKey: 'faq8Q', answerKey: 'faq8A' },
   ];
 
   return (
     <section className="max-w-3xl mx-auto px-6 py-20">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-4">
-          Frequently Asked Questions
+          {t('faqSectionTitle')}
         </h2>
         <p className="text-slate-600 text-lg">
-          Everything you need to know to get started
+          {t('faqSectionDesc')}
         </p>
       </div>
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         {faqs.map((faq, index) => (
-          <FAQItem key={index} {...faq} index={index} />
+          <FAQItem key={index} questionKey={faq.questionKey} answerKey={faq.answerKey} index={index} t={t} />
         ))}
       </div>
 
@@ -108,13 +78,13 @@ export default function FAQ() {
         className="mt-12 text-center p-8 bg-sky-50 rounded-2xl border border-sky-200"
       >
         <p className="text-slate-700 mb-4">
-          Didn't find what you're looking for?
+          {t('faqContactText')}
         </p>
         <a
           href="mailto:support@seasoners.eu"
           className="inline-block px-6 py-3 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-colors"
         >
-          Contact Our Support Team
+          {t('faqContactBtn')}
         </a>
       </motion.div>
     </section>
