@@ -41,61 +41,61 @@ export default function HomePage() {
   
   const whatWeFight = [
     {
-      title: "❌ Corporate real estate platforms",
-      problem: "Middlemen taking 20-30% commissions. Massive fees that inflate prices.",
-      solution: "Direct connections. You keep 100% of the negotiation power.",
+      title: t('fightCorpTitle'),
+      problem: t('fightCorpProblem'),
+      solution: t('fightCorpSolution'),
     },
     {
-      title: "❌ Scammers and fake listings",
-      problem: "Unverified accounts and elaborate scams. You never know who's real.",
-      solution: "ID verification. Real people with real trust scores. Accountability matters.",
+      title: t('fightScamTitle'),
+      problem: t('fightScamProblem'),
+      solution: t('fightScamSolution'),
     },
     {
-      title: "❌ Complex contracts and hidden terms",
-      problem: "Legal jargon and surprise fees. Unclear what you're actually paying for.",
-      solution: "Simple, clear agreements between two people. A handshake, but digital.",
+      title: t('fightContractsTitle'),
+      problem: t('fightContractsProblem'),
+      solution: t('fightContractsSolution'),
     },
     {
-      title: "❌ Algorithm-driven isolation",
-      problem: "Platforms force communities. You find random strangers, not people like you.",
-      solution: "YOU choose who you connect with. Direct messaging. Real conversations.",
+      title: t('fightAlgoTitle'),
+      problem: t('fightAlgoProblem'),
+      solution: t('fightAlgoSolution'),
     },
   ];
 
   const differentiators = [
     {
-      title: "🤝 Simple handshake agreements",
-      body: "6-12 month leases with real people. No corporate landlords, no forced contracts. Just you and them, working it out.",
+      title: t('diffHandshakeTitle'),
+      body: t('diffHandshakeBody'),
     },
     {
-      title: "🛡️ Verified people, not platforms",
-      body: "ID and phone verification mean real accountability. Scammers get filtered out. Trust is earned, not faked.",
+      title: t('diffVerifiedTitle'),
+      body: t('diffVerifiedBody'),
     },
     {
-      title: "💰 Zero platform fees",
-      body: "You negotiate directly with owners and employers. No middlemen. No hidden commissions. What you agree to is what you pay.",
+      title: t('diffFeesTitle'),
+      body: t('diffFeesBody'),
     },
     {
-      title: "🌍 Travel and work freely",
-      body: "Live your dream. Work in Innsbruck for the ski season. Live in Barcelona for the summer. Stay as long as you want, move freely.",
+      title: t('diffTravelTitle'),
+      body: t('diffTravelBody'),
     },
   ];
 
   const howItWorks = [
     {
-      title: "Create your profile",
-      body: "Verify who you are. Build your real identity and trust score. Make an actual connection with hosts.",
-      action: { label: "Get started", href: "/auth/signin" },
+      title: t('stepCreateTitle'),
+      body: t('stepCreateBody'),
+      action: { label: t('stepCreateAction'), href: "/auth/signin" },
     },
     {
-      title: "Find people and places",
-      body: "Browse stays, jobs, and people looking for seasonal help. Message directly. No algorithms. No bots. Real conversations.",
-      action: { label: "Browse listings", href: "/stays" },
+      title: t('stepFindTitle'),
+      body: t('stepFindBody'),
+      action: { label: t('stepFindAction'), href: "/stays" },
     },
     {
-      title: "Agree and move forward",
-      body: "Talk it through. Agree on terms together. Simple, clear, done. No lawyers, no fees, no corporate middlemen.",
-      action: { label: "Start connecting", href: "/messages" },
+      title: t('stepAgreeTitle'),
+      body: t('stepAgreeBody'),
+      action: { label: t('stepAgreeAction'), href: "/messages" },
     },
   ];
   
@@ -157,9 +157,9 @@ export default function HomePage() {
       {/* What We're Fighting Against */}
       <section className="max-w-6xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
-          <p className="text-sm uppercase font-semibold text-sky-700 tracking-wide mb-2">Why Seasoners is different</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-sky-900 mb-4">We're bringing back simple seasonal living</h2>
-          <p className="text-lg text-slate-700 max-w-2xl mx-auto">No corporate middlemen. No agent fees. No scams. Just direct connections between real people.</p>
+          <p className="text-sm uppercase font-semibold text-sky-700 tracking-wide mb-2">{t('whyDifferentLabel')}</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-sky-900 mb-4">{t('whyDifferentTitle')}</h2>
+          <p className="text-lg text-slate-700 max-w-2xl mx-auto">{t('whyDifferentSubtitle')}</p>
         </div>
         
         <div className="grid md:grid-cols-2 gap-6">
@@ -172,8 +172,8 @@ export default function HomePage() {
               transition={{ delay: idx * 0.1 }}
             >
               <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
-              <p className="text-sm text-red-700 mb-3"><strong>The problem:</strong> {item.problem}</p>
-              <p className="text-sm text-emerald-700"><strong>Our solution:</strong> {item.solution}</p>
+              <p className="text-sm text-red-700 mb-3"><strong>{t('theProblem')}</strong> {item.problem}</p>
+              <p className="text-sm text-emerald-700"><strong>{t('ourSolution')}</strong> {item.solution}</p>
             </motion.div>
           ))}
         </div>
@@ -182,9 +182,9 @@ export default function HomePage() {
       {/* Safety & Legal Section */}
       <section className="max-w-6xl mx-auto px-6 py-16 bg-gradient-to-br from-emerald-50 to-sky-50 rounded-3xl">
         <div className="text-center mb-12">
-          <p className="text-sm uppercase font-semibold text-emerald-700 tracking-wide mb-2">Your Peace of Mind</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Safe, Legal, and Protected</h2>
-          <p className="text-lg text-slate-700 max-w-2xl mx-auto">Simple doesn't mean unprotected. We believe in direct connections WITH legal safeguards.</p>
+          <p className="text-sm uppercase font-semibold text-emerald-700 tracking-wide mb-2">{t('safetyLabel')}</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">{t('safetyTitle')}</h2>
+          <p className="text-lg text-slate-700 max-w-2xl mx-auto">{t('safetySubtitle')}</p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-6">
@@ -195,8 +195,8 @@ export default function HomePage() {
             transition={{ delay: 0 }}
           >
             <div className="text-4xl mb-3">🛡️</div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Verified Identities</h3>
-            <p className="text-sm text-slate-600">ID and phone verification for every user. No anonymity. Real accountability. Real safety.</p>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">{t('safetyVerifiedTitle')}</h3>
+            <p className="text-sm text-slate-600">{t('safetyVerifiedDesc')}</p>
           </motion.div>
 
           <motion.div 
@@ -206,8 +206,8 @@ export default function HomePage() {
             transition={{ delay: 0.1 }}
           >
             <div className="text-4xl mb-3">⚖️</div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Clear Terms & Conditions</h3>
-            <p className="text-sm text-slate-600">Legal protections are built in. You have <a href="/terms" className="text-sky-600 hover:text-sky-700 font-semibold">clear T&Cs</a> and <a href="/privacy" className="text-sky-600 hover:text-sky-700 font-semibold">privacy rights</a> that protect you.</p>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">{t('safetyTermsTitle')}</h3>
+            <p className="text-sm text-slate-600">{t('safetyTermsDesc')}</p>
           </motion.div>
 
           <motion.div 
@@ -217,13 +217,13 @@ export default function HomePage() {
             transition={{ delay: 0.2 }}
           >
             <div className="text-4xl mb-3">🔒</div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Dispute Resolution</h3>
-            <p className="text-sm text-slate-600">If something goes wrong, we have processes to help. Direct support and fair resolution between parties.</p>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">{t('safetyDisputeTitle')}</h3>
+            <p className="text-sm text-slate-600">{t('safetyDisputeDesc')}</p>
           </motion.div>
         </div>
 
         <div className="mt-12 p-6 bg-white rounded-2xl border-2 border-emerald-200">
-          <p className="text-center text-slate-700"><strong>Simple principles:</strong> Direct connections YES. Zero legal protection NO. We keep it simple but we keep you safe.</p>
+          <p className="text-center text-slate-700" dangerouslySetInnerHTML={{ __html: t('safetyPrincipleText') }}></p>
         </div>
       </section>
 
@@ -232,14 +232,14 @@ export default function HomePage() {
         <div className="rounded-3xl bg-white/80 backdrop-blur border shadow-sm p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
-              <p className="text-sm uppercase font-semibold text-sky-700 tracking-wide">How it works</p>
-              <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mt-1">Three simple steps to freedom</h2>
+              <p className="text-sm uppercase font-semibold text-sky-700 tracking-wide">{t('howItWorksLabel')}</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mt-1">{t('howItWorksTitle')}</h2>
             </div>
             <a
               href="/stays"
               className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-sky-600 text-white font-semibold hover:bg-sky-700 transition"
             >
-              Explore opportunities →
+              {t('howItWorksExplore')}
             </a>
           </div>
           <div className="grid md:grid-cols-3 gap-4 md:gap-6">
@@ -269,14 +269,14 @@ export default function HomePage() {
         <div className="rounded-3xl bg-white/80 backdrop-blur border shadow-sm p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
-              <p className="text-sm uppercase font-semibold text-sky-700 tracking-wide">What makes us different</p>
-              <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mt-1">Built for real seasonal living</h2>
+              <p className="text-sm uppercase font-semibold text-sky-700 tracking-wide">{t('diffLabel')}</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-sky-900 mt-1">{t('diffTitle')}</h2>
             </div>
             <a
               href="/list"
               className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition"
             >
-              Start listing →
+              {t('diffStartListing')}
             </a>
           </div>
           <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
