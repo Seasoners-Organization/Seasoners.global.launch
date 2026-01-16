@@ -123,7 +123,7 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Travel, live, and work where you dream
+          {t('heroTitle')}
         </motion.h1>
         <motion.p
           className="text-lg md:text-xl text-slate-700/90 max-w-2xl leading-relaxed mb-4"
@@ -131,7 +131,7 @@ export default function HomePage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          No corporate landlords. No agent fees. No scammers. Just people connecting directly for seasonal work and living — the way it used to be.
+          {t('heroSubtitle')}
         </motion.p>
         <motion.div
           className="flex flex-col sm:flex-row gap-3 justify-center"
@@ -143,13 +143,13 @@ export default function HomePage() {
             href="/stays"
             className="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-semibold transition"
           >
-            Find seasonal stays
+            {t('browseStays')}
           </a>
           <a
             href="/jobs"
             className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition"
           >
-            Find seasonal work
+            {t('exploreJobs')}
           </a>
         </motion.div>
       </section>
