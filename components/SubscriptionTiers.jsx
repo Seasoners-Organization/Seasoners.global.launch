@@ -1,8 +1,9 @@
 "use client";
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useLanguage } from './LanguageProvider';
 
-const SubscriptionPlan = ({ name, price, period, features, highlighted, cta }) => (
+const SubscriptionPlan = ({ nameKey, price, period, features, highlighted, ctaKey, t }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -16,13 +17,13 @@ const SubscriptionPlan = ({ name, price, period, features, highlighted, cta }) =
     {highlighted && (
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <span className="bg-sky-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-          MOST POPULAR
+          {t('mostPopular')}
         </span>
       </div>
     )}
 
     <div className="mb-6">
-      <h3 className="text-2xl font-bold text-slate-900 mb-2">{name}</h3>
+      <h3 className="text-2xl font-bold text-slate-900 mb-2">{t(nameKey)}</h3>
       <div className="flex items-baseline gap-1">
         <span className="text-4xl font-bold text-sky-600">€{price}</span>
         <span className="text-slate-600 text-sm">/{period}</span>
@@ -33,7 +34,7 @@ const SubscriptionPlan = ({ name, price, period, features, highlighted, cta }) =
       {features.map((feature, index) => (
         <li key={index} className="flex items-center gap-3 text-sm text-slate-700">
           <span className="text-emerald-500 font-bold">✓</span>
-          <span>{feature}</span>
+          <span>{t(feature)}</span>
         </li>
       ))}
     </ul>
@@ -45,54 +46,55 @@ const SubscriptionPlan = ({ name, price, period, features, highlighted, cta }) =
           : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
       }`}
     >
-      {cta}
+      {t(ctaKey)}
     </button>
   </motion.div>
 );
 
 export default function SubscriptionTiers() {
+  const { t } = useLanguage();
   const plans = [
     {
-      name: 'Free',
+      nameKey: 'planFreeName',
       price: 0,
       period: 'forever',
-      cta: 'Start Exploring',
+      ctaKey: 'planFreeBtn',
       features: [
-        'Browse verified listings',
-        'View trusted member profiles',
-        'Transparent trust scores',
-        'Save up to 5 favorites',
-        'Access to community guidelines',
+        'planFreeFeat1',
+        'planFreeFeat2',
+        'planFreeFeat3',
+        'planFreeFeat4',
+        'planFreeFeat5',
       ],
     },
     {
-      name: 'Searcher',
+      nameKey: 'planSearcherName',
       price: 7,
       period: 'month',
       highlighted: true,
-      cta: 'Unlock Searcher Access',
+      ctaKey: 'planSearcherBtn',
       features: [
-        'Everything in Free, plus:',
-        'Message hosts & employers',
-        'Unlimited messaging',
-        'Save unlimited favorites',
-        'Priority support',
-        'Advanced search filters',
+        'planSearcherFeat1',
+        'planSearcherFeat2',
+        'planSearcherFeat3',
+        'planSearcherFeat4',
+        'planSearcherFeat5',
+        'planSearcherFeat6',
       ],
     },
     {
-      name: 'Lister',
+      nameKey: 'planListerName',
       price: 12,
       period: 'month',
-      cta: 'Unlock Lister Access',
+      ctaKey: 'planListerBtn',
       features: [
-        'Everything in Searcher, plus:',
-        'Create unlimited listings',
-        'Featured listing badge',
-        'Request secure agreements',
-        'Applicant messaging',
-        'Performance analytics',
-        'Early access to new tools',
+        'planListerFeat1',
+        'planListerFeat2',
+        'planListerFeat3',
+        'planListerFeat4',
+        'planListerFeat5',
+        'planListerFeat6',
+        'planListerFeat7',
       ],
     },
   ];
@@ -101,16 +103,16 @@ export default function SubscriptionTiers() {
     <section className="max-w-6xl mx-auto px-6 py-20">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-4">
-          Simple, Transparent Pricing
+          {t('pricingSectionTitle')}
         </h2>
         <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-          Choose the plan that works for you. All plans include verified user access and safety features.
+          {t('pricingSectionDesc')}
         </p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
         {plans.map((plan, index) => (
-          <SubscriptionPlan key={index} {...plan} />
+          <SubscriptionPlan key={index} nameKey={plan.nameKey} price={plan.price} period={plan.period} features={plan.features} highlighted={plan.highlighted} ctaKey={plan.ctaKey} t={t} />
         ))}
       </div>
 
@@ -120,12 +122,12 @@ export default function SubscriptionTiers() {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="mt-16 bg-blue-50 rounded-2xl border-2 border-blue-200 p-8 text-center"
       >
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">Premium ID Verification</h3>
+        <h3 className="text-xl font-semibold text-slate-900 mb-2">{t('premiumIDTitle')}</h3>
         <p className="text-slate-600 mb-4">
-          Unlock premium features like advanced verification, priority listings, and exclusive matches. Coming soon!
+          {t('premiumIDDesc')}
         </p>
         <p className="text-sm text-slate-500">
-          Early adopters will get lifetime discounts on premium tier
+          {t('premiumIDEarlyBird')}
         </p>
       </motion.div>
     </section>
