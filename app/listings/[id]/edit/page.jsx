@@ -43,7 +43,7 @@ export default function EditListing() {
       const data = await res.json();
       
       if (!res.ok) {
-        throw new Error(data.error || "Failed to load listing");
+        throw new Error(data.error || t('failedToLoadListing'));
       }
 
       setListing(data);
@@ -76,10 +76,10 @@ export default function EditListing() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to update listing");
+        throw new Error(data.error || t('failedToUpdateListing'));
       }
 
-      setSuccess("Listing updated successfully!");
+      setSuccess(t('listingUpdatedSuccess'));
       setTimeout(() => {
         router.push(`/listings/${listingId}`);
       }, 1500);
@@ -102,7 +102,7 @@ export default function EditListing() {
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto mb-4"></div>
-            <p className="text-slate-600">Loading...</p>
+            <p className="text-slate-600">{t('loading')}</p>
           </div>
         </div>
         <Footer />
@@ -121,7 +121,7 @@ export default function EditListing() {
               onClick={() => router.push("/profile")}
               className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700"
             >
-              Back to Profile
+              {t('backToProfile')}
             </button>
           </div>
         </div>
@@ -136,10 +136,10 @@ export default function EditListing() {
       <section className="max-w-3xl mx-auto px-6 py-16 min-h-screen">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold text-sky-900 mb-2">
-            {t('editListing') || 'Edit Listing'}
+            {t('editListing')}
           </h1>
           <p className="text-slate-700">
-            Update your listing details
+            {t('updateListingDetails')}
           </p>
         </div>
 
@@ -158,7 +158,7 @@ export default function EditListing() {
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-6">
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-              {t('title') || 'Title'}
+              {t('titleLabel')}
             </label>
             <input
               type="text"
@@ -168,13 +168,13 @@ export default function EditListing() {
               onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-              placeholder="Enter listing title"
+              placeholder={t('titlePlaceholder')}
             />
           </div>
 
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-              {t('description') || 'Description'}
+              {t('descriptionLabel')}
             </label>
             <textarea
               id="description"
@@ -184,13 +184,13 @@ export default function EditListing() {
               required
               rows={6}
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-              placeholder="Describe your listing"
+              placeholder={t('descriptionPlaceholder')}
             />
           </div>
 
           <div>
             <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
-              {t('priceLabel') || 'Price (€/month)'}
+              {t('pricePerMonth')}
             </label>
             <input
               type="number"
@@ -208,7 +208,7 @@ export default function EditListing() {
 
           <div>
             <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
-              {t('city') || 'City/Location'}
+              {t('cityLocation')}
             </label>
             <input
               type="text"
@@ -217,7 +217,7 @@ export default function EditListing() {
               value={formData.city}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-              placeholder="Enter city or location"
+              placeholder={t('cityLocationPlaceholder')}
             />
           </div>
 
@@ -227,14 +227,14 @@ export default function EditListing() {
               disabled={saving}
               className="flex-1 bg-gradient-to-r from-sky-600 to-amber-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-sky-700 hover:to-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
-              {saving ? t('saving') || 'Saving...' : t('saveChanges') || 'Save Changes'}
+              {saving ? t('saving') : t('saveChanges')}
             </button>
             <button
               type="button"
               onClick={() => router.push(`/listings/${listingId}`)}
               className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
             >
-              {t('cancel') || 'Cancel'}
+              {t('cancel')}
             </button>
           </div>
         </form>
