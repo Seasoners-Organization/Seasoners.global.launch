@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useLanguage } from './LanguageProvider';
 
-const SubscriptionPlan = ({ nameKey, price, period, features, highlighted, ctaKey, t }) => (
+const SubscriptionPlan = ({ nameKey, price, period, features, highlighted, ctaKey, ctaHref, t }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -39,15 +39,16 @@ const SubscriptionPlan = ({ nameKey, price, period, features, highlighted, ctaKe
       ))}
     </ul>
 
-    <button
-      className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+    <a
+      href={ctaHref}
+      className={`block w-full py-3 rounded-lg font-semibold transition-colors text-center ${
         highlighted
           ? 'bg-sky-600 text-white hover:bg-sky-700'
           : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
       }`}
     >
       {t(ctaKey)}
-    </button>
+    </a>
   </motion.div>
 );
 
@@ -59,6 +60,7 @@ export default function SubscriptionTiers() {
       price: 0,
       period: 'forever',
       ctaKey: 'planFreeBtn',
+      ctaHref: '/auth/signin',
       features: [
         'planFreeFeat1',
         'planFreeFeat2',
@@ -73,6 +75,7 @@ export default function SubscriptionTiers() {
       period: 'month',
       highlighted: true,
       ctaKey: 'planSearcherBtn',
+      ctaHref: '/subscribe?tier=SEARCHER',
       features: [
         'planSearcherFeat1',
         'planSearcherFeat2',
@@ -87,6 +90,7 @@ export default function SubscriptionTiers() {
       price: 12,
       period: 'month',
       ctaKey: 'planListerBtn',
+      ctaHref: '/subscribe?tier=LISTER',
       features: [
         'planListerFeat1',
         'planListerFeat2',
@@ -108,11 +112,14 @@ export default function SubscriptionTiers() {
         <p className="text-slate-600 text-lg max-w-2xl mx-auto">
           {t('pricingSectionDesc')}
         </p>
+        <p className="text-sm text-emerald-700 font-semibold mt-4">
+          {t('freeTrialBanner')}
+        </p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
         {plans.map((plan, index) => (
-          <SubscriptionPlan key={index} nameKey={plan.nameKey} price={plan.price} period={plan.period} features={plan.features} highlighted={plan.highlighted} ctaKey={plan.ctaKey} t={t} />
+          <SubscriptionPlan key={index} nameKey={plan.nameKey} price={plan.price} period={plan.period} features={plan.features} highlighted={plan.highlighted} ctaKey={plan.ctaKey} ctaHref={plan.ctaHref} t={t} />
         ))}
       </div>
 
