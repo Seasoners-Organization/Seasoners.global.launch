@@ -4,24 +4,26 @@ import Footer from "../../../components/Footer";
 import AnimatedPage from "../../../components/AnimatedPage";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useLanguage } from "../../../components/LanguageProvider";
 
 export default function PaymentHelp() {
+  const { t } = useLanguage();
   const faqs = [
     {
-      q: "What payment methods do you accept?",
-      a: "We accept all major credit and debit cards (Visa, Mastercard, American Express), as well as various local payment methods through Stripe. All payments are processed securely."
+      q: t('helpPaymentsQ1'),
+      a: t('helpPaymentsA1')
     },
     {
-      q: "When will I be charged for my subscription?",
-      a: "A card is required to start your 90-day free trial. You won't be charged until the trial ends. If you subscribe monthly, you'll be charged on day 91 and then on the same day each month. Annual subscriptions are charged once per year."
+      q: t('helpPaymentsQ2'),
+      a: t('helpPaymentsA2')
     },
     {
-      q: "Can I get a refund?",
-      a: "You can cancel anytime during your 90-day free trial at no cost. After billing starts, subscriptions are non-refundable for the current billing period, but you can cancel to prevent future charges."
+      q: t('helpPaymentsQ3'),
+      a: t('helpPaymentsA3')
     },
     {
-      q: "How do I update my payment method?",
-      a: "Go to Profile → Settings → Subscription → Update Payment Method. Enter your new card details. Your next payment will use the updated method."
+      q: t('helpPaymentsQ4'),
+      a: t('helpPaymentsA4')
     },
     {
       q: "Why was my payment declined?",
@@ -72,10 +74,10 @@ export default function PaymentHelp() {
             >
               <div className="text-6xl mb-4">💰</div>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                Payment Support
+                {t('helpPaymentsTitle')}
               </h1>
               <p className="text-xl text-gray-600">
-                Billing, subscriptions, and payment issues
+                {t('helpPaymentsSubtitle')}
               </p>
             </motion.div>
 
@@ -84,7 +86,7 @@ export default function PaymentHelp() {
               href="/help"
               className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8"
             >
-              ← Back to Help Center
+              ← {t('helpBackToCenter')}
             </Link>
 
             {/* FAQs */}
@@ -115,10 +117,10 @@ export default function PaymentHelp() {
               className="mt-12 bg-green-50 rounded-lg p-8 text-center"
             >
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Secure Payment Processing
+                {t('helpPaymentsSecure')}
               </h3>
               <p className="text-gray-600">
-                All payments are processed securely through Stripe. We never store your complete credit card information.
+                {t('helpPaymentsSecureDesc')}
               </p>
             </motion.div>
 
@@ -130,16 +132,16 @@ export default function PaymentHelp() {
               className="mt-8 bg-blue-50 rounded-lg p-8 text-center"
             >
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Payment issue not resolved?
+                {t('helpPaymentsNotResolved')}
               </h3>
               <p className="text-gray-600 mb-4">
-                Contact our billing team for personalized assistance
+                {t('helpPaymentsContactBilling')}
               </p>
               <a
                 href="mailto:support@seasoners.eu"
                 className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
               >
-                Contact Billing Support
+                {t('helpContactBillingSupport')}
               </a>
             </motion.div>
           </div>

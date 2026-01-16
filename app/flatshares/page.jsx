@@ -66,10 +66,10 @@ export default function FlatsharesPage() {
           {/* Header */}
           <div className="mb-6 sm:mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2 sm:mb-3">
-              Flatshares
+              {t('flatsharesTitle')}
             </h1>
             <p className="text-base sm:text-lg text-slate-600">
-              Find your next shared apartment with compatible roommates
+              {t('flatsharesSubtitle')}
             </p>
           </div>
 
@@ -82,12 +82,12 @@ export default function FlatsharesPage() {
               ) : filtered.length === 0 ? (
                 <EmptyState
                   icon="🏠"
-                  title="Be the First to List a Flatshare!"
-                  description="We're building the community for seasonal flatshares. List your place now and help other travelers find their perfect home away from home."
-                  actionLabel="List Your Flatshare"
+                  title={t('flatsharesEmptyTitle')}
+                  description={t('flatsharesEmptyDesc')}
+                  actionLabel={t('flatsharesListYourPlace')}
                   actionHref="/list"
                   showSecondaryAction={true}
-                  secondaryActionLabel="Explore"
+                  secondaryActionLabel={t('exploreLabel')}
                   secondaryActionOnClick={() => window.location.reload()}
                 />
               ) : (

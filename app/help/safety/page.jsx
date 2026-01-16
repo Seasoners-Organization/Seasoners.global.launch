@@ -4,8 +4,10 @@ import Footer from "../../../components/Footer";
 import AnimatedPage from "../../../components/AnimatedPage";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useLanguage } from "../../../components/LanguageProvider";
 
 export default function SafetyHelp() {
+  const { t } = useLanguage();
   const safetyTips = [
     {
       title: "Before You Meet",
@@ -110,10 +112,10 @@ export default function SafetyHelp() {
               className="text-center mb-12"
             >
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                Safety Resources
+                {t('helpSafetyTitle')}
               </h1>
               <p className="text-xl text-gray-600">
-                Stay safe while using Seasoners
+                {t('helpSafetySubtitle')}
               </p>
             </motion.div>
 
@@ -122,7 +124,7 @@ export default function SafetyHelp() {
               href="/help"
               className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8"
             >
-              ← Back to Help Center
+              ← {t('helpBackToCenter')}
             </Link>
 
             {/* Safety Tips */}
@@ -162,22 +164,22 @@ export default function SafetyHelp() {
             >
               <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
                 <span className="text-2xl mr-2">🚨</span>
-                Emergency Contacts
+                {t('helpSafetyEmergency')}
               </h3>
               <div className="grid md:grid-cols-2 gap-4 text-gray-700">
                 <div>
-                  <p className="font-semibold">Austria Emergency Services:</p>
+                  <p className="font-semibold">{t('helpSafetyEmergencyAustria')}</p>
                   <p>Police: 133</p>
                   <p>Ambulance: 144</p>
                   <p>Fire: 122</p>
                   <p>EU Emergency: 112</p>
                 </div>
                 <div>
-                  <p className="font-semibold">Seasoners Safety Team:</p>
+                  <p className="font-semibold">{t('helpSafetyEmergencySeasoners')}</p>
                   <p>Email: safety@seasoners.eu</p>
                   <p>Response time: Within 2 hours</p>
                   <p className="text-sm mt-2 text-gray-600">
-                    For life-threatening emergencies, always contact local authorities first
+                    {t('helpSafetyEmergencyNote')}
                   </p>
                 </div>
               </div>
@@ -185,7 +187,7 @@ export default function SafetyHelp() {
 
             {/* FAQs */}
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Safety FAQs
+              {t('helpSafetyFAQs')}
             </h2>
             <div className="space-y-4 mb-12">
               {faqs.map((faq, index) => (
@@ -214,16 +216,16 @@ export default function SafetyHelp() {
               className="bg-orange-50 rounded-lg p-8 text-center"
             >
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                See something concerning?
+                {t('helpSafetyReportConcern')}
               </h3>
               <p className="text-gray-600 mb-4">
-                Report safety issues immediately - we take every report seriously
+                {t('helpSafetyReportDesc')}
               </p>
               <a
                 href="mailto:safety@seasoners.eu"
                 className="inline-block bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition"
               >
-                Report Safety Concern
+                {t('helpSafetyReportButton')}
               </a>
             </motion.div>
           </div>

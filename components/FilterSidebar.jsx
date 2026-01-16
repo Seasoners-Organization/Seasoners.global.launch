@@ -3,6 +3,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { getCountriesBySeason, getRegionsByCountry, getLocations, applyFilters, getCountryName, prettyRegionName } from '../utils/geo';
 import { SEASONS } from '../utils/destinations';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useLanguage } from './LanguageProvider';
 
 // Debounce helper
 function useDebouncedEffect(effect, deps, delay) {
@@ -13,6 +14,7 @@ function useDebouncedEffect(effect, deps, delay) {
 }
 
 export default function FilterSidebar({ listings, onFiltered, context = 'stays' }) {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -140,7 +142,7 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
           <button onClick={() => setIndustry('all')} className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Industry: {industry.replace('_',' ').toLowerCase()} ×</button>
         )}
         {hasAny && (
-          <button onClick={resetAll} className="px-2 py-1 text-xs rounded-full bg-slate-200 text-slate-700">Clear all</button>
+          <button onClick={resetAll} className="px-2 py-1 text-xs rounded-full bg-slate-200 text-slate-700">{t('filterClearAll')}</button>
         )}
       </div>
       {/* Mobile compact summary */}
@@ -158,29 +160,29 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
         ].filter(Boolean).join(' · ')}</div>
       )}
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-slate-700">Filters</h2>
-        <button onClick={resetAll} className="text-xs text-sky-700 hover:underline" aria-label="Reset all filters">Reset</button>
+        <h2 className="text-sm font-semibold text-slate-700">{t('filterSidebarTitle')}</h2>
+        <button onClick={resetAll} className="text-xs text-sky-700 hover:underline" aria-label="Reset all filters">{t('filterReset')}</button>
       </div>
 
       {/* Availability Section */}
       <fieldset className="space-y-3 border rounded-lg p-4 border-slate-200">
-        <legend className="text-xs font-medium text-slate-500 px-1">Season & Location</legend>
+        <legend className="text-xs font-medium text-slate-500 px-1">{t('filterSeasonLocation')}</legend>
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium text-slate-600">Season
+          <label className="text-xs font-medium text-slate-600">{t('filterSeason')}
             <select aria-label="Season" value={season} onChange={e => setSeason(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
-              <option value="all">All</option>
+              <option value="all">{t('filterAll')}</option>
               {SEASONS.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </label>
-          <label className="text-xs font-medium text-slate-600">Country
+          <label className="text-xs font-medium text-slate-600">{t('filterCountry')}
             <select aria-label="Country" value={country} onChange={e => setCountry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
-              <option value="all">All</option>
+              <option value="all">{t('filterAll')}</option>
               {countries.map(c => <option key={c} value={c}>{getCountryName(c)}</option>)}
             </select>
           </label>
-          <label className="text-xs font-medium text-slate-600">Region
+          <label className="text-xs font-medium text-slate-600">{t('filterRegion')}
             <select aria-label="Region" value={region} onChange={e => setRegion(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" disabled={country==='all' || regions.length===0}>
-              <option value="all">{country==='all' ? 'All' : 'Select region'}</option>
+              <option value="all">{country==='all' ? t('filterAll') : t('filterSelectRegion')}</option>
               {regions.map(r => <option key={r} value={r}>{prettyRegionName(r)}</option>)}
             </select>
           </label>
@@ -189,12 +191,12 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
 
       {/* Economic Section */}
       <fieldset className="space-y-3 border rounded-lg p-4 border-slate-200">
-        <legend className="text-xs font-medium text-slate-500 px-1">Economics</legend>
+        <legend className="text-xs font-medium text-slate-500 px-1">{t('filterEconomics')}</legend>
         <div className="grid grid-cols-2 gap-2">
-          <label className="text-xs font-medium text-slate-600">Price Min
+          <label className="text-xs font-medium text-slate-600">{t('filterPriceMin')}
             <input aria-label="Price minimum" type="number" min="0" value={priceMin} onChange={e=>setPriceMin(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
           </label>
-          <label className="text-xs font-medium text-slate-600">Price Max
+          <label className="text-xs font-medium text-slate-600">{t('filterPriceMax')}
             <input aria-label="Price maximum" type="number" min="0" value={priceMax} onChange={e=>setPriceMax(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
           </label>
         </div>
@@ -203,12 +205,12 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
       {/* Property Section */}
       {showProperty && (
         <fieldset className="space-y-3 border rounded-lg p-4 border-slate-200">
-          <legend className="text-xs font-medium text-slate-500 px-1">Property</legend>
+          <legend className="text-xs font-medium text-slate-500 px-1">{t('filterProperty')}</legend>
           <div className="grid grid-cols-2 gap-2">
-            <label className="text-xs font-medium text-slate-600">Bedrooms
+            <label className="text-xs font-medium text-slate-600">{t('filterBedrooms')}
               <input aria-label="Bedrooms" type="number" min="0" value={bedrooms} onChange={e=>setBedrooms(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
             </label>
-            <label className="text-xs font-medium text-slate-600">Roommates
+            <label className="text-xs font-medium text-slate-600">{t('filterRoommates')}
               <input aria-label="Roommates" type="number" min="0" value={roommates} onChange={e=>setRoommates(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
             </label>
           </div>
@@ -218,27 +220,27 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
       {/* Jobs Section */}
       {showJobs && (
         <fieldset className="space-y-3 border rounded-lg p-4 border-slate-200">
-          <legend className="text-xs font-medium text-slate-500 px-1">Jobs</legend>
+          <legend className="text-xs font-medium text-slate-500 px-1">{t('filterJobs')}</legend>
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-medium text-slate-600">Job Type
+            <label className="text-xs font-medium text-slate-600">{t('filterJobType')}
               <select aria-label="Job type" value={jobType} onChange={e=>setJobType(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
-                <option value="all">All</option>
-                <option value="FULL_TIME">Full Time</option>
-                <option value="PART_TIME">Part Time</option>
-                <option value="SEASONAL">Seasonal</option>
-                <option value="TEMPORARY">Temporary</option>
+                <option value="all">{t('filterAll')}</option>
+                <option value="FULL_TIME">{t('filterJobFullTime')}</option>
+                <option value="PART_TIME">{t('filterJobPartTime')}</option>
+                <option value="SEASONAL">{t('filterJobSeasonal')}</option>
+                <option value="TEMPORARY">{t('filterJobTemporary')}</option>
               </select>
             </label>
-            <label className="text-xs font-medium text-slate-600">Industry
+            <label className="text-xs font-medium text-slate-600">{t('filterIndustry')}
               <select aria-label="Industry" value={industry} onChange={e=>setIndustry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
-                <option value="all">All</option>
-                <option value="HOSPITALITY">Hospitality</option>
-                <option value="FOOD_SERVICE">Food Service</option>
-                <option value="RETAIL">Retail</option>
-                <option value="OUTDOOR">Outdoor</option>
-                <option value="TRAVEL">Travel</option>
-                <option value="MAINTENANCE">Maintenance</option>
-                <option value="OTHER">Other</option>
+                <option value="all">{t('filterAll')}</option>
+                <option value="HOSPITALITY">{t('filterIndustryHospitality')}</option>
+                <option value="FOOD_SERVICE">{t('filterIndustryFoodService')}</option>
+                <option value="RETAIL">{t('filterIndustryRetail')}</option>
+                <option value="OUTDOOR">{t('filterIndustryOutdoor')}</option>
+                <option value="TRAVEL">{t('filterIndustryTravel')}</option>
+                <option value="MAINTENANCE">{t('filterIndustryMaintenance')}</option>
+                <option value="OTHER">{t('filterIndustryOther')}</option>
               </select>
             </label>
           </div>

@@ -4,24 +4,26 @@ import Footer from "../../../components/Footer";
 import AnimatedPage from "../../../components/AnimatedPage";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useLanguage } from "../../../components/LanguageProvider";
 
 export default function AccountHelp() {
+  const { t } = useLanguage();
   const faqs = [
     {
-      q: "How do I reset my password?",
-      a: "Click 'Forgot Password' on the sign-in page. Enter your email address and we'll send you a secure reset link. If you don't receive the email within 5 minutes, check your spam folder."
+      q: t('helpAccountQ1'),
+      a: t('helpAccountA1')
     },
     {
-      q: "How do I update my profile information?",
-      a: "Go to your Profile page and click 'Edit Profile'. You can update your name, bio, location, languages, and profile picture. Remember to click 'Save Changes' when you're done."
+      q: t('helpAccountQ2'),
+      a: t('helpAccountA2')
     },
     {
-      q: "How do I verify my email address?",
-      a: "After signing up, check your email for a verification link. Click the link to verify your email. If you didn't receive it, go to your profile and click 'Resend Verification Email'."
+      q: t('helpAccountQ3'),
+      a: t('helpAccountA3')
     },
     {
-      q: "How do I verify my phone number?",
-      a: "Go to your Profile → Settings → Phone Verification. Enter your phone number and click 'Send Code'. Enter the 6-digit code you receive via SMS to complete verification."
+      q: t('helpAccountQ4'),
+      a: t('helpAccountA4')
     },
     {
       q: "How do I get identity verified?",
@@ -63,10 +65,10 @@ export default function AccountHelp() {
               className="text-center mb-12"
             >
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                Account Help
+                {t('helpAccountTitle')}
               </h1>
               <p className="text-xl text-gray-600">
-                Manage your account, security, and verification
+                {t('helpAccountSubtitle')}
               </p>
             </motion.div>
 
@@ -75,7 +77,7 @@ export default function AccountHelp() {
               href="/help"
               className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8"
             >
-              ← Back to Help Center
+              ← {t('helpBackToCenter')}
             </Link>
 
             {/* FAQs */}
@@ -106,7 +108,7 @@ export default function AccountHelp() {
               className="mt-12 bg-blue-50 rounded-lg p-8 text-center"
             >
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Still need help?
+                {t('helpStillNeedHelp')}
               </h3>
               <p className="text-gray-600 mb-4">
                 Our support team is here to assist you
@@ -115,7 +117,7 @@ export default function AccountHelp() {
                 href="mailto:support@seasoners.eu"
                 className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
               >
-                Contact Support
+                {t('helpContactSupport')}
               </a>
             </motion.div>
           </div>

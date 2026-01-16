@@ -4,16 +4,18 @@ import Footer from "../../../components/Footer";
 import AnimatedPage from "../../../components/AnimatedPage";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useLanguage } from "../../../components/LanguageProvider";
 
 export default function ListingHelp() {
+  const { t } = useLanguage();
   const faqs = [
     {
-      q: "Why was my listing rejected?",
-      a: "Listings may be rejected for: incomplete information, inappropriate content, fake photos, discriminatory language, or violating our Terms of Service. Check your email for specific feedback from our moderation team."
+      q: t('helpListingsQ1'),
+      a: t('helpListingsA1')
     },
     {
-      q: "How do I edit my listing?",
-      a: "Go to your Profile → My Listings. Click on the listing you want to edit, then click 'Edit'. Make your changes and click 'Save'. Changes are reviewed before going live."
+      q: t('helpListingsQ2'),
+      a: t('helpListingsA2')
     },
     {
       q: "How do I delete my listing?",
@@ -63,10 +65,10 @@ export default function ListingHelp() {
               className="text-center mb-12"
             >
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                Listing Issues
+                {t('helpListingsTitle')}
               </h1>
               <p className="text-xl text-gray-600">
-                Create, manage, and optimize your listings
+                {t('helpListingsSubtitle')}
               </p>
             </motion.div>
 
@@ -75,7 +77,7 @@ export default function ListingHelp() {
               href="/help"
               className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8"
             >
-              ← Back to Help Center
+              ← {t('helpBackToCenter')}
             </Link>
 
             {/* FAQs */}
@@ -106,11 +108,11 @@ export default function ListingHelp() {
               className="mt-12 bg-green-50 rounded-lg p-8"
             >
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                💡 Pro Tips for Great Listings
+                {t('helpListingsProTips')}
               </h3>
               <ul className="space-y-2 text-gray-600">
-                <li>• Use natural lighting for photos</li>
-                <li>• Be specific about dates and requirements</li>
+                <li>• {t('helpListingsTip1')}</li>
+                <li>• {t('helpListingsTip2')}</li>
                 <li>• Respond to inquiries within 24 hours</li>
                 <li>• Update your listing regularly to boost visibility</li>
                 <li>• Be honest about limitations and expectations</li>
@@ -125,7 +127,7 @@ export default function ListingHelp() {
               className="mt-8 bg-blue-50 rounded-lg p-8 text-center"
             >
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Need more help with your listing?
+                {t('helpNeedMoreHelp')}
               </h3>
               <p className="text-gray-600 mb-4">
                 Our team can review your listing and provide personalized feedback
@@ -134,7 +136,7 @@ export default function ListingHelp() {
                 href="mailto:support@seasoners.eu"
                 className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
               >
-                Contact Support
+                {t('helpContactSupport')}
               </a>
             </motion.div>
           </div>
