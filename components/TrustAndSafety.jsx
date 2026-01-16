@@ -1,6 +1,7 @@
 "use client";
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useLanguage } from './LanguageProvider';
 
 const TrustFeature = ({ icon, title, description }) => (
   <motion.div
@@ -17,36 +18,37 @@ const TrustFeature = ({ icon, title, description }) => (
 );
 
 export default function TrustAndSafety() {
+  const { t } = useLanguage();
   const trustFeatures = [
     {
       icon: '',
-      title: 'Email Verification Required',
-      description: 'All members verify their identity before accessing the platform.',
+      titleKey: 'trustEmailVerifyTitle',
+      descKey: 'trustEmailVerifyDesc',
     },
     {
       icon: '',
-      title: 'Phone Verification Available',
-      description: 'Optional phone verification strengthens your profile and builds member confidence.',
+      titleKey: 'trustPhoneVerifyTitle',
+      descKey: 'trustPhoneVerifyDesc',
     },
     {
       icon: '',
-      title: 'Identity Verification (Coming Soon)',
-      description: 'Government ID verification for additional security and platform trust.',
+      titleKey: 'trustIDVerifyTitle',
+      descKey: 'trustIDVerifyDesc',
     },
     {
       icon: '⭐',
-      title: 'Public Trust Scores',
-      description: 'Transparent trust metrics built from verified interactions and community feedback.',
+      titleKey: 'trustScoresTitle',
+      descKey: 'trustScoresDesc',
     },
     {
       icon: '📋',
-      title: 'Legally Binding Agreements',
-      description: 'Every arrangement is protected by clear, verified agreements with secure e-signatures.',
+      titleKey: 'trustAgreementsTitle',
+      descKey: 'trustAgreementsDesc',
     },
     {
       icon: '🛡️',
-      title: 'Dispute Resolution',
-      description: 'Fair, transparent process to resolve disputes and protect all parties involved.',
+      titleKey: 'trustDisputeTitle',
+      descKey: 'trustDisputeDesc',
     },
   ];
 
@@ -60,15 +62,15 @@ export default function TrustAndSafety() {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-4">
-            Safety & Trust Built In
+            {t('trustSectionTitle')}
           </h2>
           <p className="text-slate-600 text-lg mb-8">
-            We've made trust and safety the foundation of Seasoners. Every feature is designed to protect you and build confidence in every interaction.
+            {t('trustSectionDesc')}
           </p>
 
           <div className="space-y-6">
             {trustFeatures.map((feature, index) => (
-              <TrustFeature key={index} {...feature} />
+              <TrustFeature key={index} icon={feature.icon} title={t(feature.titleKey)} description={t(feature.descKey)} />
             ))}
           </div>
 
@@ -76,7 +78,7 @@ export default function TrustAndSafety() {
             href="/agreement"
             className="inline-block mt-8 px-6 py-3 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-colors"
           >
-            Learn About Our Agreements →
+            {t('learnAgreementsBtn')} →
           </Link>
         </motion.div>
 
@@ -91,8 +93,8 @@ export default function TrustAndSafety() {
             {/* Trust Score Circle */}
             <div className="text-center p-6 bg-white rounded-2xl border border-sky-100">
               <div className="text-5xl font-bold text-sky-600 mb-2">85</div>
-              <p className="text-slate-600 font-medium">Average Trust Score</p>
-              <p className="text-xs text-slate-500 mt-2">Users who complete verification</p>
+              <p className="text-slate-600 font-medium">{t('avgTrustScore')}</p>
+              <p className="text-xs text-slate-500 mt-2">{t('avgTrustScoreDesc')}</p>
             </div>
 
             {/* Verification badges */}
@@ -100,7 +102,7 @@ export default function TrustAndSafety() {
               <div className="flex items-center gap-2 p-3 bg-white rounded-lg border border-emerald-200">
                 <span className="text-2xl"></span>
                 <div>
-                  <p className="font-semibold text-slate-900 text-sm">Email Verified</p>
+                  <p className="font-semibold text-slate-900 text-sm">{t('emailVerified')}</p>
                   <p className="text-xs text-slate-600">100% of users</p>
                 </div>
               </div>
@@ -108,7 +110,7 @@ export default function TrustAndSafety() {
               <div className="flex items-center gap-2 p-3 bg-white rounded-lg border border-emerald-200">
                 <span className="text-2xl"></span>
                 <div>
-                  <p className="font-semibold text-slate-900 text-sm">Phone Verified</p>
+                  <p className="font-semibold text-slate-900 text-sm">{t('phoneVerified')}</p>
                   <p className="text-xs text-slate-600">92% of active users</p>
                 </div>
               </div>
@@ -116,7 +118,7 @@ export default function TrustAndSafety() {
               <div className="flex items-center gap-2 p-3 bg-white rounded-lg border border-emerald-200">
                 <span className="text-2xl"></span>
                 <div>
-                  <p className="font-semibold text-slate-900 text-sm">ID Verified</p>
+                  <p className="font-semibold text-slate-900 text-sm">{t('idVerified')}</p>
                   <p className="text-xs text-slate-600">78% of premium users</p>
                 </div>
               </div>
@@ -124,7 +126,7 @@ export default function TrustAndSafety() {
 
             {/* Trust badge */}
             <div className="text-center p-4 bg-gradient-to-r from-emerald-100 to-sky-100 rounded-xl border border-emerald-200">
-              <p className="text-sm font-semibold text-emerald-900">🛡️ Your trust is our priority</p>
+              <p className="text-sm font-semibold text-emerald-900">🛡️ {t('trustPriority')}</p>
             </div>
           </div>
         </motion.div>
