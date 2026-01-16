@@ -1,6 +1,7 @@
 "use client";
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useLanguage } from './LanguageProvider';
 
 const StatCard = ({ icon, label, value, suffix = '' }) => (
   <motion.div
@@ -17,6 +18,7 @@ const StatCard = ({ icon, label, value, suffix = '' }) => (
 );
 
 export default function SocialProof() {
+  const { t } = useLanguage();
   const [stats, setStats] = useState({
     users: 0,
     listings: 0,
@@ -89,35 +91,35 @@ export default function SocialProof() {
     >
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-4">
-          Trusted by Global Seasonal Workers & Hosts
+          {t('socialProofTitle')}
         </h2>
         <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-          Verified members across 50+ countries creating meaningful work and living experiences through fair agreements and transparent communication.
+          {t('socialProofAdditionalText')}
         </p>
       </div>
 
       <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl border border-sky-200 p-8">
         <StatCard
           icon=""
-          label="Verified Members"
+          label={t('verifiedMembers')}
           value={stats.users}
           suffix="+"
         />
         <StatCard
           icon=""
-          label="Verified Listings"
+          label={t('verifiedListings')}
           value={stats.listings}
           suffix="+"
         />
         <StatCard
           icon=""
-          label="Successful Matches"
+          label={t('successfulMatches')}
           value={stats.connections}
           suffix="+"
         />
         <StatCard
           icon=""
-          label="Countries Active"
+          label={t('countriesActive')}
           value={stats.countries}
           suffix=""
         />

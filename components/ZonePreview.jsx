@@ -120,18 +120,18 @@ export default function ZonePreview({ zones }) {
 
                 {/* Quick Stats */}
                 <div className="flex items-center justify-between text-xs text-slate-500 mb-3 pb-3 border-t border-slate-100">
-                  <span>Listings available</span>
+                  <span>{t('zoneListingsAvailable')}</span>
                   <span className="text-sky-600 font-semibold">→</span>
                 </div>
 
                 {/* Season Tags */}
                 <div className="flex gap-1 flex-wrap">
-                  {['Summer', 'Winter'].map(season => (
+                  {[{ id: 'summer', key: 'zoneSummerTag' }, { id: 'winter', key: 'zoneWinterTag' }].map(season => (
                     <span
-                      key={season}
+                      key={season.id}
                       className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full"
                     >
-                      {season}
+                      {t(season.key)}
                     </span>
                   ))}
                 </div>
@@ -149,13 +149,13 @@ export default function ZonePreview({ zones }) {
         className="mt-12 text-center"
       >
         <p className="text-slate-600 mb-4">
-          Explore more regions and seasonal opportunities
+          {t('zoneExploreMore')}
         </p>
         <a
           href="/stays"
           className="inline-block px-8 py-3 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-colors"
         >
-          Browse All Listings →
+          {t('zoneBrowseAllBtn')}
         </a>
       </motion.div>
     </section>

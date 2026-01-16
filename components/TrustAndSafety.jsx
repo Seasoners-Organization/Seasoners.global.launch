@@ -103,7 +103,7 @@ export default function TrustAndSafety() {
                 <span className="text-2xl"></span>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">{t('emailVerified')}</p>
-                  <p className="text-xs text-slate-600">100% of users</p>
+                  <p className="text-xs text-slate-600">{t('emailVerificationPercent')}</p>
                 </div>
               </div>
 
@@ -111,7 +111,7 @@ export default function TrustAndSafety() {
                 <span className="text-2xl"></span>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">{t('phoneVerified')}</p>
-                  <p className="text-xs text-slate-600">92% of active users</p>
+                  <p className="text-xs text-slate-600">{t('phoneVerificationPercent')}</p>
                 </div>
               </div>
 
@@ -119,14 +119,14 @@ export default function TrustAndSafety() {
                 <span className="text-2xl"></span>
                 <div>
                   <p className="font-semibold text-slate-900 text-sm">{t('idVerified')}</p>
-                  <p className="text-xs text-slate-600">78% of premium users</p>
+                  <p className="text-xs text-slate-600">{t('idVerificationPercent')}</p>
                 </div>
               </div>
             </div>
 
             {/* Trust badge */}
             <div className="text-center p-4 bg-gradient-to-r from-emerald-100 to-sky-100 rounded-xl border border-emerald-200">
-              <p className="text-sm font-semibold text-emerald-900">🛡️ {t('trustPriority')}</p>
+              <p className="text-sm font-semibold text-emerald-900">{t('trustBadgeText')}</p>
             </div>
           </div>
         </motion.div>
