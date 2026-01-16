@@ -1,8 +1,10 @@
 "use client";
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useLanguage } from './LanguageProvider';
 
 export default function HeroWithCTA() {
+  const { t } = useLanguage();
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -22,7 +24,7 @@ export default function HeroWithCTA() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-3xl md:text-5xl font-bold mb-6 leading-tight"
         >
-          Ready to Start Your Seasonal Adventure?
+          {t('ctaHeroTitle')}
         </motion.h2>
 
         <motion.p
@@ -31,8 +33,7 @@ export default function HeroWithCTA() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-lg text-sky-100 mb-8 max-w-2xl mx-auto"
         >
-          Join thousands of seasonal workers and hosts who are already using Seasoners. 
-          Verified, safe, and transparent.
+          {t('ctaHeroDesc')}
         </motion.p>
 
         <motion.div
@@ -45,13 +46,13 @@ export default function HeroWithCTA() {
             href="/auth/register"
             className="px-8 py-4 bg-white text-sky-600 rounded-lg font-bold hover:bg-sky-50 transition-colors shadow-lg hover:shadow-xl"
           >
-            Get Started Free →
+            {t('ctaGetStartedBtn')} →
           </Link>
           <Link
             href="/about"
             className="px-8 py-4 border-2 border-white text-white rounded-lg font-bold hover:bg-white/10 transition-colors"
           >
-            Learn More About Us
+            {t('ctaLearnMoreBtn')}
           </Link>
         </motion.div>
 
@@ -64,17 +65,17 @@ export default function HeroWithCTA() {
         >
           <div className="flex items-center gap-2">
             <span className="text-lg">✓</span>
-            <span>Verified Users</span>
+            <span>{t('ctaBadgeVerified')}</span>
           </div>
           <span className="text-sky-400">•</span>
           <div className="flex items-center gap-2">
             <span className="text-lg"></span>
-            <span>Safe & Secure</span>
+            <span>{t('ctaBadgeSafe')}</span>
           </div>
           <span className="text-sky-400">•</span>
           <div className="flex items-center gap-2">
             <span className="text-lg"></span>
-            <span>Protected Agreements</span>
+            <span>{t('ctaBadgeProtected')}</span>
           </div>
         </motion.div>
       </div>
