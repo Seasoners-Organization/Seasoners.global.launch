@@ -76,6 +76,20 @@ export default function SubscriptionTiers() {
       ctaKey: 'planFreeBtn',
       ctaHref: '/auth/signin',
       features: [
+        'planFreeFeat1',
+        'planFreeFeat2',
+        'planFreeFeat3',
+        'planFreeFeat4',
+        'planFreeFeat5',
+      ],
+    },
+    {
+      nameKey: 'planSearcherName',
+      price: 7,
+      period: 'month',
+      highlighted: true,
+      ctaKey: 'planSearcherBtn',
+      ctaHref: '/subscribe?tier=SEARCHER',
       showTrialPrice: true,
       trialSavings: 21,
       features: [
@@ -94,21 +108,7 @@ export default function SubscriptionTiers() {
       ctaKey: 'planListerBtn',
       ctaHref: '/subscribe?tier=LISTER',
       showTrialPrice: true,
-      trialSavings: 36
-        'planSearcherFeat1',
-        'planSearcherFeat2',
-        'planSearcherFeat3',
-        'planSearcherFeat4',
-        'planSearcherFeat5',
-        'planSearcherFeat6',
-      ],
-    },
-    {
-      nameKey: 'planListerName',
-      price: 12,
-      period: 'month',
-      ctaKey: 'planListerBtn',
-      ctaHref: '/subscribe?tier=LISTER',
+      trialSavings: 36,
       features: [
         'planListerFeat1',
         'planListerFeat2',
@@ -120,7 +120,11 @@ export default function SubscriptionTiers() {
       ],
     },
   ];
-div className="inline-block mb-4">
+
+  return (
+    <section className="max-w-6xl mx-auto px-6 py-20">
+      <div className="text-center mb-16">
+        <div className="inline-block mb-4">
           <span className="bg-emerald-400 text-emerald-900 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wide">
             {t('earlyBirdOffer')}
           </span>
@@ -138,6 +142,12 @@ div className="inline-block mb-4">
           <p className="text-sm text-slate-600 mt-1">
             {t('freeTrialExplainer')}
           </p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-8">
+        {plans.map((plan, index) => (
+          <SubscriptionPlan 
             key={index} 
             nameKey={plan.nameKey} 
             price={plan.price} 
@@ -149,17 +159,7 @@ div className="inline-block mb-4">
             showTrialPrice={plan.showTrialPrice}
             trialSavings={plan.trialSavings}
             t={t} 
-         
-        </divt('pricingSectionDesc')}
-        </p>
-        <p className="text-sm text-emerald-700 font-semibold mt-4">
-          {t('freeTrialBanner')}
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-8">
-        {plans.map((plan, index) => (
-          <SubscriptionPlan key={index} nameKey={plan.nameKey} price={plan.price} period={plan.period} features={plan.features} highlighted={plan.highlighted} ctaKey={plan.ctaKey} ctaHref={plan.ctaHref} t={t} />
+          />
         ))}
       </div>
 
