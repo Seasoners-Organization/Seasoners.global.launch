@@ -179,6 +179,54 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Safety & Legal Section */}
+      <section className="max-w-6xl mx-auto px-6 py-16 bg-gradient-to-br from-emerald-50 to-sky-50 rounded-3xl">
+        <div className="text-center mb-12">
+          <p className="text-sm uppercase font-semibold text-emerald-700 tracking-wide mb-2">Your Peace of Mind</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Safe, Legal, and Protected</h2>
+          <p className="text-lg text-slate-700 max-w-2xl mx-auto">Simple doesn't mean unprotected. We believe in direct connections WITH legal safeguards.</p>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-6">
+          <motion.div 
+            className="rounded-2xl border-2 border-emerald-300 bg-white p-6 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0 }}
+          >
+            <div className="text-4xl mb-3">🛡️</div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Verified Identities</h3>
+            <p className="text-sm text-slate-600">ID and phone verification for every user. No anonymity. Real accountability. Real safety.</p>
+          </motion.div>
+
+          <motion.div 
+            className="rounded-2xl border-2 border-emerald-300 bg-white p-6 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <div className="text-4xl mb-3">⚖️</div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Clear Terms & Conditions</h3>
+            <p className="text-sm text-slate-600">Legal protections are built in. You have <a href="/terms" className="text-sky-600 hover:text-sky-700 font-semibold">clear T&Cs</a> and <a href="/privacy" className="text-sky-600 hover:text-sky-700 font-semibold">privacy rights</a> that protect you.</p>
+          </motion.div>
+
+          <motion.div 
+            className="rounded-2xl border-2 border-emerald-300 bg-white p-6 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="text-4xl mb-3">🔒</div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Dispute Resolution</h3>
+            <p className="text-sm text-slate-600">If something goes wrong, we have processes to help. Direct support and fair resolution between parties.</p>
+          </motion.div>
+        </div>
+
+        <div className="mt-12 p-6 bg-white rounded-2xl border-2 border-emerald-200">
+          <p className="text-center text-slate-700"><strong>Simple principles:</strong> Direct connections YES. Zero legal protection NO. We keep it simple but we keep you safe.</p>
+        </div>
+      </section>
+
       {/* How it works */}
       <section className="max-w-6xl mx-auto px-6 pb-12">
         <div className="rounded-3xl bg-white/80 backdrop-blur border shadow-sm p-6 md:p-8">
