@@ -1,5 +1,6 @@
 "use client";
 import { motion } from 'framer-motion';
+import { useLanguage } from './LanguageProvider';
 
 const FeatureCard = ({ icon, title, description, step }) => (
   <motion.div
@@ -21,62 +22,63 @@ const FeatureCard = ({ icon, title, description, step }) => (
 );
 
 export default function FeatureHighlights() {
+  const { t } = useLanguage();
   const features = [
     {
       icon: '',
-      title: 'Verified Users',
-      description: 'Every user is verified through email, phone, and optional ID verification. Hosts and employers know exactly who they\'re working with.',
+      titleKey: 'featureVerifiedUsersTitle',
+      descKey: 'featureVerifiedUsersDesc',
     },
     {
       icon: '',
-      title: 'Verified Reputation',
-      description: 'Every interaction builds reputation. Users with excellent ratings and verified status stand out. Trust is earned through consistent, positive behavior.',
+      titleKey: 'featureReputationTitle',
+      descKey: 'featureReputationDesc',
     },
     {
       icon: '',
-      title: 'Legally Clear Agreements',
-      description: 'Dual-language agreements with digital signatures protect both parties. Clear terms, flexible terms, and transparent dispute resolution.',
+      titleKey: 'featureAgreementsTitle',
+      descKey: 'featureAgreementsDesc',
     },
     {
       icon: '',
-      title: 'Global Communication',
-      description: 'Connect with people worldwide. Real-time translation removes language barriers so everyone can communicate clearly across 50+ languages.',
+      titleKey: 'featureCommunicationTitle',
+      descKey: 'featureCommunicationDesc',
     },
     {
       icon: '',
-      title: 'Private & Secure Messaging',
-      description: 'Encrypted in-app messaging ensures your conversations stay private and secure. No need to share personal details until you\'re comfortable.',
+      titleKey: 'featureMessagingTitle',
+      descKey: 'featureMessagingDesc',
     },
     {
       icon: '',
-      title: 'Community Safety Standards',
-      description: 'Reporting, blocking, and community guidelines create a safe space for everyone. We enforce standards consistently across all interactions.',
+      titleKey: 'featureSafetyTitle',
+      descKey: 'featureSafetyDesc',
     },
   ];
 
   const workflowSteps = [
     {
       icon: '',
-      title: 'Discover Verified Opportunities',
-      description: 'Browse verified listings and profiles. Filter by location, season, and requirements. Preview comprehensive host and employer profiles.',
+      titleKey: 'workflowDiscoverTitle',
+      descKey: 'workflowDiscoverDesc',
       step: 1,
     },
     {
       icon: '',
-      title: 'Connect with Confidence',
-      description: 'Use secure in-app messaging to ask questions and discuss details. Build trust through real conversation before making any commitment.',
+      titleKey: 'workflowConnectTitle',
+      descKey: 'workflowConnectDesc',
       step: 2,
     },
     {
       icon: '',
-      title: 'Sign a Clear Agreement',
-      description: 'Both parties review and sign a transparent, dual-language agreement with clear terms and legal protections.',
+      titleKey: 'workflowSignTitle',
+      descKey: 'workflowSignDesc',
       step: 3,
     },
     {
       icon: '',
-      title: 'Start Your Experience',
-      description: 'Begin your seasonal journey with confidence. Stay connected through Seasoners, build your verified reputation, and unlock future opportunities.',
+      titleKey: 'workflowStartTitle',
+      descKey: 'workflowStartDesc',
       step: 4,
     },
   ];
@@ -87,16 +89,16 @@ export default function FeatureHighlights() {
       <div className="mb-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-4">
-            Why Choose Seasoners?
+            {t('featureSectionTitle')}
           </h2>
           <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-            We've built the safest and most transparent platform for seasonal work and housing
+            {t('featureSectionDesc')}
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <FeatureCard key={index} {...feature} />
+            <FeatureCard key={index} icon={feature.icon} title={t(feature.titleKey)} description={t(feature.descKey)} />
           ))}
         </div>
       </div>
@@ -105,10 +107,10 @@ export default function FeatureHighlights() {
       <div>
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-4">
-            How It Works
+            {t('howItWorksTitle')}
           </h2>
           <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-            Four simple steps to find your next seasonal opportunity
+            {t('howItWorksDesc')}
           </p>
         </div>
 
@@ -116,7 +118,7 @@ export default function FeatureHighlights() {
         <div className="hidden md:grid md:grid-cols-4 gap-6 mb-12">
           {workflowSteps.map((step, index) => (
             <div key={index} className="relative">
-              <FeatureCard {...step} />
+              <FeatureCard icon={step.icon} title={t(step.titleKey)} description={t(step.descKey)} step={step.step} />
               {index < workflowSteps.length - 1 && (
                 <div className="absolute top-12 -right-3 text-3xl text-sky-300">→</div>
               )}
@@ -128,7 +130,7 @@ export default function FeatureHighlights() {
         <div className="md:hidden space-y-4">
           {workflowSteps.map((step, index) => (
             <div key={index} className="relative">
-              <FeatureCard {...step} />
+              <FeatureCard icon={step.icon} title={t(step.titleKey)} description={t(step.descKey)} step={step.step} />
               {index < workflowSteps.length - 1 && (
                 <div className="flex justify-center py-2">
                   <div className="text-2xl text-sky-300">↓</div>
