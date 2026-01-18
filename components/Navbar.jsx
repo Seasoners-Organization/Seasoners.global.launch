@@ -234,7 +234,7 @@ export default function Navbar() {
               </svg>
             </button>
             {isDestinationsOpen && (
-              <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 py-3 z-50">
+              <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 py-3 z-50 max-h-[80vh] overflow-y-auto">
                 <div className="px-4 pb-2 text-xs text-slate-500">{t('seasonWinter')}</div>
                 {ZONES.filter(z => z.season === 'winter').map(z => (
                   <a key={z.slug} href={`/zones/${z.slug}`} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus:bg-slate-100">{z.title}</a>
@@ -314,7 +314,7 @@ export default function Navbar() {
       </div>
       {/* Mobile menu panel */}
       {isMobileOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white">
+        <div className="md:hidden border-t border-slate-200 bg-white max-h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="max-w-6xl mx-auto px-4 py-3 grid gap-2 text-slate-800">
             {isHydrated && session && (
               <a href="/list" className="py-2" onClick={() => setIsMobileOpen(false)}>
@@ -329,7 +329,7 @@ export default function Navbar() {
                 <summary className="cursor-pointer select-none flex items-center gap-2">
                   {t('destinations')}
                 </summary>
-                <div className="mt-1 pl-3">
+                <div className="mt-1 pl-3 max-h-48 overflow-y-auto">
                   <div className="text-xs text-slate-500 mb-1">{t('seasonWinter')}</div>
                   {ZONES.filter(z => z.season === 'winter').map(z => (
                     <a key={z.slug} href={`/zones/${z.slug}`} className="block py-1.5" onClick={() => setIsMobileOpen(false)}>{z.title}</a>

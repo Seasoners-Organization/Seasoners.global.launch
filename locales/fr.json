@@ -352,6 +352,7 @@
   "howItWorksDesc": "Étapes simples pour commencer",
   "howItWorksExplore": "Explorer les opportunités →",
   "howItWorksLabel": "Comment ça marche",
+  "howItWorksSubtitle": "Commencez en trois étapes simples",
   "howItWorksTitle": "Trois étapes simples vers la liberté",
   "howToFindJob": "Comment trouver un emploi dans {zone}",
   "hpAgreementTeaserBody": "Un langage simple, adapté aux deux langues et adaptable à tous les pays. Commencez chaque séjour par une clarté partagée.",
@@ -379,6 +380,7 @@
   "languages": "Langues",
   "lastMessage": "Dernier message",
   "learnAgreementsBtn": "En savoir plus sur les accords",
+  "learnMoreAboutSafety": "En savoir plus sur la sécurité",
   "list": "Lister",
   "listOne": "première liste",
   "listPlaceOrJob": "Indiquer un lieu ou un emploi",
@@ -674,5 +676,7 @@
   "zonePreviewDesc": "Trouvez des opportunités saisonnières à travers l'Europe, des stations de ski aux régions viticoles",
   "zonePreviewTitle": "Explorez les Saisons et Destinations",
   "zoneSummerTag": "Été",
-  "zoneWinterTag": "Hiver"
+  "zoneWinterTag": "Hiver",
+  "ourValuesTitle": "Nos Valeurs",
+  "ourValuesSubtitle": "Les principes qui guident tout ce que nous faisons"
 }

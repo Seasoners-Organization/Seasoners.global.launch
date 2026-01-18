@@ -57,7 +57,7 @@ export default function LanguageToggle({ className = "" }) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 max-h-[70vh] overflow-y-auto">
           {LANGUAGES.map((lang) => (
             <button
               key={lang.code}

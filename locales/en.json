@@ -352,6 +352,7 @@
   "howItWorksDesc": "Simple steps to get started",
   "howItWorksExplore": "Explore opportunities →",
   "howItWorksLabel": "How it works",
+  "howItWorksSubtitle": "Get started in three simple steps",
   "howItWorksTitle": "Three simple steps to freedom",
   "howToFindJob": "How to find a job in {zone}",
   "hpAgreementTeaserBody": "Our verified, dual-language agreement template provides clarity and legal protection. Start every arrangement with confidence.",
@@ -379,6 +380,7 @@
   "languages": "Languages",
   "lastMessage": "Last message",
   "learnAgreementsBtn": "Learn About Agreements",
+  "learnMoreAboutSafety": "Learn More About Safety",
   "list": "List",
   "listOne": "list one",
   "listPlaceOrJob": "List a Place or Job",
@@ -674,5 +676,7 @@
   "zonePreviewDesc": "Find seasonal opportunities across Europe, from ski resorts to wine regions",
   "zonePreviewTitle": "Explore Seasons & Destinations",
   "zoneSummerTag": "Summer",
-  "zoneWinterTag": "Winter"
+  "zoneWinterTag": "Winter",
+  "ourValuesTitle": "Our Values",
+  "ourValuesSubtitle": "The principles that guide everything we do"
 }
