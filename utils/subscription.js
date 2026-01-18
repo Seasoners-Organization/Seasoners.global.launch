@@ -25,8 +25,6 @@ export const SUBSCRIPTION_PLANS = {
     name: 'Searcher Plus',
     price: 9.90,
     priceId: process.env.NEXT_PUBLIC_STRIPE_PLUS_MONTHLY_PRICE_ID,
-    annualPrice: 79.00,
-    annualPriceId: process.env.NEXT_PUBLIC_STRIPE_PLUS_ANNUAL_PRICE_ID,
     currency: 'EUR',
     interval: 'month',
     features: [

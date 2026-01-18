@@ -47,7 +47,7 @@ Seasoners now uses a transparent freemium model designed to maximize platform gr
 - Listings/jobs creation remains free
 
 ✅ **Simplified Subscription**
-- Single Plus tier (€9.90/month or €79/year)
+- Single Plus tier (€9.90/month)
 - 7-day free trial without card
 - Cancel anytime
 

@@ -22,7 +22,6 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 
 # Subscription Price IDs (create these in Stripe Dashboard)
 NEXT_PUBLIC_STRIPE_PLUS_MONTHLY_PRICE_ID=price_...
-NEXT_PUBLIC_STRIPE_PLUS_ANNUAL_PRICE_ID=price_...  # Optional
 
 # Boost Price IDs (one-time payments)
 NEXT_PUBLIC_STRIPE_BOOST_7_PRICE_ID=price_...
@@ -44,10 +43,6 @@ STRIPE_EARLY_BIRD_PRICE_ID=price_...
   - Billing period: Monthly
   - Trial: 7 days
   - Copy Price ID → `NEXT_PUBLIC_STRIPE_PLUS_MONTHLY_PRICE_ID`
-- **Annual Price** (Optional):
-  - Amount: EUR 79.00
-  - Billing period: Yearly
-  - Copy Price ID → `NEXT_PUBLIC_STRIPE_PLUS_ANNUAL_PRICE_ID`
 
 #### Product 2: Featured Boost (One-time)
 - Name: "Seasoners Featured Boost"
