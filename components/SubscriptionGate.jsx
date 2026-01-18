@@ -6,8 +6,8 @@ import { SUBSCRIPTION_PLANS } from "../utils/subscription";
 export default function SubscriptionGate({ 
   isOpen, 
   onClose, 
-  requiredTier = "SEARCHER", 
-  action = "contact sellers",
+  requiredTier = "PLUS", 
+  action = "send unlimited messages",
   onUpgrade 
 }) {
   const plan = SUBSCRIPTION_PLANS[requiredTier];

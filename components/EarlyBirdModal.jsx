@@ -38,11 +38,10 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
     localStorage.setItem('earlyBirdModalSeen', 'true');
   };
 
-  const handleSignUp = () => {
+  const handleUpgrade = () => {
     localStorage.setItem('earlyBirdModalSeen', 'true');
-    localStorage.setItem('earlyBirdSignupDate', new Date().toISOString());
-    // Redirect to registration with promo code
-    window.location.href = '/auth/register?promo=EARLYBIRD3';
+    // Redirect to pricing/subscribe page
+    window.location.href = '/subscribe';
   };
 
   const handleRemindLater = () => {
@@ -88,74 +87,50 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                 
                 <div className="relative">
                   <div className="inline-block mb-4">
-                    <span className="bg-emerald-400 text-emerald-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">
-                      Early Supporter Offer
+                    <span className="bg-amber-300 text-amber-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">
+                      Upgrade to Plus
                     </span>
                   </div>
-                  
+
                   <h2 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
-                    Experience Premium Free
+                    Unlock Unlimited Messaging
                   </h2>
-                  
+
                   <p className="text-lg md:text-xl text-sky-100 font-medium">
-                    Unlock full access for 90 days at no cost — card required, no charge until day 91
+                    €9.90/month • Cancel anytime
                   </p>
                 </div>
               </div>
 
               {/* Content */}
               <div className="p-5 md:p-8 -mt-6 relative overflow-y-auto">
-                {/* Value Proposition Cards */}
+                {/* Plus Plan Features */}
                 <div className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl border-2 border-sky-200 p-4 md:p-6 mb-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <div className="text-3xl md:text-4xl font-bold text-sky-600 mb-2">
-                        €0
-                        <span className="text-base md:text-lg text-slate-500 line-through ml-2">€21</span>
-                      </div>
-                      <p className="text-sm md:text-base text-slate-600 font-semibold mb-3">
-                        Searcher Plan (save €21)
-                      </p>
-                      <ul className="space-y-2 text-sm text-slate-700">
-                        <li className="flex items-start gap-2">
-                          <span className="text-emerald-500 font-bold mt-0.5">✓</span>
-                          <span>3 months completely free</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-emerald-500 font-bold mt-0.5">✓</span>
-                          <span>Contact unlimited hosts & employers</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-emerald-500 font-bold mt-0.5">✓</span>
-                          <span>Priority support access</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <div className="text-3xl md:text-4xl font-bold text-sky-600 mb-2">
-                        €0
-                        <span className="text-base md:text-lg text-slate-500 line-through ml-2">€36</span>
-                      </div>
-                      <p className="text-sm md:text-base text-slate-600 font-semibold mb-3">
-                        Lister Plan (save €36)
-                      </p>
-                      <ul className="space-y-2 text-sm text-slate-700">
-                        <li className="flex items-start gap-2">
-                          <span className="text-emerald-500 font-bold mt-0.5">✓</span>
-                          <span>3 months completely free</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-emerald-500 font-bold mt-0.5">✓</span>
-                          <span>Create unlimited listings</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-emerald-500 font-bold mt-0.5">✓</span>
-                          <span>Featured badge & analytics</span>
-                        </li>
-                      </ul>
-                    </div>
+                  <div className="flex items-baseline gap-3 mb-3">
+                    <span className="text-3xl md:text-4xl font-bold text-sky-600">€9.90</span>
+                    <span className="text-slate-600">/month</span>
                   </div>
+                  <p className="text-sm md:text-base text-slate-600 font-semibold mb-3">
+                    Plus Plan
+                  </p>
+                  <ul className="space-y-2 text-sm text-slate-700">
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold mt-0.5">✓</span>
+                      <span>Unlimited outbound messages</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold mt-0.5">✓</span>
+                      <span>Unlimited saved searches</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold mt-0.5">✓</span>
+                      <span>Instant email alerts</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold mt-0.5">✓</span>
+                      <span>Priority message indicator</span>
+                    </li>
+                  </ul>
                 </div>
 
                 {/* Urgency Message */}
@@ -177,29 +152,25 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                 <div className="flex flex-wrap gap-3 justify-center mb-6 text-xs md:text-sm text-slate-600">
                   <div className="flex items-center gap-1.5">
                     <span className="text-emerald-500 font-bold">✓</span>
-                    <span>No charge for 90 days</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-emerald-500 font-bold">✓</span>
-                    <span>Card on file; billing starts day 91</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-emerald-500 font-bold">✓</span>
                     <span>Cancel anytime</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-emerald-500 font-bold">✓</span>
-                    <span>Full access included</span>
+                    <span>No hidden fees</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-emerald-500 font-bold">✓</span>
+                    <span>Secure payments</span>
                   </div>
                 </div>
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
-                    onClick={handleSignUp}
+                    onClick={handleUpgrade}
                     className="flex-1 bg-gradient-to-r from-sky-600 to-blue-600 text-white py-3.5 px-6 rounded-xl font-bold text-base md:text-lg hover:from-sky-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
-                    Claim Your 3 Months Free →
+                    Upgrade for €9.90/month →
                   </button>
                   
                   <button
@@ -211,8 +182,7 @@ export default function EarlyBirdModal({ trigger = 'navigation' }) {
                 </div>
 
                 <p className="text-center text-xs text-slate-500 mt-4">
-                  By signing up, you agree to our <a href="/subscribe/terms" className="underline hover:text-slate-700">Subscription Terms</a> and <a href="/privacy" className="underline hover:text-slate-700">Privacy Policy</a>. 
-                  You'll receive email reminders before your trial ends.
+                  By upgrading, you agree to our <a href="/subscribe/terms" className="underline hover:text-slate-700">Subscription Terms</a> and <a href="/privacy" className="underline hover:text-slate-700">Privacy Policy</a>.
                 </p>
               </div>
             </div>
