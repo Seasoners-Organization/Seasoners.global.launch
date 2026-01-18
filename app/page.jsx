@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SocialProof from "../components/SocialProof";
-import SubscriptionTiers from "../components/SubscriptionTiers";
 import FAQ from "../components/FAQ";
 import ZonePreview from "../components/ZonePreview";
 import HeroWithCTA from "../components/HeroWithCTA";
@@ -182,8 +181,23 @@ export default function HomePage() {
       {/* Social Proof */}
       <SocialProof />
 
-      {/* Subscription Tiers */}
-      <SubscriptionTiers />
+      {/* Pricing CTA */}
+      <section className="max-w-6xl mx-auto px-6 pb-12">
+        <motion.div 
+          className="rounded-2xl bg-gradient-to-br from-sky-50 to-blue-50 border-2 border-sky-200 p-8 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">{t('pricingCTATitle')}</h2>
+          <p className="text-slate-700 mb-6 max-w-2xl mx-auto">{t('pricingCTADesc')}</p>
+          <a
+            href="/subscribe"
+            className="inline-flex items-center px-8 py-3 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 transition"
+          >
+            {t('viewPricing')} →
+          </a>
+        </motion.div>
+      </section>
 
       {/* Zone Preview */}
       <ZonePreview zones={ZONES} />

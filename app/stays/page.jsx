@@ -232,8 +232,8 @@ export default function StaysPage() {
       <SubscriptionGate
         isOpen={showSubscriptionGate}
         onClose={() => setShowSubscriptionGate(false)}
-        requiredTier="SEARCHER"
-        action="contact sellers"
+        requiredTier="PLUS"
+        action="send unlimited messages"
         onUpgrade={handleUpgrade}
       />
     </main>

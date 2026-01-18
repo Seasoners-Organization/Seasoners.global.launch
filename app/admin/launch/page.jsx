@@ -130,10 +130,10 @@ export default function LaunchControlPage() {
               </p>
               <div className="mt-3 space-y-2">
                 <div className="text-sm text-gray-700">
-                  <strong>Early-Bird:</strong> €{settings?.earlyBirdPrice || 5}/month (both tiers)
+                  <strong>Current Pricing:</strong> Plus €9.90/month (unlimited messaging)
                 </div>
                 <div className="text-sm text-gray-700">
-                  <strong>Regular:</strong> Searcher €{settings?.regularSearcherPrice || 7}/mo, Lister €{settings?.regularListerPrice || 12}/mo
+                  <strong>Boosts:</strong> €9.90/7 days or €29.90/30 days (featured placement)
                 </div>
               </div>
             </div>

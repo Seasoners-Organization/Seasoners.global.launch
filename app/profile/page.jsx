@@ -365,10 +365,8 @@ export default function ProfilePage() {
                     <p className="text-slate-600">{user.email}</p>
                     <div className="flex items-center gap-2 mt-2">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        user.subscriptionTier === 'LISTER' 
+                        user.subscriptionTier === 'PLUS' 
                           ? 'bg-gradient-to-r from-sky-100 to-amber-100 text-sky-900'
-                          : user.subscriptionTier === 'SEARCHER'
-                          ? 'bg-sky-100 text-sky-700'
                           : 'bg-slate-100 text-slate-700'
                       }`}>
                         {plan.name} {t('plan')}
@@ -768,12 +766,12 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="flex gap-3">
-                    {user.subscriptionTier !== 'LISTER' && (
+                    {user.subscriptionTier !== 'PLUS' && (
                       <a
                         href="/subscribe"
                         className="px-6 py-2 bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white rounded-lg font-medium transition"
                       >
-                        Upgrade Plan
+                        Upgrade to Plus
                       </a>
                     )}
                     {user.subscriptionStatus === 'ACTIVE' && user.subscriptionTier !== 'FREE' && (

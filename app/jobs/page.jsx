@@ -353,8 +353,8 @@ export default function JobsPage() {
       <SubscriptionGate
         isOpen={showSubscriptionGate}
         onClose={() => setShowSubscriptionGate(false)}
-        requiredTier="SEARCHER"
-        action="contact employers"
+        requiredTier="PLUS"
+        action="send unlimited messages"
         onUpgrade={handleUpgrade}
       />
     </main>

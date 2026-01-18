@@ -219,14 +219,6 @@ export default function List() {
               </div>
             )}
 
-            {status === "authenticated" && !userCanCreate && (
-              <div className="bg-sky-50 border border-sky-200 rounded-lg p-4 mb-4">
-                <p className="text-sky-800 text-center">
-                  <strong>{t('listerRequired').split('. ')[0]}.</strong> {t('listerRequired').split('. ').slice(1).join('. ')}
-                </p>
-              </div>
-            )}
-
         {ok ? (
           <p className="text-green-600 text-center font-semibold">{t('thanksListingSubmitted')}</p>
         ) : (
@@ -579,7 +571,7 @@ export default function List() {
       <SubscriptionGate
         isOpen={showSubscriptionGate}
         onClose={() => setShowSubscriptionGate(false)}
-        requiredTier="LISTER"
+        requiredTier="PLUS"
         action="create listings"
         onUpgrade={handleUpgrade}
       />

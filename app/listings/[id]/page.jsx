@@ -423,8 +423,8 @@ export default function ListingDetailPage() {
       <SubscriptionGate
         isOpen={showSubscriptionGate}
         onClose={() => setShowSubscriptionGate(false)}
-        requiredTier="SEARCHER"
-        action={listing.type === 'JOB' ? 'contact employers' : 'contact hosts'}
+        requiredTier="PLUS"
+        action="send unlimited messages"
         onUpgrade={handleUpgrade}
       />
 

@@ -31,7 +31,7 @@ export default function ListingHelp() {
     },
     {
       q: "Can I have multiple listings?",
-      a: "Free accounts: 1 active listing. Searcher plan: 3 listings. Lister plan: unlimited listings. Upgrade your subscription to post more listings."
+      a: "All users can create listings for free! There's no limit on the number of listings you can post."
     },
     {
       q: "How long do listings stay active?",
