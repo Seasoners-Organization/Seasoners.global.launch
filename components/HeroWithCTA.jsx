@@ -6,12 +6,7 @@ import { useLanguage } from './LanguageProvider';
 export default function HeroWithCTA() {
   const { t } = useLanguage();
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="relative bg-gradient-to-br from-sky-600 via-blue-600 to-sky-700 text-white py-20"
-    >
+    <section className="relative bg-gradient-to-br from-sky-600 via-blue-600 to-sky-700 text-white py-20">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-48 -mt-48"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full -ml-48 -mb-48"></div>
@@ -79,6 +74,6 @@ export default function HeroWithCTA() {
           </div>
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 }
