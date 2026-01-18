@@ -1,4 +1,4 @@
-// Subscription tier pricing and features
+// Updated subscription tier pricing and features
 
 export const SUBSCRIPTION_PLANS = {
   FREE: {
@@ -7,117 +7,165 @@ export const SUBSCRIPTION_PLANS = {
     price: 0,
     currency: 'EUR',
     features: [
-      'Browse jobs and stays',
-      'View listings',
-      'Basic search and filters',
+      'Browse stays and jobs',
+      'View listing details',
+      'Create profile',
+      '10 messages per month',
+      '1 saved search',
+      'Email verification badge',
     ],
     limitations: [
-      'Cannot contact sellers',
-      'Cannot create listings',
+      'Limited to 10 outbound messages/month',
+      'No instant alerts',
+      'Limited saved searches (1)',
     ],
   },
-  SEARCHER: {
-    tier: 'SEARCHER',
-    name: 'Searcher',
-    price: 7,
-    priceId: process.env.NEXT_PUBLIC_STRIPE_SEARCHER_PRICE_ID,
+  PLUS: {
+    tier: 'PLUS',
+    name: 'Searcher Plus',
+    price: 9.90,
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PLUS_MONTHLY_PRICE_ID,
+    annualPrice: 79.00,
+    annualPriceId: process.env.NEXT_PUBLIC_STRIPE_PLUS_ANNUAL_PRICE_ID,
     currency: 'EUR',
     interval: 'month',
     features: [
       'All Free features',
-      'Contact sellers and employers',
-      'Direct messaging',
-      'Save favorites',
-      'Email notifications',
+      'Unlimited outbound messages',
+      'Unlimited saved searches',
+      'Instant email alerts',
+      'Priority message indicator',
     ],
-    cta: 'Upgrade to contact sellers',
-  },
-  LISTER: {
-    tier: 'LISTER',
-    name: 'Lister',
-    price: 12,
-    priceId: process.env.NEXT_PUBLIC_STRIPE_LISTER_PRICE_ID,
-    currency: 'EUR',
-    interval: 'month',
-    features: [
-      'All Searcher features',
-      'Create unlimited listings',
-      'Post jobs and stays',
-      'Receive applications',
-      'Priority support',
-      'Analytics dashboard',
-    ],
-    cta: 'Upgrade to create listings',
+    cta: 'Upgrade to Plus',
   },
 };
+
+export const BOOST_PLANS = {
+  BOOST_7: {
+    name: '7-Day Featured Boost',
+    price: 9.90,
+    priceId: process.env.NEXT_PUBLIC_STRIPE_BOOST_7_PRICE_ID,
+    currency: 'EUR',
+    durationDays: 7,
+    features: [
+      'Featured at top of listings',
+      'Increased visibility',
+      '7 days duration',
+    ],
+  },
+  BOOST_30: {
+    name: '30-Day Featured Boost',
+    price: 29.90,
+    priceId: process.env.NEXT_PUBLIC_STRIPE_BOOST_30_PRICE_ID,
+    currency: 'EUR',
+    durationDays: 30,
+    features: [
+      'Featured at top of listings',
+      'Maximum visibility',
+      '30 days duration',
+      'Best value',
+    ],
+  },
+};
+
+// Message quota for free users
+export const FREE_MESSAGE_QUOTA = 10;
 
 // Check if user has an active subscription
 export function hasActiveSubscription(user) {
   if (!user) return false;
-  // Early-bird one-time payment grants lifetime full access independent of subscription fields.
+  
+  // Early-bird one-time payment grants lifetime full access
   if (user.isEarlyBird && user.waitlistStatus === 'active') return true;
 
   return (
     user.subscriptionStatus === 'ACTIVE' &&
-    user.subscriptionTier !== 'FREE' &&
+    user.subscriptionTier === 'PLUS' &&
     user.subscriptionExpiresAt &&
     new Date(user.subscriptionExpiresAt) > new Date()
   );
 }
 
-// Check if user can contact sellers (SEARCHER or LISTER tier)
-export function canContactSellers(user) {
-  if (!user) return false;
-  // Early-bird users have full platform access.
-  if (user.isEarlyBird && user.waitlistStatus === 'active') return true;
-
-  return (
-    hasActiveSubscription(user) &&
-    (user.subscriptionTier === 'SEARCHER' || user.subscriptionTier === 'LISTER')
-  );
+// Check if user can send messages (considering quota)
+export function canSendMessages(user, currentMonthUsage = 0) {
+  if (!user) return { allowed: false, reason: 'Not authenticated' };
+  
+  // Plus subscribers have unlimited messages
+  if (hasActiveSubscription(user)) {
+    return { allowed: true, unlimited: true };
+  }
+  
+  // Free users have quota
+  if (currentMonthUsage >= FREE_MESSAGE_QUOTA) {
+    return { 
+      allowed: false, 
+      reason: 'Monthly message quota exceeded',
+      quota: FREE_MESSAGE_QUOTA,
+      used: currentMonthUsage,
+    };
+  }
+  
+  return { 
+    allowed: true, 
+    unlimited: false,
+    quota: FREE_MESSAGE_QUOTA,
+    used: currentMonthUsage,
+    remaining: FREE_MESSAGE_QUOTA - currentMonthUsage,
+  };
 }
 
-// Check if user can create listings (LISTER tier only)
-export function canCreateListings(user) {
-  if (!user) return false;
-  // Early-bird grants creation capability.
-  if (user.isEarlyBird && user.waitlistStatus === 'active') return true;
-
+// Check if listing has active boost
+export function hasActiveBoost(listing) {
+  if (!listing) return false;
+  
   return (
-    hasActiveSubscription(user) &&
-    user.subscriptionTier === 'LISTER'
+    listing.isFeatured &&
+    listing.featuredUntil &&
+    new Date(listing.featuredUntil) > new Date()
   );
 }
 
 // Get required tier for an action
 export function getRequiredTier(action) {
-  const tierMap = {
-    'contact': 'SEARCHER',
-    'create_listing': 'LISTER',
-    'message': 'SEARCHER',
-    'apply': 'SEARCHER',
-  };
-  
-  return tierMap[action] || 'FREE';
+  // For new model, all users can do everything (listings are free)
+  // Only messages have quota for free users
+  return 'FREE';
 }
 
-// Get subscription plan details by tier
-export function getPlanByTier(tier) {
+// Get plan details by tier
+export function getPlanDetails(tier) {
   return SUBSCRIPTION_PLANS[tier] || SUBSCRIPTION_PLANS.FREE;
 }
 
-// Check if subscription is expiring soon (within 7 days)
-export function isSubscriptionExpiringSoon(user) {
-  if (!user?.subscriptionExpiresAt) return false;
-  
-  const expiryDate = new Date(user.subscriptionExpiresAt);
+// Calculate month period start (first day of current month in UTC)
+export function getCurrentPeriodStart() {
   const now = new Date();
-  const daysUntilExpiry = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
-  
-  return daysUntilExpiry > 0 && daysUntilExpiry <= 7;
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
 }
 
-// Format subscription status for display
+// Format period for display
+export function formatPeriod(date) {
+  return date.toISOString().substring(0, 7); // YYYY-MM
+}
+
+// BACKWARDS COMPATIBILITY FUNCTIONS
+// These maintain compatibility with old code that checks subscription tiers
+
+// Check if user can contact sellers (deprecated - kept for compatibility)
+// In new model, FREE users can contact (with quota), so this returns true
+export function canContactSellers(user) {
+  // Everyone can contact, free users just have quota
+  return true;
+}
+
+// Check if user can create listings (deprecated - kept for compatibility)
+// In new model, listing creation is FREE for everyone
+export function canCreateListings(user) {
+  // Listing creation is free for everyone
+  return true;
+}
+
+// Format subscription status (deprecated - kept for compatibility)
 export function formatSubscriptionStatus(status) {
   const statusMap = {
     'ACTIVE': 'Active',
@@ -125,11 +173,10 @@ export function formatSubscriptionStatus(status) {
     'EXPIRED': 'Expired',
     'PAST_DUE': 'Past Due',
   };
-  
   return statusMap[status] || status;
 }
 
-// Format subscription expiry date
+// Format expiry date (deprecated - kept for compatibility)
 export function formatExpiryDate(date) {
   if (!date) return 'N/A';
   return new Date(date).toLocaleDateString('en-US', {

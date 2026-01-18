@@ -35,9 +35,8 @@ enum Region {
 
 // Subscription tiers
 enum SubscriptionTier {
-  FREE       // Free tier - browse only
-  SEARCHER   // €7/month - contact sellers/employers
-  LISTER     // €12/month - create listings + contact
+  FREE       // Free tier - 10 messages/month, browse, 1 saved search
+  PLUS       // €9.90/month - unlimited messages, unlimited saved searches, alerts
 }
 
 enum SubscriptionStatus {
@@ -213,6 +212,10 @@ model Listing {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
+  // Featured boost fields
+  isFeatured  Boolean  @default(false)
+  featuredUntil DateTime? // Expiry timestamp for featured boost
+  
   // Photos
   photos      Json?    // Array of base64 data URLs: ["data:image/jpeg;base64,..."]
   
@@ -230,6 +233,9 @@ model Listing {
   messages    Message[]
   savedBy     SavedListing[] @relation("SavedBy")
   analytics   ListingAnalytics[] @relation("ListingAnalytics")
+  boosts      ListingBoost[] @relation("ListingBoosts")
+  
+  @@index([isFeatured, featuredUntil])
 }
 
 model Agreement {
@@ -375,4 +381,38 @@ model Message {
 
   @@index([senderId, recipientId])
   @@index([listingId])
+}
+
+// Message usage tracking for quota enforcement
+model MessageUsage {
+  id          String   @id @default(cuid())
+  userId      String
+  periodStart DateTime // First day of month (YYYY-MM-01) in UTC
+  sentCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, periodStart])
+  @@index([userId])
+  @@index([periodStart])
+}
+
+// Listing boost purchases
+model ListingBoost {
+  id          String   @id @default(cuid())
+  listingId   String
+  userId      String
+  durationDays Int     // 7 or 30
+  price       Float    // EUR 9.90 or 29.90
+  startedAt   DateTime @default(now())
+  expiresAt   DateTime
+  stripePaymentIntentId String? @unique
+  stripeCheckoutSessionId String? @unique
+  createdAt   DateTime @default(now())
+
+  listing     Listing  @relation("ListingBoosts", fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
+  @@index([userId])
+  @@index([expiresAt])
 }

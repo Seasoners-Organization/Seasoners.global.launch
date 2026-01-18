@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     await prisma.user.update({
       where: { id: user.id },
       data: {
-        subscriptionTier: 'LISTER', // or infer from metadata if needed
+        subscriptionTier: 'PLUS', // New monetization model uses PLUS tier
         subscriptionStatus: 'ACTIVE',
         stripeCustomerId: customer.id,
         stripeSubscriptionId: activeSub.id,
