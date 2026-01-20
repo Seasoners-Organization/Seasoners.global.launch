@@ -561,7 +561,7 @@ export default function List() {
               className="w-full bg-amber-700 hover:brightness-110 text-white font-semibold py-3 sm:py-4 rounded-xl text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-700 active:scale-95 touch-manipulation min-h-[48px]"
               disabled={status === "unauthenticated" || loading}
             >
-              {loading ? t('submittingGeneric') : t('submitGeneric')}
+              {loading ? t('publishingListing') || 'Publishing...' : t('publishListing') || 'Publish My Listing'}
             </button>
             
             {/* Success Encouragement */}

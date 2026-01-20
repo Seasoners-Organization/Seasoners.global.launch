@@ -30,6 +30,7 @@ function RegisterForm() {
   const [captchaToken, setCaptchaToken] = useState('');
   const captchaRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(0);
+  const [showExitModal, setShowExitModal] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',

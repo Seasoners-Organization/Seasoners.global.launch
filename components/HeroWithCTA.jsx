@@ -51,12 +51,29 @@ export default function HeroWithCTA() {
           </Link>
         </motion.div>
 
-        {/* Trust badges */}
+        {/* Benefits Preview */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="mt-12 flex flex-wrap gap-4 justify-center items-center text-sm text-sky-100"
+          className="mt-6 text-sm text-sky-100 font-medium"
+        >
+          <p className="mb-3">✓ Sign up FREE • No credit card needed • Takes 2 minutes</p>
+          <div className="flex flex-wrap gap-4 justify-center text-xs text-sky-100/90">
+            <span>✓ Create listings</span>
+            <span>•</span>
+            <span>✓ Browse jobs & stays</span>
+            <span>•</span>
+            <span>✓ 10 free messages/month</span>
+          </div>
+        </motion.div>
+
+        {/* Trust badges */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mt-16 flex flex-wrap gap-4 justify-center items-center text-sm text-sky-100"
         >
           <div className="flex items-center gap-2">
             <span className="text-lg">✓</span>
@@ -64,12 +81,12 @@ export default function HeroWithCTA() {
           </div>
           <span className="text-sky-400">•</span>
           <div className="flex items-center gap-2">
-            <span className="text-lg"></span>
+            <span className="text-lg">🔒</span>
             <span>{t('ctaBadgeSafe')}</span>
           </div>
           <span className="text-sky-400">•</span>
           <div className="flex items-center gap-2">
-            <span className="text-lg"></span>
+            <span className="text-lg">🛡️</span>
             <span>{t('ctaBadgeProtected')}</span>
           </div>
         </motion.div>
