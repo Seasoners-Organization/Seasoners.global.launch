@@ -25,21 +25,6 @@ export default function ZonePreview({ zones }) {
     'all': zones.map(z => z.slug)
   };
 
-  // For demo purposes - in reality, this would come from the backend
-  const getZoneStats = (zone) => {
-    const listingCounts = {
-      'tyrol': 45,
-      'salzburg': 32,
-      'vorarlberg': 28,
-      'upper-austria': 37,
-      'vienna': 21,
-      'styria': 19,
-      'carinthia': 15,
-      'lower-austria': 26,
-    };
-    return listingCounts[zone.slug] || Math.floor(Math.random() * 50);
-  };
-
   const filteredZones = selectedSeason === 'all' 
     ? zones 
     : zones.filter(zone => seasonZoneMap[selectedSeason]?.includes(zone.slug));
@@ -87,8 +72,6 @@ export default function ZonePreview({ zones }) {
       {/* Zone Grid */}
       <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
         {filteredZones.map((zone, index) => {
-          const listingCount = getZoneStats(zone);
-          
           return (
             <motion.div
               key={zone.slug}
@@ -121,14 +104,9 @@ export default function ZonePreview({ zones }) {
                 {/* Content */}
                 <div className="p-5 flex-grow flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-bold text-lg text-sky-900 group-hover:text-sky-700 transition-colors">
-                        {zone.title}
-                      </h3>
-                      <span className="text-sm font-bold text-white bg-gradient-to-r from-sky-600 to-blue-600 px-3 py-1 rounded-full">
-                        {listingCount}
-                      </span>
-                    </div>
+                    <h3 className="font-bold text-lg text-sky-900 group-hover:text-sky-700 transition-colors mb-3">
+                      {zone.title}
+                    </h3>
 
                     <p className="text-sm text-slate-600 mb-4 line-clamp-2 leading-relaxed">
                       {zone.summary}
@@ -151,7 +129,7 @@ export default function ZonePreview({ zones }) {
 
                   {/* CTA */}
                   <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-sm">
-                    <span className="font-semibold text-sky-600 group-hover:text-sky-700">View Details</span>
+                    <span className="font-semibold text-sky-600 group-hover:text-sky-700">Explore</span>
                     <motion.span
                       className="text-lg text-sky-600 group-hover:text-sky-700"
                       animate={{ x: [0, 4, 0] }}

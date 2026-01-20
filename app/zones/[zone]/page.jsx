@@ -12,7 +12,6 @@ import { motion } from 'framer-motion';
 const TAB_CONFIG = [
   { id: 'stays', icon: '🏠', label: 'Accommodations' },
   { id: 'jobs', icon: '💼', label: 'Jobs' },
-  { id: 'guides', icon: '📖', label: 'Guides' },
 ];
 
 export default function ZonePage({ params }) {
@@ -80,18 +79,14 @@ export default function ZonePage({ params }) {
       {/* Quick Stats */}
       <section className="bg-gradient-to-r from-sky-600 to-blue-600 text-white py-6 sticky top-16 z-40 shadow-lg">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-wrap gap-8 justify-center md:justify-start mb-4">
-            <div className="text-center md:text-left">
-              <div className="text-2xl font-bold">{Math.floor(Math.random() * 50) + 20}</div>
-              <div className="text-sm text-white/90">Active Listings</div>
-            </div>
+          <div className="flex flex-wrap gap-8 justify-center md:justify-start">
             <div className="text-center md:text-left">
               <div className="text-2xl font-bold">{zoneData.hotspots?.length || 5}</div>
               <div className="text-sm text-white/90">Popular Areas</div>
             </div>
             <div className="text-center md:text-left hidden sm:block">
               <div className="text-2xl font-bold">{zoneData.season}</div>
-              <div className="text-sm text-white/90">Season</div>
+              <div className="text-sm text-white/90">Best Season</div>
             </div>
           </div>
         </div>
@@ -153,20 +148,6 @@ export default function ZonePage({ params }) {
               </Link>
             </div>
           )}
-
-          {activeTab === 'guides' && (
-            <div className="mb-16">
-              <h2 className="text-3xl font-bold text-sky-900 mb-6">Guides & Resources</h2>
-              <p className="text-lg text-slate-700 mb-8">Get insider tips for working and living in {zoneData.title}.</p>
-              <Link
-                href={`/zones/${zone}/guides`}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-sky-600 text-white rounded-xl font-semibold hover:bg-sky-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                Read Guides
-                <span>→</span>
-              </Link>
-            </div>
-          )}
         </motion.div>
       </section>
 
@@ -203,29 +184,6 @@ export default function ZonePage({ params }) {
               <ZoneAgreementCTA zone={zone} preset={zoneData.preset} />
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Resources & Guides */}
-      <section className="max-w-6xl mx-auto px-6 py-16 md:py-20">
-        <h2 className="text-3xl font-bold text-sky-900 mb-10">Resources & Tips</h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div
-            whileHover={{ y: -4, shadow: 'lg' }}
-            className="rounded-xl border-2 border-slate-200 bg-white p-8 hover:shadow-lg transition-all"
-          >
-            <h4 className="text-xl font-bold text-slate-900 mb-3">🏔️ Finding Work in {zoneData.title}</h4>
-            <p className="text-slate-700 mb-4">Discover the best strategies for finding seasonal employment in this region, including insider tips from experienced workers.</p>
-            <a href="#" className="text-sky-600 font-semibold hover:text-sky-700">Read Guide →</a>
-          </motion.div>
-          <motion.div
-            whileHover={{ y: -4, shadow: 'lg' }}
-            className="rounded-xl border-2 border-slate-200 bg-white p-8 hover:shadow-lg transition-all"
-          >
-            <h4 className="text-xl font-bold text-slate-900 mb-3">🏠 Housing & Accommodation</h4>
-            <p className="text-slate-700 mb-4">Learn about staff accommodation, shared housing, and rental options available for seasonal workers in {zoneData.title}.</p>
-            <a href="#" className="text-sky-600 font-semibold hover:text-sky-700">Read Guide →</a>
-          </motion.div>
         </div>
       </section>
 

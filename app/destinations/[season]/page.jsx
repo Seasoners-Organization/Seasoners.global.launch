@@ -44,7 +44,6 @@ export default function SeasonDestinationsPage() {
 
   // Get hero image for season
   const heroZone = zones[0] || ZONES[0];
-  const totalListings = zones.reduce((sum) => sum + Math.floor(Math.random() * 50), 0);
 
   return (
     <main>
@@ -94,24 +93,6 @@ export default function SeasonDestinationsPage() {
           >
             <div className="text-3xl md:text-4xl font-bold">{zones.length}</div>
             <div className="text-sm text-white/90">Destinations</div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-center md:text-left"
-          >
-            <div className="text-3xl md:text-4xl font-bold">{totalListings}+</div>
-            <div className="text-sm text-white/90">Active Listings</div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-center md:text-left"
-          >
-            <div className="text-3xl md:text-4xl font-bold">3000+</div>
-            <div className="text-sm text-white/90">Seasonal Workers</div>
           </motion.div>
         </div>
       </section>
