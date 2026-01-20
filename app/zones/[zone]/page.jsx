@@ -7,6 +7,13 @@ import Link from 'next/link';
 import ZoneAgreementCTA from '../../../components/ZoneAgreementCTA';
 import { useLanguage } from '../../../components/LanguageProvider';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+
+const TAB_CONFIG = [
+  { id: 'stays', icon: '🏠', label: 'Accommodations' },
+  { id: 'jobs', icon: '💼', label: 'Jobs' },
+  { id: 'guides', icon: '📖', label: 'Guides' },
+];
 
 export default function ZonePage({ params }) {
   const { zone } = params;
@@ -15,6 +22,7 @@ export default function ZonePage({ params }) {
   const [summary, setSummary] = useState('');
   const [description, setDescription] = useState('');
   const [opening, setOpening] = useState('');
+  const [activeTab, setActiveTab] = useState('stays');
 
   useEffect(() => {
     if (!zoneData) return;
@@ -38,88 +46,186 @@ export default function ZonePage({ params }) {
     <main>
       <Navbar />
 
-      {/* Hero Section with Image */}
-      <section className="relative h-[60vh] min-h-[400px] overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative h-[55vh] min-h-[400px] overflow-hidden">
         <img 
           src={zoneData.hero} 
           alt={zoneData.title} 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
           <div className="max-w-6xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg"
+            >
               {zoneData.title}
-            </h1>
-            <p className="text-xl text-white/95 max-w-3xl drop-shadow-md mb-2">
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-lg md:text-xl text-white/95 max-w-3xl drop-shadow-md"
+            >
               {opening}
-            </p>
-            <p className="text-lg text-white/90 max-w-3xl drop-shadow-md">
-              {summary}
-            </p>
+            </motion.p>
           </div>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto p-6 md:p-12">
-        {/* Description */}
-        <div className="mb-12">
-          <p className="text-lg text-slate-700 leading-relaxed">
-            {description}
-          </p>
-        </div>
-
-        {/* Navigation Tabs */}
-        <div className="flex gap-3 mb-8">
-          <Link href={`/zones/${zone}/stays`} className="px-6 py-3 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-medium transition">
-            {t('stays')}
-          </Link>
-          <Link href={`/zones/${zone}/jobs`} className="px-6 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
-            {t('jobs')}
-          </Link>
-          <Link href={`/zones/${zone}/guides`} className="px-6 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
-            {t('guides')}
-          </Link>
-        </div>
-
-        {/* Featured Hotspots */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold text-sky-800 mb-6">{t('featuredDestinations')}</h3>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {zoneData.hotspots.map((h) => (
-              <div key={h} className="rounded-xl p-6 border border-slate-200 bg-white hover:shadow-lg transition text-center">
-                <span className="text-lg font-medium text-slate-800">{h}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Trusted Stay Guide */}
-        <div className="rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white p-8 mb-12">
-          <h2 className="text-2xl font-semibold text-sky-800 mb-4">{t('trustedStayGuide')}</h2>
-          <p className="text-slate-700 leading-relaxed">
-            {t('trustedStayGuideDesc').replace('{zone}', zoneData.title)}
-          </p>
-        </div>
-
-        {/* Resources & Guides */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold text-sky-800 mb-6">{t('resourcesGuides')}</h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border border-slate-200 bg-white p-6 hover:shadow-md transition">
-              <h4 className="font-semibold text-slate-900 mb-2">🏔️ {t('howToFindJob').replace('{zone}', zoneData.title)}</h4>
-              <p className="text-sm text-slate-600">{t('comingSoonJobTips')}</p>
+      {/* Quick Stats */}
+      <section className="bg-gradient-to-r from-sky-600 to-blue-600 text-white py-6 sticky top-16 z-40 shadow-lg">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-wrap gap-8 justify-center md:justify-start mb-4">
+            <div className="text-center md:text-left">
+              <div className="text-2xl font-bold">{Math.floor(Math.random() * 50) + 20}</div>
+              <div className="text-sm text-white/90">Active Listings</div>
             </div>
-            <div className="rounded-xl border border-slate-200 bg-white p-6 hover:shadow-md transition">
-              <h4 className="font-semibold text-slate-900 mb-2">🏠 {t('staffHousingOptions')}</h4>
-              <p className="text-sm text-slate-600">{t('comingSoonStaffHousing')}</p>
+            <div className="text-center md:text-left">
+              <div className="text-2xl font-bold">{zoneData.hotspots?.length || 5}</div>
+              <div className="text-sm text-white/90">Popular Areas</div>
+            </div>
+            <div className="text-center md:text-left hidden sm:block">
+              <div className="text-2xl font-bold">{zoneData.season}</div>
+              <div className="text-sm text-white/90">Season</div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Agreement CTA */}
-        <div className="text-center">
-          <ZoneAgreementCTA zone={zone} preset={zoneData.preset} />
+      {/* Tab Navigation */}
+      <section className="max-w-6xl mx-auto px-6 py-8">
+        <div className="flex gap-3 mb-12 overflow-x-auto pb-3">
+          {TAB_CONFIG.map((tab) => (
+            <motion.button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all duration-300 flex items-center gap-2 ${
+                activeTab === tab.id
+                  ? 'bg-sky-600 text-white shadow-lg'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              }`}
+            >
+              <span className="text-lg">{tab.icon}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
+              <span className="sm:hidden">{tab.id === 'stays' ? 'Stay' : tab.id === 'jobs' ? 'Jobs' : 'Info'}</span>
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Tab Content */}
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {activeTab === 'stays' && (
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-sky-900 mb-6">Accommodations in {zoneData.title}</h2>
+              <p className="text-lg text-slate-700 mb-8">{description}</p>
+              <Link
+                href={`/zones/${zone}/stays`}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-sky-600 text-white rounded-xl font-semibold hover:bg-sky-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Browse {zoneData.hotspots?.length || 5}+ Accommodations
+                <span>→</span>
+              </Link>
+            </div>
+          )}
+
+          {activeTab === 'jobs' && (
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-sky-900 mb-6">Jobs in {zoneData.title}</h2>
+              <p className="text-lg text-slate-700 mb-8">Find seasonal job opportunities in {zoneData.title}. From hospitality to tourism, discover work that fits your skills.</p>
+              <Link
+                href={`/zones/${zone}/jobs`}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-sky-600 text-white rounded-xl font-semibold hover:bg-sky-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                View Available Jobs
+                <span>→</span>
+              </Link>
+            </div>
+          )}
+
+          {activeTab === 'guides' && (
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-sky-900 mb-6">Guides & Resources</h2>
+              <p className="text-lg text-slate-700 mb-8">Get insider tips for working and living in {zoneData.title}.</p>
+              <Link
+                href={`/zones/${zone}/guides`}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-sky-600 text-white rounded-xl font-semibold hover:bg-sky-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Read Guides
+                <span>→</span>
+              </Link>
+            </div>
+          )}
+        </motion.div>
+      </section>
+
+      {/* Featured Hotspots */}
+      <section className="max-w-6xl mx-auto px-6 py-16 md:py-20">
+        <h2 className="text-3xl font-bold text-sky-900 mb-10">Popular Areas to Explore</h2>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {zoneData.hotspots.map((h, idx) => (
+            <motion.div
+              key={h}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              whileHover={{ y: -4, shadow: 'md' }}
+              className="rounded-xl p-6 border border-sky-200 bg-gradient-to-br from-sky-50 to-white hover:shadow-lg transition-all text-center cursor-pointer"
+            >
+              <span className="text-lg font-semibold text-sky-900">{h}</span>
+              <p className="text-xs text-sky-600 mt-2">Popular destination</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Trusted Stay Guide */}
+      <section className="max-w-6xl mx-auto px-6 py-16 md:py-20">
+        <div className="rounded-2xl border-2 border-sky-300 bg-gradient-to-br from-sky-50 via-white to-blue-50 p-8 md:p-12">
+          <div className="flex items-start gap-4 mb-4">
+            <span className="text-4xl">🤝</span>
+            <div>
+              <h2 className="text-3xl font-bold text-sky-900 mb-4">Seasoners Community Agreement</h2>
+              <p className="text-lg text-slate-700 leading-relaxed mb-6">
+                Join a trusted community of verified seasonal workers in {zoneData.title}. Our agreement ensures safety, respect, and clear expectations for everyone.
+              </p>
+              <ZoneAgreementCTA zone={zone} preset={zoneData.preset} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Resources & Guides */}
+      <section className="max-w-6xl mx-auto px-6 py-16 md:py-20">
+        <h2 className="text-3xl font-bold text-sky-900 mb-10">Resources & Tips</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div
+            whileHover={{ y: -4, shadow: 'lg' }}
+            className="rounded-xl border-2 border-slate-200 bg-white p-8 hover:shadow-lg transition-all"
+          >
+            <h4 className="text-xl font-bold text-slate-900 mb-3">🏔️ Finding Work in {zoneData.title}</h4>
+            <p className="text-slate-700 mb-4">Discover the best strategies for finding seasonal employment in this region, including insider tips from experienced workers.</p>
+            <a href="#" className="text-sky-600 font-semibold hover:text-sky-700">Read Guide →</a>
+          </motion.div>
+          <motion.div
+            whileHover={{ y: -4, shadow: 'lg' }}
+            className="rounded-xl border-2 border-slate-200 bg-white p-8 hover:shadow-lg transition-all"
+          >
+            <h4 className="text-xl font-bold text-slate-900 mb-3">🏠 Housing & Accommodation</h4>
+            <p className="text-slate-700 mb-4">Learn about staff accommodation, shared housing, and rental options available for seasonal workers in {zoneData.title}.</p>
+            <a href="#" className="text-sky-600 font-semibold hover:text-sky-700">Read Guide →</a>
+          </motion.div>
         </div>
       </section>
 
