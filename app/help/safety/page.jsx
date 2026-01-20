@@ -57,44 +57,44 @@ export default function SafetyHelp() {
 
   const faqs = [
     {
-      q: "How does Seasoners verify users?",
-      a: "We verify email addresses, phone numbers, and government-issued IDs. Verified badges appear on profiles. However, verification doesn't guarantee safety - always use your judgment and follow safety guidelines."
+      q: t('helpSafetyQ1') || "How does Seasoners verify users?",
+      a: t('helpSafetyA1') || "We verify email addresses, phone numbers, and government-issued IDs. Verified badges appear on profiles. However, verification doesn't guarantee safety - always use your judgment and follow safety guidelines."
     },
     {
-      q: "What should I do if I feel unsafe?",
-      a: "Your safety is paramount. Leave the situation immediately if you feel threatened. Contact local authorities if necessary. Then report the incident to support@seasoners.eu with details and evidence."
+      q: t('helpSafetyQ2') || "What should I do if I feel unsafe?",
+      a: t('helpSafetyA2') || "Your safety is paramount. Leave the situation immediately if you feel threatened. Contact local authorities if necessary. Then report the incident to support@seasoners.eu with details and evidence."
     },
     {
-      q: "How do I report a suspicious listing or user?",
-      a: "Click the 'Report' button on any listing or profile. Select the reason for reporting and provide details. We investigate all reports within 24 hours and take appropriate action."
+      q: t('helpSafetyQ3') || "How do I report a suspicious listing or user?",
+      a: t('helpSafetyA3') || "Click the 'Report' button on any listing or profile. Select the reason for reporting and provide details. We investigate all reports within 24 hours and take appropriate action."
     },
     {
-      q: "What happens after I report someone?",
-      a: "Our trust & safety team reviews the report. Depending on severity: warning, temporary suspension, or permanent ban. You'll be notified of the outcome. Serious cases may be reported to authorities."
+      q: t('helpSafetyQ4') || "What happens after I report someone?",
+      a: t('helpSafetyA4') || "Our trust & safety team reviews the report. Depending on severity: warning, temporary suspension, or permanent ban. You'll be notified of the outcome. Serious cases may be reported to authorities."
     },
     {
-      q: "Can I block or hide users?",
-      a: "Yes. Go to their profile and select 'Block User'. They won't be able to message you or see your listings. You won't see their listings either."
+      q: t('helpSafetyQ5') || "Can I block or hide users?",
+      a: t('helpSafetyA5') || "Yes. Go to their profile and select 'Block User'. They won't be able to message you or see your listings. You won't see their listings either."
     },
     {
-      q: "What is Trust Score and how does it work?",
-      a: "Trust Score (0-100) is calculated from: verification status, profile completeness, positive reviews, response rate, and account age. Higher scores indicate more trustworthy users."
+      q: t('helpSafetyQ6') || "What is Trust Score and how does it work?",
+      a: t('helpSafetyA6') || "Trust Score (0-100) is calculated from: verification status, profile completeness, positive reviews, response rate, and account age. Higher scores indicate more trustworthy users."
     },
     {
-      q: "Are background checks performed?",
-      a: "We verify IDs but don't perform full background checks. We recommend: meeting in public first, checking references, and doing your own research before committing."
+      q: t('helpSafetyQ7') || "Are background checks performed?",
+      a: t('helpSafetyA7') || "We verify IDs but don't perform full background checks. We recommend: meeting in public first, checking references, and doing your own research before committing."
     },
     {
-      q: "What should I include in a rental agreement?",
-      a: "Include: names, addresses, dates, payment terms, house rules, deposit information, cancellation policy, and emergency contacts. Both parties should sign. We provide agreement templates in your dashboard."
+      q: t('helpSafetyQ8') || "What should I include in a rental agreement?",
+      a: t('helpSafetyA8') || "Include: names, addresses, dates, payment terms, house rules, deposit information, cancellation policy, and emergency contacts. Both parties should sign. We provide agreement templates in your dashboard."
     },
     {
-      q: "How do I handle payment disputes?",
-      a: "For Stripe payments: contact support@seasoners.eu with documentation. For cash/direct payments: we can't intervene but can ban users who violate terms. Always use traceable payment methods."
+      q: t('helpSafetyQ9') || "How do I handle payment disputes?",
+      a: t('helpSafetyA9') || "For Stripe payments: contact support@seasoners.eu with documentation. For cash/direct payments: we can't intervene but can ban users who violate terms. Always use traceable payment methods."
     },
     {
-      q: "What if someone asks me to pay outside Seasoners?",
-      a: "NEVER do this. This is a common scam and violates our Terms of Service. All transactions should go through official channels. Report users who request off-platform payments immediately."
+      q: t('helpSafetyQ10') || "What if someone asks me to pay outside Seasoners?",
+      a: t('helpSafetyA10') || "NEVER do this. This is a common scam and violates our Terms of Service. All transactions should go through official channels. Report users who request off-platform payments immediately."
     }
   ];
 

@@ -38,24 +38,24 @@ export default function PaymentHelp() {
       a: "We occasionally offer promotional discounts for annual subscriptions and early adopters. Sign up for our newsletter to be notified of special offers."
     },
     {
-      q: "What happens if my payment fails?",
-      a: "We'll retry the payment up to 3 times over 7 days. You'll receive email notifications. If all retries fail, your subscription will be downgraded to the free tier and your listings may be hidden."
+      q: t('helpPaymentsQ7') || "What happens if my payment fails?",
+      a: t('helpPaymentsA7') || "We'll retry the payment up to 3 times over 7 days. You'll receive email notifications. If all retries fail, your subscription will be downgraded to the free tier and your listings may be hidden."
     },
     {
-      q: "Is my payment information secure?",
-      a: "Yes. We use Stripe for payment processing, which is PCI-DSS Level 1 certified. We never store your full credit card details on our servers. All transactions are encrypted."
+      q: t('helpPaymentsQ8') || "Is my payment information secure?",
+      a: t('helpPaymentsA8') || "Yes. We use Stripe for payment processing, which is PCI-DSS Level 1 certified. We never store your full credit card details on our servers. All transactions are encrypted."
     },
     {
-      q: "Can I pause my subscription?",
-      a: "We don't offer subscription pausing. You can cancel and resubscribe later, but you'll lose any remaining time on your current subscription period."
+      q: t('helpPaymentsQ9') || "Can I pause my subscription?",
+      a: t('helpPaymentsA9') || "We don't offer subscription pausing. You can cancel and resubscribe later, but you'll lose any remaining time on your current subscription period."
     },
     {
-      q: "Do you offer invoices or receipts?",
-      a: "Yes. After each payment, you'll receive an email receipt. You can also download invoices from Profile → Settings → Subscription → Billing History."
+      q: t('helpPaymentsQ10') || "Do you offer invoices or receipts?",
+      a: t('helpPaymentsA10') || "Yes. After each payment, you'll receive an email receipt. You can also download invoices from Profile → Settings → Subscription → Billing History."
     },
     {
-      q: "What currency are payments processed in?",
-      a: "All prices are in Euros (EUR). If your card is in a different currency, your bank will convert it at their exchange rate and may charge a foreign transaction fee."
+      q: t('helpPaymentsQ11') || "What currency are payments processed in?",
+      a: t('helpPaymentsA11') || "All prices are in Euros (EUR). If your card is in a different currency, your bank will convert it at their exchange rate and may charge a foreign transaction fee."
     }
   ];
 

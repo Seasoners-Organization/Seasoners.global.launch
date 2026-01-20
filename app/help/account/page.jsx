@@ -26,28 +26,28 @@ export default function AccountHelp() {
       a: t('helpAccountA4')
     },
     {
-      q: "How do I get identity verified?",
-      a: "Go to your Profile → Verification. Upload a clear photo of your government-issued ID (passport, driver's license, or national ID card). Our team reviews submissions within 24-48 hours."
+      q: t('helpAccountQ5') || "How do I get identity verified?",
+      a: t('helpAccountA5') || "Go to your Profile → Verification. Upload a clear photo of your government-issued ID (passport, driver's license, or national ID card). Our team reviews submissions within 24-48 hours."
     },
     {
-      q: "Can I change my email address?",
-      a: "Yes. Go to Settings → Account → Change Email. Enter your new email address and verify it by clicking the link we send to your new email. Your old email will remain active until the new one is verified."
+      q: t('helpAccountQ6') || "Can I change my email address?",
+      a: t('helpAccountA6') || "Yes. Go to Settings → Account → Change Email. Enter your new email address and verify it by clicking the link we send to your new email. Your old email will remain active until the new one is verified."
     },
     {
-      q: "How do I delete my account?",
-      a: "Go to Settings → Account → Delete Account. You'll need to confirm the deletion and enter your password. Note: This action is permanent and cannot be undone. All your listings and messages will be deleted."
+      q: t('helpAccountQ7') || "How do I delete my account?",
+      a: t('helpAccountA7') || "Go to Settings → Account → Delete Account. You'll need to confirm the deletion and enter your password. Note: This action is permanent and cannot be undone. All your listings and messages will be deleted."
     },
     {
-      q: "Why is my account suspended?",
-      a: "Accounts may be suspended for violating our Terms of Service, such as posting fake listings, harassment, or fraudulent activity. If you believe this was a mistake, contact support@seasoners.eu with your account details."
+      q: t('helpAccountQ8') || "Why is my account suspended?",
+      a: t('helpAccountA8') || "Accounts may be suspended for violating our Terms of Service, such as posting fake listings, harassment, or fraudulent activity. If you believe this was a mistake, contact support@seasoners.eu with your account details."
     },
     {
-      q: "How do I enable two-factor authentication?",
-      a: "Go to Settings → Security → Two-Factor Authentication. Choose your preferred method (SMS or authenticator app) and follow the setup instructions. We highly recommend enabling this for added security."
+      q: t('helpAccountQ9') || "How do I enable two-factor authentication?",
+      a: t('helpAccountA9') || "Go to Settings → Security → Two-Factor Authentication. Choose your preferred method (SMS or authenticator app) and follow the setup instructions. We highly recommend enabling this for added security."
     },
     {
-      q: "Can I have multiple accounts?",
-      a: "No. Each person is allowed one account only. Multiple accounts may result in suspension of all accounts. If you need to manage listings for a business, contact us about our business account options."
+      q: t('helpAccountQ10') || "Can I have multiple accounts?",
+      a: t('helpAccountA10') || "No. Each person is allowed one account only. Multiple accounts may result in suspension of all accounts. If you need to manage listings for a business, contact us about our business account options."
     }
   ];
 

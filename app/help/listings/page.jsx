@@ -38,16 +38,16 @@ export default function ListingHelp() {
       a: "Listings remain active until you delete them or your subscription expires. We recommend updating your listings regularly to keep them fresh in search results."
     },
     {
-      q: "How do I mark my listing as no longer available?",
-      a: "Edit your listing and change the status to 'Unavailable' or 'Filled'. This removes it from search but keeps it in your profile for future reactivation."
+      q: t('helpListingsQ7') || "How do I mark my listing as no longer available?",
+      a: t('helpListingsA7') || "Edit your listing and change the status to 'Unavailable' or 'Filled'. This removes it from search but keeps it in your profile for future reactivation."
     },
     {
-      q: "What makes a good listing?",
-      a: "Include: clear photos, detailed description, accurate location, fair pricing, availability dates, required qualifications (for jobs), house rules (for stays), and quick response to inquiries."
+      q: t('helpListingsQ8') || "What makes a good listing?",
+      a: t('helpListingsA8') || "Include: clear photos, detailed description, accurate location, fair pricing, availability dates, required qualifications (for jobs), house rules (for stays), and quick response to inquiries."
     },
     {
-      q: "Can I promote my listing to appear higher in search?",
-      a: "Featured listings (coming soon) will appear at the top of search results. Currently, listings are ranked by: recency, completeness, trust score, and relevance to search terms."
+      q: t('helpListingsQ9') || "Can I promote my listing to appear higher in search?",
+      a: t('helpListingsA9') || "Yes! Boost your listing for 7 days (€9.90) or 30 days (€29.90) to appear at the top of search results. Great way to get more visibility!"
     }
   ];
 

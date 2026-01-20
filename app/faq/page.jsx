@@ -14,136 +14,116 @@ export default function FAQ() {
 
   const faqCategories = [
     {
-      category: "Getting Started",
+      category: t('faqGettingStarted') || "Getting Started",
       icon: "🚀",
       questions: [
         {
-          q: "How do I create an account?",
-          a: "Click 'Sign Up' in the top right corner and follow the simple registration process. You can sign up using your email or Google account."
+          q: t('faqQ1') || "How do I create an account?",
+          a: t('faqA1') || "Click 'Sign Up' in the top right corner and follow the simple registration process. You can sign up using your email or Google account."
         },
         {
-          q: "Is Seasoners free to use?",
-          a: "Browsing and basic features are free. Premium subscriptions include a 90-day free trial (card required to start, no charges until day 91). After the trial, choose monthly or annual plans for unlimited listings, verification badges, and priority support."
+          q: t('faqQ2') || "Is Seasoners free to use?",
+          a: t('faqA2') || "YES! Browsing is completely free. You get 10 free messages per month. Plus members (€9.90/month) get unlimited messaging and priority support. Cancel anytime."
         },
         {
-          q: "What countries does Seasoners operate in?",
-          a: "We're currently focused on Austria with plans to expand globally. You can find opportunities in major Austrian cities and ski resorts."
+          q: t('faqQ3') || "What countries does Seasoners operate in?",
+          a: t('faqA3') || "We're currently focused on Austria with plans to expand globally. You can find opportunities in major Austrian cities and ski resorts."
         },
         {
-          q: "How do I verify my account?",
-          a: "Complete your profile with accurate information and upload a government-issued ID. Our team reviews verification requests within 24-48 hours."
+          q: t('faqQ4') || "How do I verify my account?",
+          a: t('faqA4') || "Complete your profile with accurate information and upload a government-issued ID. Our team reviews verification requests within 24-48 hours."
         }
       ]
     },
     {
-      category: "Listings & Search",
+      category: t('faqListingsSearch') || "Listings & Search",
       icon: "🏠",
       questions: [
         {
-          q: "How do I create a listing?",
-          a: "Go to your profile, click 'Create Listing', and fill in the details. You'll need a verified account to post listings. Make sure to include clear photos and detailed descriptions."
+          q: t('faqQ5') || "How do I create a listing?",
+          a: t('faqA5') || "Go to your profile, click 'Create Listing', and fill in the details. All users can create listings for free! Make sure to include clear photos and detailed descriptions."
         },
         {
-          q: "How do I search for opportunities?",
-          a: "Use the search filters on the Jobs or Stays pages. You can filter by location, dates, price range, and specific amenities or job types."
+          q: t('faqQ6') || "How do I search for opportunities?",
+          a: t('faqA6') || "Use the search filters on the Jobs or Stays pages. You can filter by location, dates, price range, and specific amenities or job types."
         },
         {
-          q: "Can I save listings for later?",
-          a: "Yes! Click the heart icon on any listing to save it to your favorites. Access saved listings from your profile."
+          q: t('faqQ7') || "Can I save listings for later?",
+          a: t('faqA7') || "Yes! Click the heart icon on any listing to save it to your favorites. Access saved listings from your profile."
         },
         {
-          q: "How many listings can I post?",
-          a: "Free accounts can post 1 listing. Premium subscribers get unlimited listings plus featured placement and priority in search results."
+          q: t('faqQ8') || "Can I boost my listing?",
+          a: t('faqA8') || "Yes! Boost your listing to appear at the top for 7 days (€9.90) or 30 days (€29.90). Great for getting more visibility!"
         }
       ]
     },
     {
-      category: "Accounts & Verification",
+      category: t('faqAccountsVerification') || "Accounts & Verification",
       icon: "✅",
       questions: [
         {
-          q: "Why should I verify my account?",
-          a: "Verified accounts build trust, get priority in search results, and unlock additional features. It helps create a safer community for everyone."
+          q: t('faqQ9') || "Why should I verify my account?",
+          a: t('faqA9') || "Verified accounts build trust, get priority in search results, and unlock additional features. It helps create a safer community for everyone."
         },
         {
-          q: "What documents are needed for verification?",
-          a: "A valid government-issued ID (passport, driver's license, or national ID card). We never share your documents and use them only for verification."
+          q: t('faqQ10') || "What documents are needed for verification?",
+          a: t('faqA10') || "A valid government-issued ID (passport, driver's license, or national ID card). We never share your documents and use them only for verification."
         },
         {
-          q: "How long does verification take?",
-          a: "Most verifications are completed within 24-48 hours. You'll receive an email notification once approved."
+          q: t('faqQ11') || "How long does verification take?",
+          a: t('faqA11') || "Most verifications are completed within 24-48 hours. You'll receive an email notification once approved."
         },
         {
-          q: "Can I change my email address?",
-          a: "Yes, go to Profile Settings > Account > Email. You'll need to verify your new email address."
+          q: t('faqQ12') || "Can I change my email address?",
+          a: t('faqA12') || "Yes, go to Profile Settings > Account > Email. You'll need to verify your new email address."
         }
       ]
     },
     {
-      category: "Payments & Subscriptions",
+      category: t('faqPaymentsSubscriptions') || "Payments & Subscriptions",
       icon: "💳",
       questions: [
         {
-          q: "What payment methods do you accept?",
-          a: "We accept all major credit/debit cards (Visa, Mastercard, Amex) and SEPA payments through our secure payment processor Stripe."
+          q: t('faqQ13') || "What payment methods do you accept?",
+          a: t('faqA13') || "We accept all major credit/debit cards (Visa, Mastercard, Amex) and SEPA payments through our secure payment processor Stripe."
         },
         {
-          q: "What is the Early Bird 3-Month Free Trial?",
-          a: "Early Bird users get 90 days (3 months) of completely free access to premium features. A card is required to start, but you will not be charged until day 91. You'll receive email reminders at 60, 30, 7, and 1 day before billing begins. Cancel anytime before day 90 with no charges."
+          q: t('faqQ14') || "How much does Plus cost?",
+          a: t('faqA14') || "Plus costs just €9.90/month and includes unlimited messaging, unlimited saved searches, and instant email alerts. Cancel anytime."
         },
         {
-          q: "When will I be charged after the free trial?",
-          a: "Your payment method will be charged on day 91 (the day after your 90-day trial ends). You'll receive 4 reminder emails before billing: at 60 days, 30 days, 7 days, and 1 day remaining. This gives you plenty of time to decide."
+          q: t('faqQ15') || "Is there a free trial?",
+          a: t('faqA15') || "Start with our FREE tier (10 messages/month, all basic features). Upgrade to Plus anytime to unlock unlimited messaging."
         },
         {
-          q: "Will I receive reminders before my trial ends?",
-          a: "Yes! We'll send you email reminders at key milestones: when you have 60 days remaining (friendly reminder), 30 days remaining (billing info), 7 days remaining (urgent notice), and 1 day remaining (final notice). You'll never be surprised by a charge."
+          q: t('faqQ16') || "Can I cancel anytime?",
+          a: t('faqA16') || "Yes! Cancel your Plus subscription anytime from your account settings. No hidden fees, no long-term commitment."
         },
         {
-          q: "Can I cancel during the free trial?",
-          a: "Absolutely! Cancel anytime during your 90-day trial period at no cost. If you cancel before day 90, you won't be charged anything. You'll keep access until the end of your trial period."
-        },
-        {
-          q: "What happens after the 3-month trial ends?",
-          a: "On day 91, your subscription automatically begins and your payment method is charged the monthly fee (€7 for Searcher, €12 for Lister). You can cancel before this date to avoid any charges, or continue enjoying premium features."
-        },
-        {
-          q: "How do I cancel my subscription?",
-          a: "Go to your Profile > Subscription Settings > Cancel Subscription. You can also click the cancellation link in any trial reminder email. Cancellation takes effect immediately but you keep access until the end of your current billing period."
-        },
-        {
-          q: "Can I cancel my subscription anytime?",
-          a: "Yes, cancel anytime from your account settings. You'll keep access until the end of your billing period, then automatically switch to the free plan."
-        },
-        {
-          q: "Do you offer refunds?",
-          a: "You can cancel during your 90-day free trial at no cost. After the trial, subscriptions can be canceled anytime but are non-refundable for the current billing period. We believe our 3-month trial gives you plenty of time to decide."
-        },
-        {
-          q: "Will the trial period change in the future?",
-          a: "The 90-day trial is exclusive to Early Bird users. As Seasoners grows, new users may receive shorter trial periods. However, if you sign up now, your 90-day trial period is locked in and won't change."
+          q: t('faqQ17') || "Can I cancel anytime?",
+          a: t('faqA17') || "Yes! Cancel your Plus subscription anytime from your account settings. No hidden fees, no long-term commitment."
         }
       ]
     },
     {
-      category: "Trust & Safety",
+      category: t('faqTrustSafety') || "Trust & Safety",
       icon: "🛡️",
       questions: [
         {
-          q: "How does Seasoners ensure safety?",
-          a: "We use Trust Scores, verification badges, community reviews, and agreements. Report any suspicious behavior immediately to support@seasoners.eu."
+          q: t('faqQ18') || "How does Seasoners ensure safety?",
+          a: t('faqA18') || "We use Trust Scores, verification badges, community reviews, and agreements. Report any suspicious behavior immediately to support@seasoners.eu."
         },
         {
-          q: "What is a Trust Score?",
-          a: "Trust Scores (0-100) measure reliability based on verification, reviews, responsiveness, and community standing. Higher scores indicate more trustworthy users."
+          q: t('faqQ19') || "What is a Trust Score?",
+          a: t('faqA19') || "Trust Scores (0-100) measure reliability based on verification, reviews, responsiveness, and community standing. Higher scores indicate more trustworthy users."
         },
         {
-          q: "How do I report inappropriate content?",
-          a: "Click the flag icon on any listing or profile, or email support@seasoners.eu with details. We investigate all reports within 24 hours."
+          q: t('faqQ20') || "How do I report inappropriate content?",
+          a: t('faqA20') || "Click the flag icon on any listing or profile, or email support@seasoners.eu with details. We investigate all reports within 24 hours."
         },
         {
-          q: "What are Zone Agreements?",
-          a: "Digital agreements between hosts and guests that outline expectations, responsibilities, and terms. Both parties sign before booking."
+          q: t('faqQ21') || "What are Zone Agreements?",
+          a: t('faqA21') || "Digital agreements between hosts and guests that outline expectations, responsibilities, and terms. Both parties sign before booking."
         }
       ]
     },

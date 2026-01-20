@@ -99,51 +99,6 @@ export default function CommunityPage() {
             </Link>
           </motion.div>
 
-          {/* Timeline Section */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="bg-white rounded-2xl border border-slate-200 p-8 mb-16"
-          >
-            <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">
-              Development Timeline
-            </h2>
-            <div className="space-y-6">
-              {[
-                { phase: "Phase 1", date: "December 2025", status: "In Progress", items: ["Core forum infrastructure", "Discussion threads", "Category system"] },
-                { phase: "Phase 2", date: "January 2026", status: "Planned", items: ["Verified member badges", "Reputation system", "Search & discovery"] },
-                { phase: "Phase 3", date: "February 2026", status: "Planned", items: ["Community moderation tools", "Member profiles", "Integration with messaging"] }
-              ].map((phase, idx) => (
-                <div key={idx} className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-sky-100 border-2 border-sky-600 flex items-center justify-center font-bold text-sky-600">
-                      {idx + 1}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-slate-900">{phase.phase}</h3>
-                      <span className="text-sm text-slate-600">{phase.date}</span>
-                      <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                        phase.status === 'In Progress' 
-                          ? 'bg-amber-100 text-amber-700' 
-                          : 'bg-slate-100 text-slate-700'
-                      }`}>
-                        {phase.status}
-                      </span>
-                    </div>
-                    <ul className="space-y-1">
-                      {phase.items.map((item, i) => (
-                        <li key={i} className="text-sm text-slate-600">• {item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
           {/* Call to Action */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
