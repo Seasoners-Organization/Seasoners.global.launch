@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useLanguage } from './LanguageProvider';
 
-const SubscriptionPlan = ({ nameKey, price, period, features, highlighted, ctaKey, ctaHref, t, showTrialPrice, trialSavings }) => (
+const SubscriptionPlan = ({ nameKey, price, period, features, highlighted, ctaKey, ctaHref, t }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -25,23 +25,9 @@ const SubscriptionPlan = ({ nameKey, price, period, features, highlighted, ctaKe
     <div className="mb-6">
       <h3 className="text-2xl font-bold text-slate-900 mb-2">{t(nameKey)}</h3>
       <div className="flex items-baseline gap-2">
-        {showTrialPrice ? (
-          <>
-            <span className="text-4xl font-bold text-emerald-600">€0</span>
-            <span className="text-lg text-slate-400 line-through">€{trialSavings}</span>
-          </>
-        ) : (
-          <>
-            <span className="text-4xl font-bold text-sky-600">€{price}</span>
-            <span className="text-slate-600 text-sm">/{period}</span>
-          </>
-        )}
+        <span className="text-4xl font-bold text-sky-600">€{price}</span>
+        <span className="text-slate-600 text-sm">/{period}</span>
       </div>
-      {showTrialPrice && (
-        <p className="text-xs text-emerald-700 font-semibold mt-2">
-          {t('trialSavingsText').replace('{{amount}}', trialSavings)}
-        </p>
-      )}
     </div>
 
     <ul className="space-y-3 mb-8">
@@ -84,39 +70,19 @@ export default function SubscriptionTiers() {
       ],
     },
     {
-      nameKey: 'planSearcherName',
-      price: 7,
+      nameKey: 'planPlusName',
+      price: 9.90,
       period: 'month',
       highlighted: true,
-      ctaKey: 'planSearcherBtn',
-      ctaHref: '/subscribe?tier=SEARCHER',
-      showTrialPrice: true,
-      trialSavings: 21,
+      ctaKey: 'planPlusBtn',
+      ctaHref: '/subscribe?tier=PLUS',
       features: [
-        'planSearcherFeat1',
-        'planSearcherFeat2',
-        'planSearcherFeat3',
-        'planSearcherFeat4',
-        'planSearcherFeat5',
-        'planSearcherFeat6',
-      ],
-    },
-    {
-      nameKey: 'planListerName',
-      price: 12,
-      period: 'month',
-      ctaKey: 'planListerBtn',
-      ctaHref: '/subscribe?tier=LISTER',
-      showTrialPrice: true,
-      trialSavings: 36,
-      features: [
-        'planListerFeat1',
-        'planListerFeat2',
-        'planListerFeat3',
-        'planListerFeat4',
-        'planListerFeat5',
-        'planListerFeat6',
-        'planListerFeat7',
+        'planPlusFeat1',
+        'planPlusFeat2',
+        'planPlusFeat3',
+        'planPlusFeat4',
+        'planPlusFeat5',
+        'planPlusFeat6',
       ],
     },
   ];
@@ -124,28 +90,15 @@ export default function SubscriptionTiers() {
   return (
     <section className="max-w-6xl mx-auto px-6 py-20">
       <div className="text-center mb-16">
-        <div className="inline-block mb-4">
-          <span className="bg-emerald-400 text-emerald-900 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wide">
-            {t('earlyBirdOffer')}
-          </span>
-        </div>
         <h2 className="text-3xl md:text-4xl font-bold text-sky-900 mb-4">
           {t('pricingSectionTitle')}
         </h2>
         <p className="text-slate-600 text-lg max-w-2xl mx-auto mb-3">
           {t('pricingSectionDesc')}
         </p>
-        <div className="bg-gradient-to-r from-emerald-50 to-sky-50 border-2 border-emerald-200 rounded-xl p-4 max-w-2xl mx-auto">
-          <p className="text-base text-emerald-800 font-bold">
-            {t('freeTrialBanner')}
-          </p>
-          <p className="text-sm text-slate-600 mt-1">
-            {t('freeTrialExplainer')}
-          </p>
-        </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 gap-8">
         {plans.map((plan, index) => (
           <SubscriptionPlan 
             key={index} 
@@ -155,28 +108,11 @@ export default function SubscriptionTiers() {
             features={plan.features} 
             highlighted={plan.highlighted} 
             ctaKey={plan.ctaKey} 
-            ctaHref={plan.ctaHref} 
-            showTrialPrice={plan.showTrialPrice}
-            trialSavings={plan.trialSavings}
+            ctaHref={plan.ctaHref}
             t={t} 
           />
         ))}
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="mt-16 bg-blue-50 rounded-2xl border-2 border-blue-200 p-8 text-center"
-      >
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">{t('premiumIDTitle')}</h3>
-        <p className="text-slate-600 mb-4">
-          {t('premiumIDDesc')}
-        </p>
-        <p className="text-sm text-slate-500">
-          {t('premiumIDEarlyBird')}
-        </p>
-      </motion.div>
     </section>
   );
 }
