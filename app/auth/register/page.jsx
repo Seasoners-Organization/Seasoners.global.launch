@@ -22,8 +22,6 @@ zxcvbnOptions.setOptions(options);
 const stepKeys = [
   'stepAccountDetails',
   'stepAccountType',
-  'stepPhoneVerification',
-  'stepVerification',
 ];
 const PhoneVerification = dynamic(() => import('../../../components/PhoneVerification'), { ssr: false });
 
@@ -39,10 +37,7 @@ function RegisterForm() {
     name: '',
     role: 'USER',
     agreeToTerms: false,
-    phoneNumber: '',
-    phoneVerified: false,
   });
-    const [phoneStepSkipped, setPhoneStepSkipped] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
@@ -80,26 +75,18 @@ function RegisterForm() {
           setError(t('passwordMinChars'));
           return false;
         }
-        // Check password strength before allowing to proceed
-        if (passwordStrength && passwordStrength.score < 3) {
+        // Check password strength before allowing to proceed (reduced from 3 to 2)
+        if (passwordStrength && passwordStrength.score < 2) {
           const suggestion = passwordStrength.feedback.warning || passwordStrength.feedback.suggestions[0] || '';
           setError(t('passwordTooWeak', { suggestion }));
           return false;
         }
         break;
-      case 1: // Account Type
+      case 1: // Account Type & Terms
         if (!formData.role) {
           setError(t('selectAccountTypeError'));
           return false;
         }
-        break;
-      case 2: // Phone Verification
-        if (!formData.phoneVerified && !phoneStepSkipped) {
-          setError(t('pleaseVerifyPhoneOrSkip'));
-          return false;
-        }
-        break;
-      case 3: // Verification
         if (!formData.agreeToTerms) {
           setError(t('mustAgreeTerms'));
           return false;
@@ -115,20 +102,6 @@ function RegisterForm() {
       setCurrentStep(prev => prev + 1);
     }
   };
-  // Handler for phone verification success
-  const handlePhoneVerified = (phone) => {
-    // Persist verified phone into form data for submission
-    setFormData(prev => ({ ...prev, phoneNumber: phone, phoneVerified: true }));
-    setPhoneStepSkipped(false);
-  };
-
-  // Handler for skipping phone verification
-  const handleSkipPhone = () => {
-    setPhoneStepSkipped(true);
-    setFormData(prev => ({ ...prev, phoneVerified: false }));
-    setCurrentStep(prev => prev + 1);
-  };
-
   const handleBack = () => {
     setError('');
     setCurrentStep(prev => prev - 1);
@@ -179,7 +152,7 @@ function RegisterForm() {
         const response = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...formData, captchaToken: freshToken, phoneNumber: formData.phoneNumber, phoneVerified: formData.phoneVerified }),
+          body: JSON.stringify({ ...formData, captchaToken: freshToken }),
         });
 
         const data = await response.json();
@@ -267,9 +240,9 @@ function RegisterForm() {
   <form className="mt-8 space-y-6" onSubmit={currentStep === stepKeys.length - 1 ? handleSubmit : e => e.preventDefault()}>
           {/* Step 1: Account Details */}
           {currentStep === 0 && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                   {t('emailAddress')}
                 </label>
                 <input
@@ -278,13 +251,13 @@ function RegisterForm() {
                   type="email"
                   autoComplete="email"
                   required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                  className="mt-1 block w-full px-4 py-3 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
                   value={formData.email}
                   onChange={handleInputChange}
                 />
               </div>
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                   {t('fullName')}
                 </label>
                 <input
@@ -292,13 +265,13 @@ function RegisterForm() {
                   name="name"
                   type="text"
                   required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                  className="mt-1 block w-full px-4 py-3 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
                   value={formData.name}
                   onChange={handleInputChange}
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                   {t('password')}
                 </label>
                 <div className="relative mt-1">
@@ -307,14 +280,14 @@ function RegisterForm() {
                     name="password"
                     type={showPassword ? "text" : "password"}
                     required
-                    className="block w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                    className="block w-full px-4 py-3 pr-12 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
                     value={formData.password}
                     onChange={handleInputChange}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 touch-manipulation"
                   >
                     {showPassword ? (
                       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -362,7 +335,7 @@ function RegisterForm() {
                 )}
               </div>
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
                   {t('confirmPassword')}
                 </label>
                 <div className="relative mt-1">
@@ -371,14 +344,14 @@ function RegisterForm() {
                     name="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     required
-                    className="block w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                    className="block w-full px-4 py-3 pr-12 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 touch-manipulation"
                   >
                     {showConfirmPassword ? (
                       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -396,133 +369,93 @@ function RegisterForm() {
             </div>
           )}
 
-          {/* Step 2: Account Type */}
+          {/* Step 2: Account Type & Terms */}
           {currentStep === 1 && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="space-y-4">
                 <label className="block text-sm font-medium text-gray-700">
                   {t('selectAccountType')}
                 </label>
-                <div className="space-y-2">
-                  <div className="flex items-center">
+                <div className="space-y-3">
+                  <div className="flex items-start">
                     <input
                       id="USER"
                       name="role"
                       type="radio"
                       value="USER"
-                      className="focus:ring-sky-500 h-4 w-4 text-sky-600 border-gray-300"
+                      className="focus:ring-sky-500 h-5 w-5 text-sky-600 border-gray-300 mt-1"
                       checked={formData.role === 'USER'}
                       onChange={handleInputChange}
                     />
-                    <label htmlFor="USER" className="ml-3">
-                      <span className="block text-sm font-medium text-gray-700">{t('regularUser')}</span>
-                      <span className="block text-sm text-gray-500">{t('regularUserDesc')}</span>
+                    <label htmlFor="USER" className="ml-3 cursor-pointer">
+                      <span className="block text-base font-medium text-gray-900">{t('regularUser')}</span>
+                      <span className="block text-sm text-gray-600 mt-1">{t('regularUserDesc')}</span>
                     </label>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-start">
                     <input
                       id="HOST"
                       name="role"
                       type="radio"
                       value="HOST"
-                      className="focus:ring-sky-500 h-4 w-4 text-sky-600 border-gray-300"
+                      className="focus:ring-sky-500 h-5 w-5 text-sky-600 border-gray-300 mt-1"
                       checked={formData.role === 'HOST'}
                       onChange={handleInputChange}
                     />
-                    <label htmlFor="HOST" className="ml-3">
-                      <span className="block text-sm font-medium text-gray-700">{t('propertyHost')}</span>
-                      <span className="block text-sm text-gray-500">{t('propertyHostDesc')}</span>
+                    <label htmlFor="HOST" className="ml-3 cursor-pointer">
+                      <span className="block text-base font-medium text-gray-900">{t('propertyHost')}</span>
+                      <span className="block text-sm text-gray-600 mt-1">{t('propertyHostDesc')}</span>
                     </label>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-start">
                     <input
                       id="EMPLOYER"
                       name="role"
                       type="radio"
                       value="EMPLOYER"
-                      className="focus:ring-sky-500 h-4 w-4 text-sky-600 border-gray-300"
+                      className="focus:ring-sky-500 h-5 w-5 text-sky-600 border-gray-300 mt-1"
                       checked={formData.role === 'EMPLOYER'}
                       onChange={handleInputChange}
                     />
-                    <label htmlFor="EMPLOYER" className="ml-3">
-                      <span className="block text-sm font-medium text-gray-700">{t('employerRole')}</span>
-                      <span className="block text-sm text-gray-500">{t('employerRoleDesc')}</span>
+                    <label htmlFor="EMPLOYER" className="ml-3 cursor-pointer">
+                      <span className="block text-base font-medium text-gray-900">{t('employerRole')}</span>
+                      <span className="block text-sm text-gray-600 mt-1">{t('employerRoleDesc')}</span>
                     </label>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
 
-          {/* Step 3: Phone Verification */}
-          {currentStep === 2 && (
-            <div className="space-y-4">
-              <PhoneVerification
-                userId={null}
-                initialPhone={formData.phoneNumber}
-                verified={!!formData.phoneVerified}
-                onVerified={(e164) => {
-                  handlePhoneVerified(e164);
-                  setCurrentStep(prev => prev + 1);
-                }}
-                showSkip={true}
-              />
-            </div>
-          )}
-
-          {/* Step 4: Verification */}
-          {currentStep === 3 && (
-            <div className="space-y-4">
-              <div className="rounded-md bg-blue-50 p-4">
-                <div className="flex">
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-blue-800">{t('verificationRequired')}</h3>
-                    <div className="mt-2 text-sm text-blue-700">
-                      <p>{t('afterRegistration')}</p>
-                      <ul className="list-disc pl-5 mt-2">
-                        <li>{t('verifyYourEmail')}</li>
-                        {(formData.role === 'HOST' || formData.role === 'EMPLOYER') && (
-                          <>
-                            <li>{t('submitIdDocs')}</li>
-                            <li>{t('provideBusinessDocs')}</li>
-                          </>
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex items-center">
+              <div className="flex items-start">
                 <input
                   id="agreeToTerms"
                   name="agreeToTerms"
                   type="checkbox"
-                  className="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded"
+                  className="h-5 w-5 text-sky-600 focus:ring-sky-500 border-gray-300 rounded mt-0.5"
                   checked={formData.agreeToTerms}
                   onChange={handleInputChange}
                 />
-                <label htmlFor="agreeToTerms" className="ml-2 block text-sm text-gray-900">
+                <label htmlFor="agreeToTerms" className="ml-3 block text-sm text-gray-900">
                   {t('iAgreeTo')} {' '}
-                  <a href="/agreement" className="text-sky-600 hover:text-sky-500">
+                  <a href="/agreement" target="_blank" className="text-sky-600 hover:text-sky-500 font-medium">
                     {t('termsAndConditions')}
                   </a>
                 </label>
               </div>
-              <div className="text-xs text-gray-500">
+
+              <div className="text-xs text-gray-500 leading-relaxed">
                 {t('recaptchaProtected')} {' '}
-                <a href="https://policies.google.com/privacy" className="text-sky-600">{t('privacyPolicy')}</a> {t('or')} {' '}
-                <a href="https://policies.google.com/terms" className="text-sky-600">{t('termsOfService')}</a> {t('apply')}
+                <a href="https://policies.google.com/privacy" target="_blank" className="text-sky-600 hover:text-sky-500">{t('privacyPolicy')}</a> {t('and')} {' '}
+                <a href="https://policies.google.com/terms" target="_blank" className="text-sky-600 hover:text-sky-500">{t('termsOfService')}</a> {t('apply')}
               </div>
             </div>
           )}
 
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-3 pt-2">
             {currentStep > 0 && (
               <button
                 type="button"
                 onClick={handleBack}
-                className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+                className="inline-flex justify-center py-3 px-6 border border-gray-300 shadow-sm text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 touch-manipulation"
               >
                 {t('back')}
               </button>
@@ -531,7 +464,7 @@ function RegisterForm() {
               type="button"
               onClick={currentStep === stepKeys.length - 1 ? handleSubmit : handleNext}
               disabled={isLoading}
-              className="ml-auto inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="ml-auto inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-lg text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-w-[120px]"
             >
               {currentStep === stepKeys.length - 1
                 ? (isLoading ? t('creatingAccount') : t('createAccount'))

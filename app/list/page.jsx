@@ -8,6 +8,7 @@ import { useLanguage } from "../../components/LanguageProvider";
 import SubscriptionGate from "../../components/SubscriptionGate";
 import UnsavedChangesWarning from "../../components/UnsavedChangesWarning";
 import EarlyBirdModal from "../../components/EarlyBirdModal";
+import PhoneVerification from "../../components/PhoneVerification";
 import { motion } from "framer-motion";
 import { getCountriesBySeason, getRegionsByCountry, getLocations, getCountryName } from "../../utils/geo";
 import { canCreateListings } from "../../utils/subscription";
@@ -19,7 +20,9 @@ export default function List() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showSubscriptionGate, setShowSubscriptionGate] = useState(false);
+  const [showPhoneVerification, setShowPhoneVerification] = useState(false);
   const [userCanCreate, setUserCanCreate] = useState(false);
+  const [userPhoneVerified, setUserPhoneVerified] = useState(false);
   const [listingType, setListingType] = useState("");
   const [currentRoommates, setCurrentRoommates] = useState([]);
   const [totalRoommates, setTotalRoommates] = useState(2);
@@ -39,6 +42,7 @@ export default function List() {
         .then(data => {
           if (data.user) {
             setUserCanCreate(canCreateListings(data.user));
+            setUserPhoneVerified(!!data.user.phoneVerified);
           }
         })
         .catch(err => {
@@ -114,6 +118,12 @@ export default function List() {
     // Check if user can create listings
     if (!userCanCreate) {
       setShowSubscriptionGate(true);
+      return;
+    }
+
+    // Check if phone is verified before allowing listing creation
+    if (!userPhoneVerified) {
+      setShowPhoneVerification(true);
       return;
     }
 
@@ -571,10 +581,48 @@ export default function List() {
       <SubscriptionGate
         isOpen={showSubscriptionGate}
         onClose={() => setShowSubscriptionGate(false)}
-        requiredTier="PLUS"
-        action="create listings"
+        requiredTier="FREE"
+        action={t('createListings')}
         onUpgrade={handleUpgrade}
       />
+
+      {/* Phone Verification Modal */}
+      {showPhoneVerification && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 sm:p-8">
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                {t('verifyPhoneTitle') || 'Verify Your Phone Number'}
+              </h3>
+              <p className="text-sm text-gray-600">
+                {t('verifyPhoneListingDesc') || 'Please verify your phone number to create listings. This helps us maintain trust and safety in our community.'}
+              </p>
+            </div>
+            
+            <PhoneVerification
+              userId={session?.user?.id}
+              initialPhone={session?.user?.phoneNumber || ''}
+              verified={userPhoneVerified}
+              onVerified={(phone) => {
+                setUserPhoneVerified(true);
+                setShowPhoneVerification(false);
+                // Auto-submit the form after verification
+                setTimeout(() => {
+                  document.querySelector('form')?.requestSubmit();
+                }, 500);
+              }}
+              showSkip={false}
+            />
+            
+            <button
+              onClick={() => setShowPhoneVerification(false)}
+              className="mt-4 w-full py-3 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+            >
+              {t('cancel')}
+            </button>
+          </div>
+        </div>
+      )}
 
       <UnsavedChangesWarning hasUnsavedChanges={hasUnsavedChanges} />
     </main>

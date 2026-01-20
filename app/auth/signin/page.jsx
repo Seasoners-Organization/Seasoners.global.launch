@@ -42,10 +42,10 @@ export default function SignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-100 via-white to-amber-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-100 via-white to-amber-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-6 bg-white p-6 sm:p-8 rounded-xl shadow-lg">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-2 text-center text-2xl sm:text-3xl font-extrabold text-gray-900">
             {t('signInToYourAccount')}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
@@ -57,7 +57,7 @@ export default function SignIn() {
         </div>
         
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg relative text-sm" role="alert">
             <span className="block sm:inline">{error}</span>
           </div>
         )}
@@ -65,7 +65,7 @@ export default function SignIn() {
         <div className="flex flex-col space-y-4">
           <button
             onClick={handleGoogleSignIn}
-            className="group relative w-full flex items-center justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+            className="group relative w-full flex items-center justify-center py-3 px-4 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 touch-manipulation min-h-[48px]"
           >
             <IoLogoGoogle className="text-xl mr-2" />
             {t('signInWithGoogle')}
@@ -80,7 +80,7 @@ export default function SignIn() {
             </div>
           </div>
 
-          <form onSubmit={handleCredentialsSignIn} className="space-y-4">
+          <form onSubmit={handleCredentialsSignIn} className="space-y-5">
             <div>
               <label htmlFor="email" className="sr-only">
                 {t('emailAddress')}
@@ -91,7 +91,7 @@ export default function SignIn() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all sm:text-sm"
+                className="appearance-none relative block w-full px-4 py-3 text-base border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
                 placeholder={t('emailAddress')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -109,7 +109,7 @@ export default function SignIn() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   required
-                  className="appearance-none relative block w-full px-3 py-2 pr-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all sm:text-sm"
+                  className="appearance-none relative block w-full px-4 py-3 pr-12 text-base border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
                   placeholder={t('password')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -117,7 +117,7 @@ export default function SignIn() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 touch-manipulation"
                 >
                   {showPassword ? (
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -134,7 +134,7 @@ export default function SignIn() {
             </div>
 
             <div className="flex items-center justify-end">
-              <a href="/auth/forgot-password" className="text-sm font-medium text-sky-600 hover:text-sky-500">
+              <a href="/auth/forgot-password" className="text-sm font-medium text-sky-600 hover:text-sky-500 py-2 touch-manipulation">
                 {t('forgotPassword')}
               </a>
             </div>
@@ -142,7 +142,7 @@ export default function SignIn() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-base font-medium rounded-lg text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[48px]"
             >
               {isLoading ? t('signingIn') : t('signIn')}
             </button>
