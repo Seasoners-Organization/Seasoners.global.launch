@@ -376,9 +376,9 @@ export default function Navbar() {
                 {t('signOut')}
               </button>
             ) : null}
-            <div className="flex items-center justify-between pt-2">
-              <span className="text-sm text-slate-600">{t('languageLabel')}</span>
-              <LanguageToggle />
+            <div className="flex items-center justify-between pt-3 gap-2">
+              <span className="text-xs sm:text-sm text-slate-600 flex-shrink-0">{t('languageLabel')}</span>
+              <LanguageToggle className="ml-auto" />
             </div>
           </div>
         </div>

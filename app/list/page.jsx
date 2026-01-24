@@ -257,7 +257,7 @@ export default function List() {
 
             <div>
               <label htmlFor="title" className="sr-only">{t('listingTitle')}</label>
-              <input id="title" name="title" className="w-full border border-slate-300 p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder={t('listingTitle')} required disabled={status === "unauthenticated" || loading} />
+              <input id="title" name="title" className="w-full border border-slate-300 p-3 md:p-3 rounded-lg text-base md:text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed min-h-[44px]" placeholder={t('listingTitle')} required disabled={status === "unauthenticated" || loading} />
             </div>
 
             <div>
@@ -369,7 +369,7 @@ export default function List() {
                   <select 
                     id="lookingForGender" 
                     name="lookingForGender"
-                    className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]"
+                    className="w-full border border-slate-300 p-3 rounded-lg text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
                     disabled={loading}
                   >
                     <option value="ANY">Any Gender</option>
@@ -389,7 +389,7 @@ export default function List() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Season</label>
-                  <select aria-label="Season" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" value={season} onChange={e=>setSeason(e.target.value)} disabled={status === "unauthenticated" || loading}>
+                  <select aria-label="Season" className="w-full border p-3 rounded-lg text-base min-h-[44px] focus:ring-2 focus:ring-sky-500" value={season} onChange={e=>setSeason(e.target.value)} disabled={status === "unauthenticated" || loading}>
                     <option value="all">All</option>
                     <option value="winter">winter</option>
                     <option value="summer">summer</option>
@@ -397,7 +397,7 @@ export default function List() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
-                  <select aria-label="Country" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" value={country} onChange={e=>setCountry(e.target.value)} disabled={status === "unauthenticated" || loading}>
+                  <select aria-label="Country" className="w-full border p-3 rounded-lg text-base min-h-[44px] focus:ring-2 focus:ring-sky-500" value={country} onChange={e=>setCountry(e.target.value)} disabled={status === "unauthenticated" || loading}>
                     <option value="all">Select country</option>
                     {countries.map(c => <option key={c} value={c}>{getCountryName(c)}</option>)}
                   </select>
@@ -408,7 +408,7 @@ export default function List() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Region / City {country === 'AT' && <span className="text-xs text-gray-500">(Austrian federal states)</span>}
                   </label>
-                  <select aria-label="Region" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" value={region} onChange={e=>setRegion(e.target.value)} disabled={status === "unauthenticated" || loading || country==='all'}>
+                  <select aria-label="Region" className="w-full border p-3 rounded-lg text-base min-h-[44px] focus:ring-2 focus:ring-sky-500" value={region} onChange={e=>setRegion(e.target.value)} disabled={status === "unauthenticated" || loading || country==='all'}>
                     <option value="all">{country === 'all' ? 'Select country first' : 'Select a city or town'}</option>
                     {regions.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
@@ -416,7 +416,7 @@ export default function List() {
                 </div>
                 <div>
                   <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">Or enter custom city</label>
-                  <input id="city" name="city" className="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder="e.g., Innsbruck, Sydney" disabled={status === "unauthenticated" || loading} />
+                  <input id="city" name="city" className="w-full border border-slate-300 p-3 rounded-lg text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder="e.g., Innsbruck, Sydney" disabled={status === "unauthenticated" || loading} />
                   <p className="text-xs text-gray-500 mt-1">Enter if your location isn't in the list above.</p>
                 </div>
               </div>
@@ -431,7 +431,7 @@ export default function List() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <label htmlFor="jobType" className="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
-                      <select id="jobType" name="jobType" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" disabled={loading}>
+                      <select id="jobType" name="jobType" className="w-full border p-3 rounded-lg text-base min-h-[44px] focus:ring-2 focus:ring-sky-500" disabled={loading}>
                         <option value="">Select type</option>
                         <option value="FULL_TIME">Full Time</option>
                         <option value="PART_TIME">Part Time</option>
@@ -441,7 +441,7 @@ export default function List() {
                     </div>
                     <div>
                       <label htmlFor="industry" className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
-                      <select id="industry" name="industry" className="w-full border p-2 sm:p-3 rounded-lg text-base min-h-[44px]" disabled={loading}>
+                      <select id="industry" name="industry" className="w-full border p-3 rounded-lg text-base min-h-[44px] focus:ring-2 focus:ring-sky-500" disabled={loading}>
                         <option value="">Select industry</option>
                         <option value="HOSPITALITY">Hospitality</option>
                         <option value="FOOD_SERVICE">Food Service</option>
@@ -456,26 +456,26 @@ export default function List() {
 
                   <div>
                     <label htmlFor="wage" className="block text-sm font-medium text-gray-700 mb-1">Wage / Salary (optional)</label>
-                    <input id="wage" name="wage" type="text" className="w-full border border-slate-300 p-2 sm:p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed min-h-[44px]" placeholder="e.g., €1,500/month or $20/hour" disabled={loading} />
+                    <input id="wage" name="wage" type="text" className="w-full border border-slate-300 p-3 rounded-lg text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder="e.g., €1,500/month or $20/hour" disabled={loading} />
                     <p className="text-xs text-gray-500 mt-1">Leave blank if not disclosing wage</p>
                   </div>
 
                   <div>
                     <label htmlFor="benefits" className="block text-sm font-medium text-gray-700 mb-1">Benefits / Perks</label>
-                    <textarea id="benefits" name="benefits" className="w-full border border-slate-300 p-2 sm:p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="2" placeholder="e.g., Free accommodation, Meals included, Ski pass, Travel allowance" disabled={loading} />
+                    <textarea id="benefits" name="benefits" className="w-full border border-slate-300 p-3 rounded-lg text-base min-h-[120px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="3" placeholder="e.g., Free accommodation, Meals included, Ski pass, Travel allowance" disabled={loading} />
                   </div>
                 </div>
               </>
             ) : (
               <div>
                 <label htmlFor="price" className="sr-only">{t('priceLabel')}</label>
-                <input id="price" name="price" type="number" step="0.01" className="w-full border border-slate-300 p-2 sm:p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed min-h-[44px]" placeholder={t('pricePlaceholderShort')} disabled={status === "unauthenticated" || loading} />
+                <input id="price" name="price" type="number" step="0.01" className="w-full border border-slate-300 p-3 rounded-lg text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all disabled:bg-slate-50 disabled:cursor-not-allowed" placeholder={t('pricePlaceholderShort')} disabled={status === "unauthenticated" || loading} />
               </div>
             )}
 
             <div>
               <label htmlFor="details" className="sr-only">{t('descriptionLabel')}</label>
-              <textarea id="details" name="details" className="w-full border border-slate-300 p-2 sm:p-3 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="4" placeholder={listingType === "Seasonal Job" ? "Job description, responsibilities, required skills, schedule, etc." : t('detailsPlaceholderShort')} required disabled={status === "unauthenticated" || loading} />
+              <textarea id="details" name="details" className="w-full border border-slate-300 p-3 rounded-lg text-base min-h-[120px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none disabled:bg-slate-50 disabled:cursor-not-allowed" rows="4" placeholder={listingType === "Seasonal Job" ? "Job description, responsibilities, required skills, schedule, etc." : t('detailsPlaceholderShort')} required disabled={status === "unauthenticated" || loading} />
             </div>
 
 {listingType !== "Seasonal Job" && (

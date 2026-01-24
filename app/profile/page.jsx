@@ -404,12 +404,12 @@ export default function ProfilePage() {
 
             {/* Tabs */}
             <div className="border-b border-slate-200 mb-6">
-              <div className="flex gap-6 overflow-x-auto">
+              <div className="flex gap-1 overflow-x-auto">
                 {["overview", "profile", "listings", "subscription", "analytics", "settings"].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`pb-3 px-1 font-medium transition-colors relative whitespace-nowrap ${
+                    className={`pb-3 px-4 py-2 min-h-[44px] font-medium transition-colors relative whitespace-nowrap ${
                       activeTab === tab
                         ? "text-sky-700"
                         : "text-slate-600 hover:text-slate-900"

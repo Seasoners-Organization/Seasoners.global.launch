@@ -156,13 +156,13 @@ export default function ListingDetailPage() {
                           <>
                             <button
                               onClick={prevPhoto}
-                              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition"
+                              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-12 h-12 flex items-center justify-center transition text-lg"
                             >
                               ‹
                             </button>
                             <button
                               onClick={nextPhoto}
-                              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition"
+                              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-12 h-12 flex items-center justify-center transition text-lg"
                             >
                               ›
                             </button>
@@ -177,12 +177,12 @@ export default function ListingDetailPage() {
 
                       {/* Thumbnail Strip */}
                       {listing.photos.length > 1 && (
-                        <div className="flex gap-2 px-8 py-4 overflow-x-auto">
+                        <div className="flex gap-2 px-4 sm:px-8 py-4 overflow-x-auto">
                           {listing.photos.map((photo, idx) => (
                             <button
                               key={idx}
                               onClick={() => setCurrentPhotoIndex(idx)}
-                              className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition ${
+                              className={`flex-shrink-0 w-24 h-24 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition min-h-[44px] ${
                                 idx === currentPhotoIndex 
                                   ? 'border-sky-500 ring-2 ring-sky-200' 
                                   : 'border-slate-200 hover:border-slate-300'

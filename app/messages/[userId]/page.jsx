@@ -480,12 +480,12 @@ export default function MessagesPage() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder={listing ? `${t('contactAboutListing')}: ${listing.title}` : t('messagePlaceholder')}
-                    className="flex-1 resize-none h-16 px-4 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="flex-1 resize-none min-h-[44px] px-4 py-3 rounded-xl border border-slate-300 text-base focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                   <button
                     type="submit"
                     disabled={sending || !input.trim()}
-                    className={`px-5 h-16 rounded-xl text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 ${sending || !input.trim() ? 'bg-slate-200 text-slate-500 cursor-not-allowed' : 'bg-sky-600 text-white hover:bg-sky-700'}`}
+                    className={`px-5 min-h-[44px] rounded-xl text-base font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 ${sending || !input.trim() ? 'bg-slate-200 text-slate-500 cursor-not-allowed' : 'bg-sky-600 text-white hover:bg-sky-700'}`}
                   >
                     {sending ? t('sending') : t('sendMessage')}
                   </button>
@@ -499,21 +499,21 @@ export default function MessagesPage() {
                 {/* Email */}
                 {emailVisible ? (
                   <div className="p-4 bg-slate-50 rounded-lg">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-sm text-slate-600 mb-1">Email</p>
                         <p className="font-medium text-slate-900">{recipient?.email}</p>
                       </div>
                       <button
                         onClick={handleEmailCopy}
-                        className="px-3 py-2 text-sm bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition"
+                        className="px-4 py-3 min-h-[44px] text-sm bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition whitespace-nowrap"
                       >
                         Copy
                       </button>
                     </div>
                     <a
                       href={`mailto:${recipient?.email}?subject=${listing ? `Re: ${listing.title}` : 'Inquiry from Seasoners'}`}
-                      className="mt-3 inline-block px-4 py-2 bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold rounded-lg transition-all"
+                      className="mt-3 inline-block px-4 py-3 min-h-[44px] bg-gradient-to-r from-sky-600 to-amber-600 hover:from-sky-700 hover:to-amber-700 text-white font-semibold rounded-lg transition-all"
                     >
                       Send Email
                     </a>
@@ -529,21 +529,21 @@ export default function MessagesPage() {
                 {/* Phone */}
                 {phoneVisible ? (
                   <div className="p-4 bg-slate-50 rounded-lg">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-sm text-slate-600 mb-1">Phone</p>
                         <p className="font-medium text-slate-900">{recipient?.phoneNumber}</p>
                       </div>
                       <button
                         onClick={handlePhoneCopy}
-                        className="px-3 py-2 text-sm bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition"
+                        className="px-4 py-3 min-h-[44px] text-sm bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition whitespace-nowrap"
                       >
                         Copy
                       </button>
                     </div>
                     <a
                       href={`tel:${recipient?.phoneNumber}`}
-                      className="mt-3 inline-block px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition"
+                      className="mt-3 inline-block px-4 py-3 min-h-[44px] bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition"
                     >
                       Call Now
                     </a>

@@ -169,19 +169,19 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
         <legend className="text-xs font-medium text-slate-500 px-1">{t('filterSeasonLocation')}</legend>
         <div className="flex flex-col gap-2">
           <label className="text-xs font-medium text-slate-600">{t('filterSeason')}
-            <select aria-label="Season" value={season} onChange={e => setSeason(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
+            <select aria-label="Season" value={season} onChange={e => setSeason(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all">
               <option value="all">{t('filterAll')}</option>
               {SEASONS.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </label>
           <label className="text-xs font-medium text-slate-600">{t('filterCountry')}
-            <select aria-label="Country" value={country} onChange={e => setCountry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
+            <select aria-label="Country" value={country} onChange={e => setCountry(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all">
               <option value="all">{t('filterAll')}</option>
               {countries.map(c => <option key={c} value={c}>{getCountryName(c)}</option>)}
             </select>
           </label>
           <label className="text-xs font-medium text-slate-600">{t('filterRegion')}
-            <select aria-label="Region" value={region} onChange={e => setRegion(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs" disabled={country==='all' || regions.length===0}>
+            <select aria-label="Region" value={region} onChange={e => setRegion(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" disabled={country==='all' || regions.length===0}>
               <option value="all">{country==='all' ? t('filterAll') : t('filterSelectRegion')}</option>
               {regions.map(r => <option key={r} value={r}>{prettyRegionName(r)}</option>)}
             </select>
@@ -194,10 +194,10 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
         <legend className="text-xs font-medium text-slate-500 px-1">{t('filterEconomics')}</legend>
         <div className="grid grid-cols-2 gap-2">
           <label className="text-xs font-medium text-slate-600">{t('filterPriceMin')}
-            <input aria-label="Price minimum" type="number" min="0" value={priceMin} onChange={e=>setPriceMin(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+            <input aria-label="Price minimum" type="number" min="0" value={priceMin} onChange={e=>setPriceMin(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
           </label>
           <label className="text-xs font-medium text-slate-600">{t('filterPriceMax')}
-            <input aria-label="Price maximum" type="number" min="0" value={priceMax} onChange={e=>setPriceMax(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+            <input aria-label="Price maximum" type="number" min="0" value={priceMax} onChange={e=>setPriceMax(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
           </label>
         </div>
       </fieldset>
@@ -208,10 +208,10 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
           <legend className="text-xs font-medium text-slate-500 px-1">{t('filterProperty')}</legend>
           <div className="grid grid-cols-2 gap-2">
             <label className="text-xs font-medium text-slate-600">{t('filterBedrooms')}
-              <input aria-label="Bedrooms" type="number" min="0" value={bedrooms} onChange={e=>setBedrooms(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+              <input aria-label="Bedrooms" type="number" min="0" value={bedrooms} onChange={e=>setBedrooms(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
             </label>
             <label className="text-xs font-medium text-slate-600">{t('filterRoommates')}
-              <input aria-label="Roommates" type="number" min="0" value={roommates} onChange={e=>setRoommates(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
+              <input aria-label="Roommates" type="number" min="0" value={roommates} onChange={e=>setRoommates(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all" />
             </label>
           </div>
         </fieldset>
@@ -223,7 +223,7 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
           <legend className="text-xs font-medium text-slate-500 px-1">{t('filterJobs')}</legend>
           <div className="flex flex-col gap-2">
             <label className="text-xs font-medium text-slate-600">{t('filterJobType')}
-              <select aria-label="Job type" value={jobType} onChange={e=>setJobType(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
+              <select aria-label="Job type" value={jobType} onChange={e=>setJobType(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all">
                 <option value="all">{t('filterAll')}</option>
                 <option value="FULL_TIME">{t('filterJobFullTime')}</option>
                 <option value="PART_TIME">{t('filterJobPartTime')}</option>
@@ -232,7 +232,7 @@ export default function FilterSidebar({ listings, onFiltered, context = 'stays' 
               </select>
             </label>
             <label className="text-xs font-medium text-slate-600">{t('filterIndustry')}
-              <select aria-label="Industry" value={industry} onChange={e=>setIndustry(e.target.value)} className="mt-1 w-full border rounded p-1.5 text-xs">
+              <select aria-label="Industry" value={industry} onChange={e=>setIndustry(e.target.value)} className="mt-1 w-full border border-slate-300 rounded p-3 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all">
                 <option value="all">{t('filterAll')}</option>
                 <option value="HOSPITALITY">{t('filterIndustryHospitality')}</option>
                 <option value="FOOD_SERVICE">{t('filterIndustryFoodService')}</option>
