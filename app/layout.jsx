@@ -59,7 +59,7 @@ export const metadata = {
 
 // Per Next.js guidance, themeColor belongs in the `viewport` export
 export const viewport = {
-  themeColor: "#0EA5E9",
+  themeColor: "#0f172a",
 };
 
 // Force dynamic rendering for the app to avoid prerendering client-only
@@ -77,7 +77,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <div className="fixed inset-0 bg-gradient-to-b from-sky-100 via-white to-amber-100 -z-10" />
+        <div className="fixed inset-0 bg-slate-50 -z-10" />
         <AppProviders>
           {children}
         </AppProviders>
