@@ -8,7 +8,7 @@ import { useLanguage } from './LanguageProvider';
 import { ZONES } from '../data/zones';
 
 export default function Navbar() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { t } = useLanguage();
   const [userDetails, setUserDetails] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -58,7 +58,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200">
+    <header className="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-sm">
       <div className="max-w-6xl mx-auto px-6 py-3 flex items-center gap-6">
         {/* Logo - Far left */}
         <a href="/" className="flex items-center gap-2">
@@ -70,7 +70,7 @@ export default function Navbar() {
             className="h-11 w-auto"
             priority
           />
-          <span className="text-2xl font-extrabold bg-gradient-to-r from-sky-700 to-sky-900 bg-clip-text text-transparent tracking-tight">Seasoners</span>
+          <span className="text-2xl font-extrabold text-slate-900 tracking-tight">Seasoners</span>
         </a>
 
         {/* Profile Dropdown - Next to logo */}
@@ -78,7 +78,7 @@ export default function Navbar() {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-700"
             >
               {userDetails?.profilePicture ? (
                 <img 
@@ -87,7 +87,7 @@ export default function Navbar() {
                   className="w-8 h-8 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-sky-600 to-sky-800 flex items-center justify-center text-white font-semibold text-sm">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-slate-700 to-blue-950 flex items-center justify-center text-white font-semibold text-sm">
                   {session.user.name?.charAt(0).toUpperCase() || 'U'}
                 </div>
               )}
@@ -120,7 +120,7 @@ export default function Navbar() {
                     <span>👤</span>
                     <span>{t('profile')}</span>
                     {session.user.identityVerified === 'PENDING' && (
-                      <span className="ml-auto h-2 w-2 bg-amber-500 rounded-full" />
+                      <span className="ml-auto h-2 w-2 bg-slate-500 rounded-full" />
                     )}
                   </a>
 
@@ -172,21 +172,21 @@ export default function Navbar() {
         {/* Main navigation - Centered */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700 mx-auto">
           {session && (
-            <a href="/list" className="hover:text-sky-700 relative group">
+            <a href="/list" className="hover:text-blue-900 relative group">
               {t('list')}
               {(!session.user.emailVerified || !session.user.phoneVerified) && (
-                <span className="absolute -top-1 -right-2 h-2 w-2 bg-amber-500 rounded-full group-hover:bg-amber-600" />
+                <span className="absolute -top-1 -right-2 h-2 w-2 bg-slate-500 rounded-full group-hover:bg-slate-700" />
               )}
             </a>
           )}
-          <a href="/stays" className="hover:text-sky-700">{t('stays')}</a>
-          <a href="/flatshares" className="hover:text-sky-700">🏠 Flatshares</a>
-          <a href="/jobs" className="hover:text-sky-700">{t('jobs')}</a>
+          <a href="/stays" className="hover:text-blue-900">{t('stays')}</a>
+          <a href="/flatshares" className="hover:text-blue-900">🏠 Flatshares</a>
+          <a href="/jobs" className="hover:text-blue-900">{t('jobs')}</a>
           {/* Destinations dropdown */}
           <div className="relative" ref={destinationsRef}>
             <button 
               onClick={() => setIsDestinationsOpen(!isDestinationsOpen)}
-              className="hover:text-sky-700 flex items-center gap-2"
+              className="hover:text-blue-900 flex items-center gap-2"
             >
               {t('destinations')}
               <svg className={`w-4 h-4 text-slate-600 transition-transform ${isDestinationsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,8 +206,8 @@ export default function Navbar() {
               </div>
             )}
           </div>
-          <a href="/agreement" className="hover:text-sky-700">{t('agreement')}</a>
-          <a href="/about" className="hover:text-sky-700">{t('about')}</a>
+          <a href="/agreement" className="hover:text-blue-900">{t('agreement')}</a>
+          <a href="/about" className="hover:text-blue-900">{t('about')}</a>
         </nav>
 
         {/* Right side - Auth or Language */}
@@ -222,7 +222,7 @@ export default function Navbar() {
               </button>
               <a
                 href="/auth/register"
-                className="px-3 py-1.5 rounded-md text-sm font-medium bg-sky-600 hover:bg-sky-700 text-white transition"
+                className="px-3 py-1.5 rounded-md text-sm font-medium bg-slate-900 hover:bg-slate-700 text-white transition"
               >
                 {t('register')}
               </a>
